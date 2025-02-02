@@ -1,0 +1,17 @@
+C:\Training\DSATutorials\DSATutorials\bin\Debug\net6.0\DSATutorials.exe
+C:\Training\DSATutorials\DSATutorials\bin\Debug\net6.0\DSATutorials.deps.json
+C:\Training\DSATutorials\DSATutorials\bin\Debug\net6.0\DSATutorials.runtimeconfig.json
+C:\Training\DSATutorials\DSATutorials\bin\Debug\net6.0\DSATutorials.dll
+C:\Training\DSATutorials\DSATutorials\bin\Debug\net6.0\DSATutorials.pdb
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.GeneratedMSBuildEditorConfig.editorconfig
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.AssemblyInfoInputs.cache
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.AssemblyInfo.cs
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.csproj.CoreCompileInputs.cache
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.dll
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\refint\DSATutorials.dll
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.pdb
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.genruntimeconfig.cache
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\ref\DSATutorials.dll
+C:\Training\DSATutorials\DSATutorials\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutorials.csproj.AssemblyReference.cache
+C:\Training\DSATutorials\DSATutorials\obj\Debug\net6.0\DSATutor.AE9D4FF3.Up2Date

@@ -1,0 +1,7 @@
+/*
+    1.Next greater element helps solves many questions in same pattern.
+    
+    2. Area of rectangle in histogram = height * (right - left - 1), where the formula (right -left-1) is nothing but width
+
+    3. Next smaller element is also used in many questions.
+*/

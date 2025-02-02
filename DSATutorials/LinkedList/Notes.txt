@@ -1,0 +1,18 @@
+﻿
+
+/*1) Singly and circular linked list reversal is straight with prev, curr and next nodes only.
+
+2) For doubly and circular doubly linked list reversal, we need to swap the prev and next pointers of each node. Use Swap method to swap
+the prev and next pointers of each node.
+
+3) Always remember to see if two pointers fast or slow are needed or not.
+
+4) 3 variations of fast pointers :
+
+    a) slow = null, fast = head;
+    b) slow = head, fast = head;
+    c) slow = head, fast = head.next;
+
+5) Most problems can be solved using fast and slow pointers.
+
+6) When we use fast and slow to find the mid , the len of first part will always be bigger than second part*/
