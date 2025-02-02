@@ -1,0 +1,7 @@
+﻿/*
+ *  1) Whenever you get a question on roation somehwhere hidden will be reversal.
+ *  
+ *  2) For array problems try to think in term of two pointer solution 
+
+    3) Usually for sliding window problem think sometimes of dictionary or hashset 
+ */
