@@ -1,66 +1,48 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-
-//class Tutorial
+﻿//public class Solution
 //{
-//    public void PrintDuplicates(int[] arr)
+
+//    // Time : O(n) , space :O(n)
+//    public IList<int> FindDuplicates(int[] nums)
 //    {
-//        if (arr.Length == 0 || arr == null)
+//        List<int> result = new List<int>();
+
+//        for (int i = 0; i < nums.Length; i++)
 //        {
-//            return;
-//        }
+//            // get the absolute value at current index
+//            int abs = Math.Abs(nums[i]);
 
-//        //Dictionary<int, int> d = new Dictionary<int, int>();
+//            // get the index of the element - 1
+//            int newIndex = abs - 1;
 
-//        //for (int i = 0; i < arr.Length; i++)
-//        //{
-//        //    if (!d.ContainsKey(arr[i]))
-//        //    {
-//        //        d.Add(arr[i], 1);
-//        //    }
-//        //    else
-//        //    {
-//        //        d[arr[i]] = d[arr[i]] + 1;
-//        //    }
-//        //}
-
-//        //for (int i = 0; i < d.Count; i++)
-//        //{
-//        //    if (d[arr[i]] > 1)
-//        //    {
-//        //        Console.Write($"{d.ElementAt(i).Key}" + " ");
-//        //    }
-//        //}
-
-//        // subtract 1 from exisitng array element
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            arr[i] = arr[i] - 1;
-//        }
-
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            arr[arr[i] % arr.Length] = arr[arr[i] % arr.Length] + arr.Length;
-//        }
-
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            if (arr[i] / arr.Length > 1)
+//            // If the number is -ve then its already visited
+//            if (nums[newIndex] < 0)
 //            {
-//                Console.WriteLine($"{i+1}: {arr[i] / arr.Length}");
+//                result.Add(Math.Abs(nums[i]));
 //            }
-
+//            else
+//            {
+//                // mark the number as -ve
+//                nums[newIndex] = -nums[newIndex];
+//            }
 //        }
+
+//        return result;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 1, 2, 3, 4, 3, 2, 5, 6, 5, 8, 5 };
+//        int[] nums = { 1, 1, 2 };
 
-//        Tutorial t = new Tutorial();
-//        t.PrintDuplicates(arr);
+//        Solution s = new Solution();
+
+//        var result = s.FindDuplicates(nums);
+
+//        foreach (var item in result)
+//        {
+//            Console.Write($"{item}" + " ");
+//        }
 //    }
 //}

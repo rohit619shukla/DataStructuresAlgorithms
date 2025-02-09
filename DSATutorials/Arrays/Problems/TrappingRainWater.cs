@@ -80,6 +80,7 @@
 
 //    // Time : O(N) 
 //    // Space: O(1)
+      // This aims to use single pass form both ends unlike above fo having multiple traversal
 //    public int Solve(int[] heights)
 //    {
 //        int totSum = 0;
