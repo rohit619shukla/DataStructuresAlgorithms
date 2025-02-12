@@ -4,67 +4,62 @@
 //{
 //    public int[] FindDiagonalOrder(int[][] mat)
 //    {
-//        int rowEnd = mat.Length;    // Total number of rows
-//        int colEnd = mat[0].Length;   // Total number of columns
+//        if (mat.Length == 0 || mat[0].Length == 0)
+//            return new int[0];
+
+//        int rowEnd = mat.Length;           // Total number of rows
+//        int colEnd = mat[0].Length;        // Total number of columns
 //        int[] result = new int[rowEnd * colEnd]; // Array to store the final diagonal order
 
-//        int index = 0;              // Index to insert values into the result array
-//        int rowBegin = 0, colBegin = 0;       // Pointers to navigate through the matrix
-//        bool upward = true;         // Direction flag: true for upward, false for downward
+//        int index = 0;                     // Index to insert values into result array
+//        int row = 0, col = 0;               // Pointers to navigate through the matrix
+//        bool upward = true;                // Direction flag: true for upward, false for downward
 
-//        // Iterate until we've filled all elements in the result array
 //        while (index < result.Length)
 //        {
-//            result[index++] = mat[rowBegin][colBegin]; // Add the current matrix element to result array
+//            result[index++] = mat[row][col]; // Store the current matrix element
 
 //            if (upward)
 //            {
-//                // If moving upward:
-//                if (colBegin == colEnd - 1)
+//                if (col == colEnd - 1)      // If at the last column, move down
 //                {
-//                    // If we're at the last column, move down to the next row
-//                    rowBegin++;
-//                    upward = false;       // Change direction to downward
+//                    row++;
+//                    upward = false;
 //                }
-//                else if (rowBegin == 0)
+//                else if (row == 0)          // If at the first row, move right
 //                {
-//                    // If we're at the top row, move right to the next column
-//                    colBegin++;
-//                    upward = false;       // Change direction to downward
+//                    col++;
+//                    upward = false;
 //                }
-//                else
+//                else                        // Move diagonally up-right
 //                {
-//                    // Otherwise, keep moving upward: decrement row, increment column
-//                    rowBegin--;
-//                    colBegin++;
+//                    row--;
+//                    col++;
 //                }
 //            }
 //            else
 //            {
-//                // If moving downward:
-//                if (rowBegin == rowEnd - 1)
+//                if (row == rowEnd - 1)      // If at the last row, move right
 //                {
-//                    // If we're at the last row, move right to the next column
-//                    colBegin++;
-//                    upward = true;        // Change direction to upward
+//                    col++;
+//                    upward = true;
 //                }
-//                else if (colBegin == 0)
+//                else if (col == 0)          // If at the first column, move down
 //                {
-//                    // If we're at the first column, move down to the next row
-//                    rowBegin++;
-//                    upward = true;        // Change direction to upward
+//                    row++;
+//                    upward = true;
 //                }
-//                else
+//                else                        // Move diagonally down-left
 //                {
-//                    // Otherwise, keep moving downward: increment row, decrement column
-//                    rowBegin++;
-//                    colBegin--;
+//                    row++;
+//                    col--;
 //                }
 //            }
 //        }
 
 //        return result;
 //    }
+
 
 //}
 //class Program
