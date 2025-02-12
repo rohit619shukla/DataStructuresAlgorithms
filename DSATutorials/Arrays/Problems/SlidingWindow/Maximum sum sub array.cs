@@ -24,6 +24,7 @@
 //                end = i;
 //            }
 
+//            // reset to zero
 //            if (currentSum < 0)
 //            {
 //                currentSum = 0;

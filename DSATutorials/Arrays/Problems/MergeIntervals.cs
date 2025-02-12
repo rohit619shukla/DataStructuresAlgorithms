@@ -32,7 +32,7 @@
 //{
 //    public int Compare(int[] n1, int[] n2)
 //    {
-//        return n1[1].CompareTo(n2[0]);
+//        return n1[0].CompareTo(n2[0]);
 //    }
 //}
 
