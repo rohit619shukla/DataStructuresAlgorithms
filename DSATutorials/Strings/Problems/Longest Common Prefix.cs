@@ -1,53 +1,52 @@
-﻿//using System;
-
-//class StringHelper
+﻿//public class Solution
 //{
-//    public string LongestCommonPrefix(string[] arr)
+
+//    // Time :O(N*M) since inner loop is dependent on outer loop, space :O(N)
+//    public string LongestCommonPrefix(string[] strs)
 //    {
-//        if (arr.Length == 0)
+//        // base case
+//        if (strs == null || strs.Length == 0)
 //        {
-//            Console.WriteLine("Empty collection found");
-//            return null;
+//            return string.Empty;
 //        }
 
-//        string output = "";
-//        string lcp = arr[0];
+//        // Take the very first string as base and compare with all
+//        string baseString = strs[0];
 
-//        for (int i = 1; i < arr.Length; i++)
+//        for (int i = 1; i < strs.Length; i++)
 //        {
-//            string current = arr[i];
+//            // ptr1 for base string and ptr2 for current compared string
+//            int ptr = 0;
 
-//            int x = 0, y = 0;
+//            string compareString = strs[i];
 
-//            while (x < lcp.Length && y < current.Length)
+//            while (ptr < baseString.Length && ptr < compareString.Length)
 //            {
-//                if (lcp[x] == current[y])
+//                if (baseString[ptr] == compareString[ptr])
 //                {
-//                    output += lcp[x];
-//                    x++;
-//                    y++;
+//                    ptr++;
 //                }
 //                else
 //                {
 //                    break;
 //                }
 //            }
-//            lcp = output;
-//            output = "";
+
+//            baseString = baseString.Substring(0, ptr);
 //        }
 
-//        return (string.IsNullOrWhiteSpace(lcp) ? "" : lcp);
+//        return baseString;
 //    }
 //}
-//class Program
+
+//class Progam
 //{
 //    public static void Main()
 //    {
-//        string[] arr = { "mint", "mini", "mineral" };
+//        string[] str = { "dog", "racecar", "car" };
 
-//        StringHelper h = new StringHelper();
-//        Console.WriteLine(h.LongestCommonPrefix(arr));
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.LongestCommonPrefix(str));
 //    }
 //}
-
-///* Complexity : O(N^2) and space : O(N) for resultant string*/

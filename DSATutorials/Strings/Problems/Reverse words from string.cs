@@ -1,58 +1,83 @@
-﻿//using System;
+﻿//using System.Reflection.Emit;
 
-//class StringHelper
+//public class Solution
 //{
+//    // Time : O(N) , space :O(N) for output array but Aux :O(1)
 //    public string ReverseWords(string str)
 //    {
-//        string[] ch = str.Split(' ');
-
-//        int start = 0, end = 0;
-
-//        int j = 0;
-//        for (int i = 0; i < ch.Length; i++)
+//        // base cases
+//        if (str == null)
 //        {
-//            if (ch[i] != "")
+//            return str;
+//        }
+
+//        // Step 1: Reverse the string completely
+//        char[] chArray = str.ToCharArray();
+//        Reverse(chArray, 0, str.Length - 1);  // O(n)
+
+//        // Step 2: Reverse each word in the reversed string individualy
+//        int i = 0, r = 0, l = 0;
+
+//        while (i < str.Length)  //O(N)
+//        {
+
+//            // This is sequential loop as we dont over again atmost twice, hence O(N). This is unique case carwfully see the iteration
+//            while (i < str.Length && chArray[i] != ' ')
 //            {
-//                ch[j] = ch[i];
-//                j++;
+//                // Assign value at index i to index r
+//                chArray[r++] = chArray[i++];
 //            }
+
+//            if (l < r)
+//            {
+//                // Reverse all characters between l and r
+//                // Here we reverse 1 word per string rather than whole string
+//                Reverse(chArray, l, r - 1);
+
+//                if (r < str.Length)
+//                {
+//                    // Add a space at index r
+//                    chArray[r] = ' ';
+//                }
+//                // increment r
+//                r++;
+
+//                // Move l to r's location
+//                l = r;
+
+//            }
+
+//            // increment i
+//            i++;
 //        }
 
-//        Array.Resize(ref ch, j);
-//        end = j - 1;
-//        while (start < end)
-//        {
-//            Swap(ch, start, end);
-//            start++;
-//            end--;
-//        }
+//        str = new string(chArray);
 
-//        str = "";
-//        for (int i = 0; i < ch.Length; i++)
-//        {
-//            str += ch[i];
-//            str += " ";
-//        }
-//        return str.Trim();
+//        return str.Substring(0, r - 1);
 //    }
 
-
-//    private void Swap(string[] ch, int lb, int ub)
+//    private void Reverse(char[] chArray, int lb, int ub)
 //    {
-//        string temp = ch[lb];
-//        ch[lb] = ch[ub];
-//        ch[ub] = temp;
+//        while (lb < ub)
+//        {
+//            char temp = chArray[lb];
+//            chArray[lb] = chArray[ub];
+//            chArray[ub] = temp;
+
+//            lb++;
+//            ub--;
+//        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str = "  hello world  ";
+//        string str = "a good   example";
 
-//        StringHelper s = new StringHelper();
-//        Console.WriteLine($"{s.ReverseWords(str)}");
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.ReverseWords(str));
 //    }
 //}
-
-//// Space :O(1), Time : O(N)
