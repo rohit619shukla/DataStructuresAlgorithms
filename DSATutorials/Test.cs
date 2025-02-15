@@ -21,6 +21,7 @@
 //    public int Horizon { get; set; }
 //}
 
+
 //public class MTFSDFECompute
 //{
 //    public string Scenario { get; set; }
@@ -37,7 +38,8 @@
 
 //}
 
-//class Solution
+
+//class Sample
 //{
 //    public static string CombineCsvData(string computeCsvData, string storageCsvData)
 //    {
@@ -58,7 +60,32 @@
 //        return computeCsvString + storageCsvString;
 //    }
 
-//    public static List<T> ConvertCsvToObjectListWithoutId<T>(string csvString)
+//    public static string ConvertToCsvString<T>(IEnumerable<T> data, bool ShouldQuote = true)
+//    {
+//        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+//        {
+//            ShouldQuote = args => ShouldQuote
+//        };
+
+//        using (var writer = new StringWriter())
+//        {
+//            using (var csv = new CsvWriter(writer, config))
+//            {
+//                csv.WriteRecords(data);
+//                writer.Flush();
+//                var output = writer.ToString();
+//                return output;
+//            }
+//        }
+//    }
+
+//    /// <summary>
+//    /// Helper to convert csv to List
+//    /// </summary>
+//    /// <typeparam name="T"></typeparam>
+//    /// <param name="csvString"></param>
+//    /// <returns>generic list object</returns>
+//    private static List<T> ConvertCsvToObjectListWithoutId<T>(string csvString)
 //    {
 //        var result = new List<T>();
 //        if (string.IsNullOrEmpty(csvString))
@@ -100,39 +127,26 @@
 //        }
 //        return result;
 //    }
-
-//    public static string ConvertToCsvString<T>(IEnumerable<T> data, bool ShouldQuote = true)
-//    {
-//        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-//        {
-//            ShouldQuote = args => ShouldQuote
-//        };
-
-//        using (var writer = new StringWriter())
-//        {
-//            using (var csv = new CsvWriter(writer, config))
-//            {
-//                csv.WriteRecords(data);
-//                writer.Flush();
-//                var output = writer.ToString();
-//                return output;
-//            }
-//        }
-//    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string computePath = @"C:\Work\MTFSDFECompute_2024_12_Azure_DF_Demand_V1_ComputeSDFE.csv";
 
-//        // Read entire file content as a single string
-//        string fileContentCompute = File.ReadAllText(computePath);
+//        string computePath = "C:\\Work\\MTFSDFECompute_2024_12_Azure_DF_Demand_V1_ComputeSDFE.csv"; // Update with your file path
+//        string computeData = File.ReadAllText(computePath); //
 
-//        string storagePath = @"C:\Work\";
+//        string storagePath = "C:\\Work\\MTFSDFEStorage_02-02-2024-14-42-MTFSDFEStorage-harinibaddam 1.csv"; // Update with your file path
+//        string storageData = File.ReadAllText(storagePath); //
 
-//        // Read entire file content as a single string
-//        string fileContentStorage = File.ReadAllText(storagePath);
 
+
+
+
+//        var result = Sample.CombineCsvData(computeData, storageData);
+
+//        string mergedpath = "C:\\Work\\MTFSDFEMerged.csv";
+
+//        File.WriteAllText(mergedpath, result); // Write the string to a CSV file
 //    }
 //}

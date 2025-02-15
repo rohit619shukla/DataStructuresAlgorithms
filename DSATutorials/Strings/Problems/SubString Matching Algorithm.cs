@@ -4,13 +4,15 @@
 //{
 //    public bool DoesSubstringMatching(string str, string pattern)
 //    {
+//        if (pattern.Length > str.Length) return false;
+
 //        char[] ptrn = pattern.ToCharArray();
 //        int[] lps = new int[ptrn.Length];
 
-//        int i = 0;   /* for given string*/
-//        int j = 0;   /* for pattern*/
+//        int i = 0;  // Pointer for `str`
+//        int j = 0;  // Pointer for `pattern`
 
-//        LPS(ptrn, lps);
+//        ComputeLPS(ptrn, lps);
 
 //        while (i < str.Length)
 //        {
@@ -19,14 +21,15 @@
 //                i++;
 //                j++;
 //            }
-//            if (j == ptrn.Length - 1 && str[i] == ptrn[j])
+
+//            if (j == ptrn.Length)
 //            {
-//                Console.WriteLine($"pattern  {pattern} : found at position : {i - j} : {i} & {j}");
+//                Console.WriteLine($"Pattern '{pattern}' found at index {i - j}");
 //                return true;
 //            }
-//            else if (str[i] != ptrn[j])
-//            {
 
+//            if (i < str.Length && str[i] != ptrn[j])
+//            {
 //                if (j == 0)
 //                {
 //                    i++;
@@ -38,14 +41,13 @@
 //            }
 //        }
 
-//        Console.WriteLine($"pattern not found {pattern}");
+//        Console.WriteLine($"Pattern '{pattern}' not found");
 //        return false;
 //    }
 
-//    private void LPS(char[] ptrn, int[] lps)
+//    private void ComputeLPS(char[] ptrn, int[] lps)
 //    {
-//        int i = 0;
-//        int j = i + 1;
+//        int i = 0, j = 1;
 
 //        while (j < ptrn.Length)
 //        {
@@ -59,7 +61,7 @@
 //            {
 //                if (i == 0)
 //                {
-//                    lps[j] = i;
+//                    lps[j] = 0;
 //                    j++;
 //                }
 //                else
@@ -69,6 +71,8 @@
 //            }
 //        }
 //    }
+
+
 //}
 //class Program
 //{

@@ -1,58 +1,66 @@
-﻿//using System;
-//using System.Collections.Generic;
-
-//class Isomorphic
+﻿//public class Solution
 //{
-//    public bool AreIsmorphic(string s1, string s2)
+//    // Time :O(N) , space :O(N)
+//    public bool IsIsomorphic(string s, string t)
 //    {
-//        Dictionary<char, char> map;
-
-//        if (s1.Length != s2.Length)
+//        // base case
+//        if (string.IsNullOrWhiteSpace(s) || string.IsNullOrWhiteSpace(t))
 //        {
 //            return false;
 //        }
 
-//        map = new Dictionary<char, char>();
-
-//        for (int i = 0; i < s1.Length; i++)
+//        if (s.Length != t.Length)
 //        {
-//            if (!map.ContainsKey(s1[i]))
+//            return false;
+//        }
+
+//        Dictionary<char, char> map = new Dictionary<char, char>();
+//        Dictionary<char, char> reverseMap = new Dictionary<char, char>();
+
+//        for (int i = 0; i < s.Length; i++)
+//        {
+//            char sc = s[i];
+//            char tc = t[i];
+
+//            if (map.ContainsKey(sc))
 //            {
-//                map.Add(s1[i], s2[i]);
+//                if (map[sc] != tc)
+//                {
+//                    return false;
+//                }
 //            }
-//            else if (map[s1[i]] != s2[i])
+//            else
 //            {
-//                return false;
+//                map[sc] = tc;
+//            }
+
+//            if (reverseMap.ContainsKey(tc))
+//            {
+//                if (reverseMap[tc] != sc)
+//                {
+//                    return false;
+//                }
+//            }
+//            else
+//            {
+//                reverseMap[tc] = sc;
 //            }
 //        }
 
-//        // Other way round
-//        map.Clear();
-
-//        for (int i = 0; i < s2.Length; i++)
-//        {
-//            if (!map.ContainsKey(s2[i]))
-//            {
-//                map.Add(s2[i], s1[i]);
-//            }
-//            else if (map[s2[i]] != s1[i])
-//            {
-//                return false;
-//            }
-//        }
 //        return true;
 //    }
+
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str1 = "aab";
-//        string str2 = "xyz";
+//        string s = "badc";
+//        string t = "baba";
 
-//        Isomorphic iso = new Isomorphic();
-//        Console.WriteLine($"{iso.AreIsmorphic(str1, str2)}");
+//        Solution sl = new Solution();
+
+//        Console.WriteLine(sl.IsIsomorphic(s, t));
 //    }
 //}
-
-// Complexity : O(N), spcae : O(N)

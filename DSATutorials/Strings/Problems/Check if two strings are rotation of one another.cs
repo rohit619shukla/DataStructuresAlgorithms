@@ -1,41 +1,53 @@
-﻿//using System;
-
-//class CheckStringRotationHelper
+﻿//public class Solution
 //{
-//    public bool AreRotation(string str1, string str2)
+//    // Time : O(m+n) , space :O(n)
+//    public bool RotateString(string str, string goal)
 //    {
-
-//        if (string.IsNullOrWhiteSpace(str1) || string.IsNullOrWhiteSpace(str2))
+//        // base cases
+//        if (string.IsNullOrWhiteSpace(str) || string.IsNullOrWhiteSpace(goal))
 //        {
 //            return false;
 //        }
 
-//        int[] lps = new int[str2.Length];
-//        LPS(str2, lps);
+//        if (str.Length != goal.Length) return false;
+//        return Solve(str += str, goal);
+//    }
 
-//        int i = 0, j = 0;
+//    private bool Solve(string str, string pattern)
+//    {
+//        // Step 1: create LPS array
+//        int[] lps = new int[pattern.Length];
+//        LPSCreation(lps, pattern);
 
-//        while (i < str1.Length - 1)
+//        // Step 2: perform actual string mathcing with help of LPS array
+//        int i = 0; // to tack the actual string
+//        int j = 0; // to track the pattern
+
+//        while (i < str.Length - 1)
 //        {
-//            if (str1[i] == str2[j])
+//            // if a match is found between both
+//            if (str[i] == pattern[j])
 //            {
 //                i++;
 //                j++;
 //            }
 
-//            if (j == str2.Length - 1 && str1[i] == str2[j])
+//            // Maybe we reached end
+//            if (j == pattern.Length)
 //            {
-//                Console.WriteLine("Strings are rotations");
+//                // we found a match
 //                return true;
 //            }
-//            else if (str1[i] != str2[j])
+//            else if (str[i] != pattern[j])
 //            {
+//                // no match found so 2 cases
 //                if (j == 0)
 //                {
 //                    i++;
 //                }
 //                else
 //                {
+//                    // move to better lps
 //                    j = lps[j - 1];
 //                }
 //            }
@@ -44,45 +56,49 @@
 //        return false;
 //    }
 
-//    private void LPS(string str, int[] lps)
+//    private void LPSCreation(int[] lps, string pattern)
 //    {
-//        int i = 0;
-//        int j = 1;
+//        int i = 0; // to track the length of longest string which is also a prefix
+//        int j = 1; // to traverse the pattern
 
-//        while (j < str.Length)
+//        while (j < pattern.Length)
 //        {
-//            if (str[i] == str[j])
+//            // If a match is found
+//            if (pattern[i] == pattern[j])
 //            {
 //                lps[j] = i + 1;
 //                i++;
 //                j++;
 //            }
-//            else if (str[i] != str[j])
+//            else
 //            {
+//                // In case of no match, we can have 2 cases
+
+//                // case 1:No prefix found till the  given moment
 //                if (i == 0)
 //                {
-//                    lps[j] = i;
+//                    lps[j] = 0;
 //                    j++;
 //                }
 //                else
 //                {
+//                    // rollback to last found longest prefix which is also a suffix to save time
 //                    i = lps[i - 1];
 //                }
 //            }
 //        }
 //    }
-
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str1 = "ABACD";
-//        string str2 = "DABAC";
+//        string str = "abcde";
+//        string goal = "abced";
 
-//        str1 += str1;
+//        Solution s = new Solution();
 
-//        CheckStringRotationHelper c = new CheckStringRotationHelper();
-//        c.AreRotation(str1, str2);
+//        Console.WriteLine(s.RotateString(str, goal));
 //    }
 //}
