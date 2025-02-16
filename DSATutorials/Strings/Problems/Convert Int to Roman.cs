@@ -1,40 +1,47 @@
-﻿//using System;
+﻿//using System.Text;
 
-//class ConversionHelper
+//public class Solution
 //{
-//    public void ConvertToRoman(int num, int[] numArr, string[] strArr)
+//    // Time : O(1) , space :O(1) since everything is fixed in terms of inputsa dn number of operations theits  O(1)
+//    //Roman numerals typically don't go beyond 3999
+//    public string IntToRoman(int num)
 //    {
-//        int i = numArr.Length - 1;   /* we start iterating from last element */
+//        StringBuilder sb = new StringBuilder();
 
-//        while (num > 0)       /* Iterate till we have something */
+//        int[] nums = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
+//        string[] romans = { "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M" };
+
+//        // Step 1: Traverse the nums array in reverse order
+//        int i = nums.Length - 1;
+
+//        while (num > 0)
 //        {
-//            int quotient = num / numArr[i];       /* get how many times we need to print the Roman equivalent*/
+//            // How many times to print the roman number
+//            int times = num / nums[i];
 
-//            num = num % numArr[i];      /* get next number in line */
+//            // get the next number
+//            num = num % nums[i];
 
-//            while (quotient > 0)                 /* print the Roman equivalent of current value of string that many times*/
+//            while (times > 0)
 //            {
-//                Console.Write($"{strArr[i]}");
-//                quotient--;
+//                sb.Append(romans[i]);
+//                times--;
 //            }
 //            i--;
 //        }
+
+//        return sb.ToString();
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Console.WriteLine("Enter a number :");
-//        int num = Convert.ToInt32(Console.ReadLine());
+//        int num = 3749;
 
-//        int[] numArr = { 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000 };
-//        string[] strArr = { "i", "iv", "v", "ix", "x", "xl", "l", "xc", "c", "cd", "d", "cm", "m" };
+//        Solution s = new Solution();
 
-//        ConversionHelper c = new ConversionHelper();
-//        c.ConvertToRoman(num, numArr, strArr);
-
+//        Console.WriteLine(s.IntToRoman(num));
 //    }
 //}
-
-//// Complexity : Since we are calgculating the number in fixed range : 1  to 3,999,999 to complexity is O(1)

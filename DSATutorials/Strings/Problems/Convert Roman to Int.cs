@@ -1,58 +1,49 @@
-﻿//using System;
-//using System.Collections.Generic;
-//class ConvertToInHelper
+﻿
+//class Solution
 //{
-//    public void ConvertToInt(string str, Dictionary<char, int> map)
+//    // Time :O(n) , space :O(1) due to the fact that dictionary will have only 7 elements
+//    public int RomanToInt(string str)
 //    {
-//        if (string.IsNullOrWhiteSpace(str))
+//        Dictionary<char, int> map = new Dictionary<char, int>
 //        {
-//            Console.WriteLine("Invalid string");
-//            return;
-//        }
+//            {'I', 1 },
+//            {'V', 5 },
+//            {'X', 10 },
+//            {'L', 50 },
+//            {'C', 100 },
+//            {'D', 500 },
+//            {'M', 1000 }
+//        };
 
-//        if (map.Count == 0)
+//        int result = 0;
+//        int prev = 0;
+
+//        // For roman numerals better to start with last character
+//        for (int i = str.Length - 1; i >= 0; i--)
 //        {
-//            Console.WriteLine("Empty map found");
-//            return;
-//        }
+//            int curr = map[str[i]];
 
-//        int output = 0;
-
-//        for (int i = 0; i <= str.Length; i++)
-//        {
-//            if ((i + 1 == str.Length) || map[str[i]] >= map[str[i + 1]])
+//            if (prev < curr)
 //            {
-//                output += map[str[i]];
+//                result += curr;
 //            }
 //            else
 //            {
-//                output -= map[str[i]];
+//                result -= curr;
 //            }
+//            prev = curr;
 //        }
 
-//        Console.WriteLine($"{output}");
+//        return result;
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Console.WriteLine("Enter Roman number : ");
-//        string str = Console.ReadLine();
+//        string str = "MCMXCIV";
 
-//        Dictionary<char, int> map = new Dictionary<char, int>();
-//        map.Add('I', 1);
-//        map.Add('V', 5);
-//        map.Add('X', 10);
-//        map.Add('L', 50);
-//        map.Add('C', 100);
-//        map.Add('D', 500);
-//        map.Add('M', 1000);
-
-//        ConvertToInHelper c = new ConvertToInHelper();
-//        c.ConvertToInt(str, map);
+//        Solution s = new Solution();
+//        Console.WriteLine(s.RomanToInt(str));
 //    }
 //}
-
-////Time complexity – O(N)
-////Auxiliary Space – O(1)   since the map is of fixed size
