@@ -1,78 +1,42 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-
-//class StringHelper
+﻿//public class Solution
 //{
-//    public void RemoveAdjacentDuplicates(string str)
+//    // Time  : O(n) , space :O(n)
+//    public string RemoveDuplicates(string str)
 //    {
-//        if (string.IsNullOrWhiteSpace(str))
-//        {
-//            return;
-//        }
-
-//        char[] ch = { };
 //        Stack<char> st = new Stack<char>();
 
-//        char prev = ' ';
-
-//        for (int i = 0; i < str.Length; i++)
+//        foreach (char ch in str)
 //        {
-
-//            if (str[i] == prev)
+//            if (st.Count > 0 && st.Peek() == ch)
 //            {
-//                continue;
-//            }
-//            else if (st.Count == 0 || st.Peek() != str[i])
-//            {
-//                st.Push(str[i]);
+//                st.Pop();
 //            }
 //            else
 //            {
-//                prev = st.Peek();
-//                st.Pop();
+//                st.Push(ch);
 //            }
 //        }
 
-//        if (st.Count > 0)
+//        char[] chr = new char[st.Count];
+//        int index = chr.Length;
+
+//        while (st.Count > 0)
 //        {
-//            ch = new char[st.Count];
-//            int i = 0;
-//            while (st.Count != 0)
-//            {
-//                ch[i] = st.Peek();
-//                st.Pop();
-//                i++;
-//            }
-
-//            ReverseString(ch, 0, ch.Length - 1);
-
-//            Console.WriteLine(new String(ch));
+//            chr[--index] = st.Pop();
 //        }
 
+//        return new string(chr);
 //    }
 
-//    private void ReverseString(char[] ch, int lb, int ub)
-//    {
-//        while (lb < ub)
-//        {
-//            char temp = ch[lb];
-//            ch[lb] = ch[ub];
-//            ch[ub] = temp;
-//            lb++;
-//            ub--;
-//        }
-//    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str = "acaaabbbacdddd";
+//        string str = "azxxzy";
 
-//        StringHelper s = new StringHelper();
-//        s.RemoveAdjacentDuplicates(str);
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.RemoveDuplicates(str));
 //    }
 //}
-
-////Complexity : O(N), space : O(N)

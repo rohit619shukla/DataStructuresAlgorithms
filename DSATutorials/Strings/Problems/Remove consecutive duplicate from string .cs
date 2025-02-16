@@ -2,11 +2,11 @@
 
 //class StringHelper
 //{
-//    public void RemoveConsecutiveDuplicates(string str)
+//    public string RemoveConsecutiveDuplicates(string str)
 //    {
 //        if (string.IsNullOrWhiteSpace(str))
 //        {
-//            return;
+//            return null;
 //        }
 
 //        int i = 0;
@@ -22,8 +22,9 @@
 //            }
 //        }
 
-//        Array.Resize(ref ch, i + 1);
-//        Console.WriteLine(new String(ch));
+//        str = new string(ch);
+
+//        return str.Substring(0, i + 1);
 //    }
 //}
 //class Program
@@ -33,8 +34,8 @@
 //        string str = "aabccba";
 
 //        StringHelper s = new StringHelper();
-//        s.RemoveConsecutiveDuplicates(str);
+//        Console.WriteLine(s.RemoveConsecutiveDuplicates(str));
 //    }
 //}
 
-//// Complexity : O(N), Space :O(1)
+//// Complexity : O(N), Space :O(n)

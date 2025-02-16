@@ -1,43 +1,50 @@
-﻿//using System;
-//class StringConversionHelper
+﻿//public class Solution
 //{
-//    public void ConvertToInt(string str)
+//    // Time : O(n) , space : O(1)
+//    public int MyAtoi(string str)
 //    {
-//        if (string.IsNullOrWhiteSpace(str))
+//        // To counter the condition of overflow and underflow we will take the result to be long
+//        long result = 0;
+
+//        // Step 1 : Check for leading space
+//        int i = 0, sign = 1;
+//        while (i < str.Length && str[i] == ' ')
 //        {
-//            Console.WriteLine("Empty string encountered");
-//            return;
+//            // move i till we get a non space number
+//            i++;
 //        }
 
-//        int output = 0;
-
-//        for (int i = 0; i < str.Length; i++)
+//        // Step 2 : Check for sign
+//        if (i < str.Length && (str[i] == '-' || str[i] == '+'))
 //        {
-//            if (str[i] >= 48 && str[i] <= 57)
-//            {
-//                output = (str[i] - 48) + (output * 10);
-//            }
-//            else
-//            {
-//                Console.WriteLine($"Given character : {str[i]} is not a number");
-//                return;
-//            }
+//            sign = (str[i] == '-' ? -1 : 1);
+//            i++;
 //        }
 
-//        Console.WriteLine($"String converted to integer is : {output}");
+//        // Process digits manually without using char.IsDigit
+//        while (i < str.Length && str[i] >= '0' && str[i] <= '9')
+//        {
+//            result = result * 10 + (str[i] - '0');
+//            i++;
+
+//            // 4. Clamp to 32-bit integer range
+//            if (result * sign <= int.MinValue) return int.MinValue;
+//            if (result * sign >= int.MaxValue) return int.MaxValue;
+//        }
+
+//        return (int)(sign * result);
 //    }
 //}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Console.WriteLine("Enter a string to convert :");
-//        string str = Console.ReadLine();
+//        string str = "42";
 
-//        StringConversionHelper s = new StringConversionHelper();
-//        s.ConvertToInt(str);
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.MyAtoi(str));
 //    }
 //}
-
-////Complexity: O(N)

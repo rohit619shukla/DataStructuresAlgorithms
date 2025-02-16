@@ -1,47 +1,40 @@
-﻿//using System;
-
-//class ConvertToLowerCaseHelper
+﻿
+//public class Solution
 //{
-//    public void ConvertToLowerCase(string str)
+//    //Time : O(n) , space :O(n)
+//    public string ToLowerCase(string str)
 //    {
 //        if (string.IsNullOrWhiteSpace(str))
 //        {
-//            Console.WriteLine("Empty string found");
-//            return;
+//            return string.Empty;
 //        }
 
-//        char[] ch = str.ToCharArray();
+//        char[] chr = str.ToCharArray();
 
-//        for (int i = 0; i < ch.Length; i++)
+//        // Iterate over all the characters and convert to lower case
+//        for (int i = 0; i < chr.Length; i++)
 //        {
-//            if (ch[i] >= 65 && ch[i] <= 90)
+//            if (chr[i] >= 'A' && chr[i] <= 'Z')
 //            {
-//                ch[i] = (char)(ch[i] + 32);
-//            }
-//            else if (ch[i] >= 97 && ch[i] <= 122)
-//            {
-//                continue;
+//                // do conversion
+//                int index = chr[i] - 'A';
+//                chr[i] = (char)('a' + index);
 //            }
 //            else
 //            {
-//                Console.WriteLine($"invalid charcater found :{ch[i]}");
-//                return;
+//                // skip as the number is already converted
+//                continue;
 //            }
 //        }
-
-//        Console.WriteLine($"String converted is : {new string(ch)}");
+//        return new string(chr);
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Console.WriteLine("Enter a string to convert :");
-//        string str = Console.ReadLine();
-
-//        ConvertToLowerCaseHelper c = new ConvertToLowerCaseHelper();
-//        c.ConvertToLowerCase(str);
+//        Solution sol = new Solution();
+//        string s = "LOVELY";
+//        Console.WriteLine(sol.ToLowerCase(s));
 //    }
 //}
-
-////Complexity: O(N)
