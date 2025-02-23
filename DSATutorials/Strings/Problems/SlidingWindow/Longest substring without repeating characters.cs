@@ -1,70 +1,37 @@
-﻿//using System;
-//using System.Collections.Generic;
-//class StringHelper
+﻿//public class Solution
 //{
-//    public void LongestSubstringWithoutRepeatingCharcaters(string str)
+//    // Time : O(n+m) both loops execute sequentially , space :O(1)
+//    public int LengthOfLongestSubstring(string str)
 //    {
-//        if (string.IsNullOrWhiteSpace(str))
+//        if (string.IsNullOrEmpty(str))
+//            return 0;
+
+//        int[] freq = new int[128]; // covers standard ASCII
+//        int i = 0, j = 0, maxlen = 0;
+
+//        while (j < str.Length)
 //        {
-//            return;
-//        }
-
-//        Dictionary<char, int> map = new Dictionary<char, int>();
-
-//        /* start of current substring */
-//        int st = 0;
-
-//        /* current length of the substring */
-//        int currLen = 0;
-
-//        /* max length of current substring */
-//        int maxLen = 0;
-
-//        /* start of the largest substring */
-//        int start = 0;
-
-//        map.Add(str[0], 0);
-//        for (int i = 1; i < str.Length; i++)
-//        {
-//            if (!map.ContainsKey(str[i]))
+//            // Use the actual character code as index
+//            while (freq[str[j]] != 0)
 //            {
-//                map.Add(str[i], i);
+//                freq[str[i]]--;
+//                i++;
 //            }
-//            else
-//            {
-//                if (map[str[i]] >= st)
-//                {
-//                    currLen = i - st;
-
-//                    if (maxLen < currLen)
-//                    {
-//                        maxLen = currLen;
-//                        start = st;
-//                    }
-//                    st = map[str[i]] + 1;
-//                }
-
-//                map[str[i]] = i;
-//            }
+//            freq[str[j]]++;
+//            maxlen = Math.Max(maxlen, j - i + 1);
+//            j++;
 //        }
-
-//        while (maxLen > 0)
-//        {
-//            Console.Write($"{str[start]}" + " ");
-//            start++;
-//            maxLen--;
-//        }
+//        return maxlen;
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str = "GEEKSFORGEEKS";
-//        StringHelper s = new StringHelper();
+//        string str = "abcabcbb";
 
-//        s.LongestSubstringWithoutRepeatingCharcaters(str);
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.LengthOfLongestSubstring(str));
 //    }
 //}
-
-///* Complexity : O(N), space : O(N)*/
