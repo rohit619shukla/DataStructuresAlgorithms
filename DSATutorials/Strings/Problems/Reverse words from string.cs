@@ -2,7 +2,7 @@
 
 //public class Solution
 //{
-//    // Time : O(N) , space :O(N) for output array but Aux :O(1)
+//    // Time : O(N) , space :O(N) for output array
 //    public string ReverseWords(string str)
 //    {
 //        // base cases
@@ -28,6 +28,7 @@
 //                chArray[r++] = chArray[i++];
 //            }
 
+//            // No point doing any operation when both are at same place
 //            if (l < r)
 //            {
 //                // Reverse all characters between l and r

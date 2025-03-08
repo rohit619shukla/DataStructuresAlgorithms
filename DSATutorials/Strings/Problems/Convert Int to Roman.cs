@@ -2,7 +2,7 @@
 
 //public class Solution
 //{
-//    // Time : O(1) , space :O(1) since everything is fixed in terms of inputsa dn number of operations theits  O(1)
+//    // Time : O(1) , space :O(1) since everything is fixed in terms of inputs and number of operations  O(1)
 //    //Roman numerals typically don't go beyond 3999
 //    public string IntToRoman(int num)
 //    {
