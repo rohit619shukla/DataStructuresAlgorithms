@@ -4,27 +4,22 @@
 //{
 //    public void RemoveSpaceFromString(string str)
 //    {
-//        if (string.IsNullOrWhiteSpace(str))
-//        {
-//            return;
-//        }
+//        int i = 0, j = 0;
 
-//        char[] ch = str.ToCharArray();
+//        char[] chr = str.ToCharArray();
 
-//        int j = 0;
-//        for (int i = 0; i < ch.Length; i++)
+//        for (j = 0; j < str.Length; j++)
 //        {
-//            if (ch[i] != ' ')
+//            if (chr[j] != ' ')
 //            {
-//                ch[j] = ch[i];
-//                j++;
+//                chr[i] = chr[j];
+//                i++;
 //            }
 //        }
 
-//        Array.Resize(ref ch, j);
-//        str = new string(ch);
+//        str = new string(chr);
 
-//        Console.WriteLine(str);
+//        Console.WriteLine(str.Substring(0, i));
 //    }
 //}
 //class Program

@@ -15,7 +15,8 @@
 //            {
 //                stack.Pop(); // Pop before appending to check outermost ')'
 //            }
-
+              
+                // The objective here is to add only innermst braces to result
 //            if (stack.Count > 0)
 //            {
 //                result.Append(c); // Append only if stack is not empty
