@@ -1,108 +1,45 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
+﻿//using System.Text;
 
-//class Helper
+//class Solution
 //{
-//    /* Complexity : O(m+n) , space : O(N) */
-//    //public void PrintUnCommonCharcters(string s1, string s2)
-//    //{
-//    //    if (string.IsNullOrWhiteSpace(s1) && string.IsNullOrWhiteSpace(s2))
-//    //    {
-//    //        return;
-//    //    }
-
-//    //    if (string.IsNullOrWhiteSpace(s1) && !string.IsNullOrWhiteSpace(s2))
-//    //    {
-//    //        Console.WriteLine($"{s2}");
-//    //    }
-
-//    //    if (!string.IsNullOrWhiteSpace(s1) && string.IsNullOrWhiteSpace(s2))
-//    //    {
-//    //        Console.WriteLine($"{s1}");
-//    //    }
-
-//    //    HashSet<char> map1 = new HashSet<char>();
-//    //    HashSet<char> map2 = new HashSet<char>();
-
-//    //    for (int i = 0; i < s1.Length; i++)
-//    //    {
-//    //        if (!map1.Contains(s1[i]))
-//    //        {
-//    //            map1.Add(s1[i]);
-//    //        }
-//    //    }
-
-//    //    for (int i = 0; i < s2.Length; i++)
-//    //    {
-//    //        if (!map2.Contains(s2[i]))
-//    //        {
-//    //            map2.Add(s2[i]);
-//    //        }
-//    //    }
-
-//    //    foreach (var item in map1.ToHashSet())
-//    //    {
-//    //        if (map2.Contains(item))
-//    //        {
-//    //            map1.Remove(item);
-//    //            map2.Remove(item);
-//    //        }
-//    //    }
-
-//    //    foreach (var item in map1)
-//    //    {
-//    //        Console.Write($"{item}" + " ");
-//    //    }
-
-//    //    foreach (var item in map2)
-//    //    {
-//    //        Console.Write($"{item}" + " ");
-//    //    }
-//    //}
-
-//    /* Complexity : O(M+N), space : O(1) */
-//    public void PrintUnCommonCharcters(string s1, string s2)
+//    // Function to find and return the uncommon characters from the two strings.
+//    public string uncommonChars(string s1, string s2)
 //    {
-//        int[] alpha = new int[26];
+//        int[] freq = new int[26];
 
-//        /* Mark all char in s1 as 1 in array according to char position */
+//        StringBuilder sb = new StringBuilder();
+
 //        for (int i = 0; i < s1.Length; i++)
 //        {
-//            alpha[s1[i] - 'a'] = 1;
+//            freq[s1[i] - 'a']++;
 //        }
 
-//        /* Mark all char in s2 as -1 if they already have been visited in s1 or mark them as 2 */
-//        for (int i = 0; i < s2.Length; i++)
+//        for (int j = 0; j < s2.Length; j++)
 //        {
-//            if (alpha[s2[i] - 'a'] == 1 || alpha[s2[i] - 'a'] == -1)
-//            {
-//                alpha[s2[i] - 'a'] = -1;
-//            }
-//            else
-//            {
-//                alpha[s2[i] - 'a'] = 2;
-//            }
+//            freq[s2[j] - 'a']++;
 //        }
 
-//        /* Print all characters in alpha marked as 1 or 2 */
-//        for (int i = 0; i < alpha.Length; i++)
+//        for (int k = 0; k < 26; k++)
 //        {
-//            if (alpha[i] == 1 || alpha[i] == 2)
+//            if (freq[k] == 1)
 //            {
-//                Console.Write($"{(char)(97 + i)}" + " ");
+//                int index = k + 'a';
+//                sb.Append((char)index);
 //            }
 //        }
+//        return sb.ToString();
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string s1 = "geeksforgeeks";
-//        string s2 = "geeksquiz";
+//        Solution s = new Solution();
 
-//        Helper h = new Helper();
-//        h.PrintUnCommonCharcters(s1, s2);
+//        string s1 = "rome";
+//        string s2 = "more";
+
+//        Console.WriteLine(s.uncommonChars(s1, s2));
 //    }
 //}

@@ -1,49 +1,40 @@
-﻿//using System;
-//using System.Collections.Generic;
-
-//class Helper
+﻿
+//class Solution
 //{
-//    public void PrintSymmetricPairs(int[,] arr, int row)
+//    public void findSymPairs(int[,] arr)
 //    {
-//        if (arr.Length == 0)
-//        {
-//            return;
-//        }
+//        int rows = arr.GetLength(0);
 
 //        Dictionary<int, int> map = new Dictionary<int, int>();
 
-
-//        for (int i = 0; i < row; i++)
+//        for (int i = 0; i < rows; i++)
 //        {
 //            int key = arr[i, 0];
 //            int value = arr[i, 1];
 
-//            if (map.ContainsKey(value))
+//            if (!map.ContainsKey(value))
 //            {
-//                if (map[value] == key)
-//                {
-//                    Console.WriteLine($"{value}  : {key}");
-//                }
+//                map[key] = value;
 //            }
-//            else
+//            else if (map[value] == key)
 //            {
-//                map.Add(key, value);
+//                Console.WriteLine("{" + value + ", " + key + "}");
 //            }
 //        }
+
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
-
 //        int[,] arr = {
-//        {3, 4}, {1, 2}, {5, 2}, {7, 10}, {4, 3}, {2, 5}
+//                       {1, 2}, {2, 1}, {3, 4}, {5, 6}, {6, 5}
 //        };
 
-//        h.PrintSymmetricPairs(arr, 6);
+//        Solution s = new Solution();
+
+//        s.findSymPairs(arr);
 //    }
 //}
-
-///* Complexity : O(N), space : O(N) */

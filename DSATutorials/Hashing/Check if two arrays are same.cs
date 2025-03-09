@@ -1,8 +1,7 @@
-﻿//using System;
-//using System.Collections.Generic;
-
-//class Helper
+﻿
+//class Solution
 //{
+//    // Time : O(n) , space :O(n)
 //    public bool AreSame(int[] arr1, int[] arr2)
 //    {
 //        if (arr1.Length != arr2.Length)
@@ -10,49 +9,39 @@
 //            return false;
 //        }
 
-//        Dictionary<int, int> map1 = new Dictionary<int, int>();
-//        Dictionary<int, int> map2 = new Dictionary<int, int>();
+//        Dictionary<int, int> map = new Dictionary<int, int>();
 
-//        foreach (var item in arr1)
+//        foreach (int item in arr1)
 //        {
-//            if (map1.ContainsKey(item))
+//            if (!map.ContainsKey(item))
 //            {
-//                map1[item]++;
+//                map[item] = 1;
 //            }
 //            else
 //            {
-//                map1.Add(item, 1);
+//                map[item]++;
 //            }
 //        }
 
-//        foreach (var item in arr2)
-//        {
-//            if (map2.ContainsKey(item))
-//            {
-//                map2[item]++;
-//            }
-//            else
-//            {
-//                map2.Add(item, 1);
-//            }
-//        }
 
-//        foreach (var item in map2)
+//        foreach (int item in arr2)
 //        {
-//            if (map1.ContainsKey(item.Key) && map1[item.Key] == map2[item.Key])
-//            {
-//                map1.Remove(item.Key);
-//                map2.Remove(item.Key);
-//            }
-//            else
+//            if (!map.ContainsKey(item))
 //            {
 //                return false;
 //            }
+//            else
+//            {
+//                map[item]--;
+//            }
 //        }
 
-//        if (map1.Count != 0 || map2.Count != 0)
+//        foreach (var item in map)
 //        {
-//            return false;
+//            if (item.Value != 0)
+//            {
+//                return false;
+//            }
 //        }
 //        return true;
 //    }
@@ -61,23 +50,12 @@
 //{
 //    public static void Main()
 //    {
-//        int[] arr1 = { 1, 7, 1 };
-//        int[] arr2 = { 7, 7, 1 };
+//        int[] arr1 = { 1, 2, 5, 4, 0, 2, 1 };
 
-//        Helper h = new Helper();
+//        int[] arr2 = { 2, 4, 5, 0, 1, 1, 2 };
 
-//        if (h.AreSame(arr1, arr2))
-//        {
-//            Console.WriteLine("Are same");
-//        }
-//        else
-//        {
-//            Console.WriteLine("Are not same");
-//        }
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.AreSame(arr1, arr2));
 //    }
 //}
-
-///* Complexity : O(N),space : O(N) */
-
-///* If the elemnts in the array wont be repeated then we can simply XOR all elem in arr1 and arr2 and finally xor both
-// .If the resutl is 0 the return true else false*/
