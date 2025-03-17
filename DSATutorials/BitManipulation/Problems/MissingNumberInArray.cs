@@ -1,38 +1,35 @@
-﻿//using System;
-
-//class TestClass
+﻿//public class Solution
 //{
-//    public void MissingNumberInArray(int[] arr)
+//    // Time : O(n) , space :O(1)
+//    public int MissingNumber(int[] nums)
 //    {
-//        // XOR for all elements 1 to n
-//        int result1 = 1;
+//        int set1 = 0, set2 = 0;
+//        // Set 1: for all the distinct numbers in range 0-n
 
-//        /* number of elements in array + 1 */
-//        for (int i = 2; i <= arr.Length + 1; i++)
+//        for (int i = 0; i <= nums.Length; i++)
 //        {
-//            result1 = result1 ^ i;
+//            set1 ^= i;
 //        }
 
-//        // XOR for all actual elements in array
-//        int result2 = arr[0];
-
-//        for (int i = 1; i < arr.Length; i++)
+//        // Set 2: for all the numbers in actual array
+//        for (int j = 0; j < nums.Length; j++)
 //        {
-//            result2 = result2 ^ arr[i];
+//            set2 ^= nums[j];
 //        }
 
-//        int final = result1 ^ result2;
-//        Console.WriteLine(final);
+//        // Finally if numbers in set are same they will cancel out each other and will spill out the missing number
+//        return set1 ^ set2;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        TestClass t = new TestClass();
-//        int[] arr = { 1, 2, 4, 6, 3, 7, 8 };
-//        t.MissingNumberInArray(arr);
+//        int[] nums = { 3, 0, 1 };
+
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.MissingNumber(nums));
 //    }
 //}
-
-////Complexity : O(N), space : O(1)

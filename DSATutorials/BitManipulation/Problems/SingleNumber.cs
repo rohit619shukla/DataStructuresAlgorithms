@@ -1,15 +1,17 @@
 ﻿//public class Solution
 //{
+
+//    // Time : O(n) , space :O(1)
 //    public int SingleNumber(int[] nums)
 //    {
-//        int result = 0;
+//        int num = 0;
 
-//        for (int i = 0; i < nums.Length; i++)
+//        foreach (int item in nums)
 //        {
-//            result ^= nums[i];
+//            num ^=  item;
 //        }
 
-//        return result;
+//        return num;
 //    }
 //}
 
@@ -17,12 +19,9 @@
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 4, 1, 2, 1, 2 };
+//        int[] nums = { 4, 1, 2, 1, 2 };
 
 //        Solution s = new Solution();
-
-//        Console.WriteLine(s.SingleNumber(arr));
+//        Console.WriteLine(s.SingleNumber(nums));
 //    }
 //}
-
-//// Time :O(n) , space :(1)

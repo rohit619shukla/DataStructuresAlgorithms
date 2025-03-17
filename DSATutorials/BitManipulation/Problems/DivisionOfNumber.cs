@@ -1,62 +1,59 @@
-﻿//// C# implementation to Divide
-//// two integers without using
-//// multiplication, division
-//// and mod operator
-//using System;
-
-//// Function to divide a by b
-//// and return floor value it
-//class GFG
+﻿//public class Solution
 //{
-//    public static long divide(long dividend,
-//                              long divisor)
+//    // Striver video
+//    // Time : O(Logn) as we are working with 2's power
+//    public int Divide(int dividend, int divisor)
 //    {
-
-//        // Calculate sign of divisor
-//        // i.e., sign will be negative
-//        // only iff either one of them
-//        // is negative otherwise it
-//        // will be positive
-//        long sign = ((dividend < 0) ^
-//                     (divisor < 0)) ? -1 : 1;
-
-//        // remove sign of operands
-//        dividend = Math.Abs(dividend);
-//        divisor = Math.Abs(divisor);
-
-//        // Initialize the quotient
-//        long quotient = 0, temp = 0;
-
-//        // test down from the highest
-//        // bit and accumulate the
-//        // tentative value for
-//        // valid bit
-//        for (int i = 31; i >= 0; --i)
+//        if (dividend == int.MinValue && divisor == -1)
 //        {
-
-//            if (temp + (divisor << i) <= dividend)            /* (divisor<<i) : ex : 8 * 2^i */
-//            {
-//                temp += divisor << i;
-//                quotient |= 1 << i;                           /* (1<<i) : ex : 8*4 = 8+8+8+8 basically count */
-//            }
+//            return int.MaxValue;
 //        }
-//        //if the sign value computed earlier is -1 then negate the value of quotient
-//        if (sign == -1)
-//            quotient = -quotient;
-//        return quotient;
-//    }
 
-//    // Driver code
-//    public static void Main()
-//    {
-//        int a = -32, b = 2;
-//        Console.WriteLine(divide(a, b));
+//        bool sign = (dividend >= 0 && divisor < 0) || (dividend < 0 && divisor >= 0);
 
-//        int a1 = 43, b1 = -8;
-//        Console.WriteLine(divide(a1, b1));
 
+//        long numerator = Math.Abs((long)dividend);
+//        long denominator = Math.Abs((long)divisor);
+//        long quotient = 0;
+
+//        while (numerator >= denominator)
+//        {
+//            int counter = 0;
+
+//            while (numerator >= (denominator << counter + 1))
+//            {
+//                counter++;
+//            }
+
+//            quotient += 1 << counter;
+//            numerator -= (denominator << counter);
+//        }
+
+//        if (quotient > int.MaxValue)
+//        {
+//            return int.MaxValue;
+//        }
+
+//        if (quotient < int.MinValue)
+//        {
+//            return int.MinValue;
+//        }
+
+//        return sign ? (int)-quotient : (int)quotient;
 //    }
 //}
 
-////Time complexity : O(log(a))
-////Auxiliary space : O(1)
+
+//class Program
+//{
+//    public static void Main()
+//    {
+//        int dividend = 22;
+
+//        int divisor = 3;
+
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.Divide(dividend, divisor));
+//    }
+//}
