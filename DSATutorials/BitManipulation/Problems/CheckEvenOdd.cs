@@ -1,33 +1,19 @@
-﻿//using System;
-
-//class TestClass
+﻿//class Solution
 //{
-//    public bool IsOddEven(int num)
+//    public bool IsEeven(int num)
 //    {
-//        return ((num & 1) == 0 ? false : true);
+//        return (num & 1) == 0 ? true : false;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        TestClass t = new TestClass();
+//        int num = 10;
 
-//        for (int i = 2; i < 50; i++)
-//        {
-//            if (t.IsOddEven(i))
-//            {
-//                Console.WriteLine($"{i} : Odd");
-//            }
-//            else
-//            {
-//                Console.WriteLine($"{i} : Even");
-//            }
-//        }
+//        Solution s = new Solution();
 
+//        Console.WriteLine(s.IsEeven(num));
 //    }
 //}
-
-// Complexity : O(1), Space : O(1)
-
-/* if we do and of given number by 1 it will be either 0  or 1*/

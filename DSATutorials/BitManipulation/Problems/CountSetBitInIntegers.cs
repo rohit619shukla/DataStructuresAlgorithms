@@ -1,47 +1,27 @@
-﻿//using System;
-
-//class Test
+﻿
+//class Solution
 //{
-//    public void Count(int num)
+//    public int CountBits(int num)
 //    {
-//        string result = "";
-
-
-//        while (num >= 1)
-//        {
-//            int reaminder = num % 2;
-//            result += reaminder.ToString();
-//            num /= 2;
-//        }
-
-//        char[] finalString = result.ToCharArray();
 //        int count = 0;
-//        foreach (var item in finalString)
+
+//        while (num > 0)
 //        {
-//            if (item == '1')
-//            {
-//                count++;
-//            }
+//            num &= (num - 1);
+//            count++;
 //        }
 
-
-//        //int count = 0;
-//        //while (num > 0)
-//        //{
-//        //    num = num & (num - 1);
-//        //    count++;
-//        //}
-//        Console.WriteLine(count);
+//        return count;
 //    }
 //}
-
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Test test = new Test();
-//        test.Count(29);
+//        int num = 13;
+
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.CountBits(num));
 //    }
 //}
-
-////Complexity: O(logy), space: O(1)

@@ -1,73 +1,67 @@
-﻿//public class Solution
+﻿
+//public class Solution
 //{
 //    // Time : O(26N) = O(N) , space :O(1)
 //    public int LongestSubstring(string str, int k)
 //    {
-//        // We will iterate over all the unique alphabets in English language, to restrict chances of encountering an invalid substring
 
-//        int maxLen = 0;
-//        for (int uniqueCharTarget = 1; uniqueCharTarget <= 26; uniqueCharTarget++)
+//        // Step 2 : we will try to start withe lowest number of characters to highest number of characters to avoid unnecessary iterations
+//        // Thing to note is larger the number of charcaters in string means larger the chance of checking bad characters
+
+//        int maxLen = int.MinValue;
+
+//        for (int uniqueTarget = 1; uniqueTarget <= 26; uniqueTarget++)
 //        {
-//            int length = str.Length;
-//            int start = 0, end = 0;   // two pointers to slide the window
-//            int uniqueCount = 0, countAtleastK = 0;
+//            int start = 0, end = 0, uniqueCount = 0, countAtLeastK = 0;
 
-//            // We will store the frequency of each character in the string as all the characters are lowercase alphabets
+//            // Step 1: Have a frequency array
 //            int[] freq = new int[26];
-//            // We will try to find the longest substring with k unique characters in the range of 1 to 26
-//            // Iterate till will reach the end of the string
-//            while (end < length)
+//            // Step 3 : start sliding window
+//            while (end < str.Length)
 //            {
-//                // Increase the window till we are within the range
-//                if (uniqueCount <= uniqueCharTarget)
+//                // We are still within the target range
+//                if (uniqueCount <= uniqueTarget)
 //                {
-//                    // get the index of the charcater
-//                    int idx = str[end] - 'a';
-
-//                    // if its the first time we are encountring this character, increase the unique count
-//                    if (freq[idx] == 0)
+//                    // It might be that we are encountering this char for the first time
+//                    if (freq[str[end] - 'a'] == 0)
 //                    {
 //                        uniqueCount++;
 //                    }
 
-//                    // Increase the frequency of the character 
-//                    freq[idx]++;
+//                    // Increment the frequency of the character
+//                    freq[str[end] - 'a']++;
 
-//                    // If the frequency of the character is equal to k(satisfies the condition), increase the countAtleastK
-//                    if (freq[idx] == k)
+//                    // wem might have found our least k character
+//                    if (freq[str[end] - 'a'] == k)
 //                    {
-//                        countAtleastK++;
+//                        countAtLeastK++;
 //                    }
 
-//                    // keep moving the window
+//                    // move the window
 //                    end++;
 //                }
 //                else
 //                {
-//                    // Decrease the window  if we are out of range as we got another qunique character which was not supposed to be part of the given range
-//                    // get the index of the charcater
-//                    int idx = str[start] - 'a';
-
-//                    // The charcater at start will now become invalid and needs to be removed from window
-//                    if (freq[idx] == k)
+//                    // We went over the target range and hence we need to shrink the window
+//                    if (freq[str[start] - 'a'] == k)
 //                    {
-//                        countAtleastK--;
+//                        // this number is no linger valid to be considered as a valid number
+//                        countAtLeastK--;
 //                    }
 
-//                    // Reduce the frequency of the character
-//                    freq[idx]--;
+//                    // Reduce the frequency of the char
+//                    freq[str[start] - 'a']--;
 
-//                    // If the frequency of the character is 0, decrease the unique count
-//                    if (freq[idx] == 0)
+//                    // While reducing the freuqency we might have lost a unique character
+//                    if (freq[str[start] - 'a'] == 0)
 //                    {
 //                        uniqueCount--;
 //                    }
 
-//                    start++; // shrink the window
+//                    start++;
 //                }
 
-//                // Decide on maxlen
-//                if (uniqueCount == uniqueCharTarget && uniqueCount == countAtleastK)
+//                if (uniqueCount == uniqueTarget && uniqueTarget == countAtLeastK)
 //                {
 //                    maxLen = Math.Max(maxLen, end - start);
 //                }
@@ -78,12 +72,14 @@
 //    }
 //}
 
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str = "aaabb";
-//        int k = 3;
+//        string str = "ababbc";
+
+//        int k = 2;
 
 //        Solution s = new Solution();
 

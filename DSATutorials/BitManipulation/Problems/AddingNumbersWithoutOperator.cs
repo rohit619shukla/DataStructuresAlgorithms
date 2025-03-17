@@ -1,28 +1,29 @@
-﻿//using System;
-
-//class Test
+﻿//public class Solution
 //{
-
-//    public void ComputeAdditionOfTwoNumbers(int n1, int n2)
+//    // Time :O(1) , space :O(1)
+//    public int GetSum(int a, int b)
 //    {
-//        while (n2 != 0)
+//        while (b != 0)
 //        {
-//            int carry = n1 & n2;                      /* gives us where the carry actually happened */
-//            n1 = n1 ^ n2;                             /* performs actuall addition */
-//            n2 = carry << 1;                          /* applies the carry to left side from where it was discovered */
-//        }
-//        Console.WriteLine($"{n1}");
-//    }
+//            int carry = a & b;
 
+//            a = a ^ b;
+
+//            b = carry << 1;
+//        }
+
+//        return a;
+//    }
 //}
+
 //class Program
 //{
-//    public static void Main(string[] args)
+//    public static void Main()
 //    {
-//        Test t = new Test();
-//        t.ComputeAdditionOfTwoNumbers(-2, 3);
-//        t.ComputeAdditionOfTwoNumbers(1, 2);
+//        int a = 1, b = 3;
+
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.GetSum(a, b));
 //    }
 //}
-
-////Complexity: O(logy), Space: O(1 
