@@ -1,46 +1,62 @@
 ﻿
+//using System.Collections.Generic;
 
 //class Solution
 //{
-//    public void Solve(string str)
+//    public IList<IList<string>> Solve(string str)
 //    {
-//        Permute(str.ToCharArray(), 0, str.Length - 1);
+//        IList<IList<string>> result = new List<IList<string>>();
+
+//        char[] currString = str.ToCharArray();
+
+//        Recursion(result, currString, 0, str.Length - 1);
+
+//        return result;
 //    }
 
-//    private void Permute(char[] chrArray, int lb, int ub)
+//    private void Recursion(IList<IList<string>> result, char[] currString, int lb, int ub)
 //    {
-//        // base case
 //        if (lb == ub)
 //        {
-//            Console.WriteLine(new string(chrArray));
+//            result.Add(new List<string> { new string(currString) });
 //            return;
 //        }
 
 //        for (int i = lb; i <= ub; i++)
 //        {
-//            Swap(ref chrArray[lb], ref chrArray[i]);
+//            Swap(currString, lb, i);
 
-//            Permute(chrArray, lb + 1, ub);
+//            Recursion(result, currString, lb + 1, ub);
 
-//            Swap(ref chrArray[lb], ref chrArray[i]);
+//            Swap(currString, lb, i);
 //        }
 //    }
 
-//    private void Swap(ref char a, ref char b)
+//    private void Swap(char[] currString, int ub, int lb)
 //    {
-//        char temp = a;
-//        a = b;
-//        b = temp;
+//        char temp = currString[lb];
+//        currString[lb] = currString[ub];
+//        currString[ub] = temp;
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
+//        Solution s = new Solution();
+
 //        string str = "ABC";
 
-//        Solution s = new Solution();
-//        s.Solve(str);
+//        var result = s.Solve(str);
+
+//        foreach (var item in result)
+//        {
+//            for (int i = 0; i < item.Count; i++)
+//            {
+//                Console.Write($"{item[i]}" + " ");
+//            }
+//            Console.WriteLine();
+//        }
 //    }
 //}
 
