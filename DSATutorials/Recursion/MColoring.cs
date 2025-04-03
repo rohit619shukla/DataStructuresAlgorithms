@@ -1,89 +1,95 @@
 ﻿
-
-//public class GraphColoring
+//class Solution
 //{
-//    public bool Solve(List<int>[] adjList, int m, int v, int startNode, int[] color)
+//    public bool IsPossible(int[][] mat, int n, int m)
 //    {
-//        // Base case: if all nodes are colored, return true
-//        if (startNode == v)
-//        {
-//            return true;
-//        }
+//        // create a color array
+//        int[] color = new int[n];
 
-//        // Try to color the current node with all possible colors
-//        for (int i = 1; i <= m; i++)
-//        {
-//            if (IsPossible(adjList, i, color, startNode))
-//            {
-//                // Assign the color to the current node
-//                color[startNode] = i;
+//        // Convert matrix to adjacenecy List
+//        List<int>[] adjList = new List<int>[n];
 
-//                // Recur to color the next node
-//                if (Solve(adjList, m, v, startNode + 1, color))
-//                {
-//                    return true;
-//                }
-
-//                // Backtrack: if it was not possible to color the node, reset the color
-//                color[startNode] = 0;
-//            }
-//        }
-
-//        return false; // No color assignment is possible
-//    }
-
-//    private bool IsPossible(List<int>[] adjList, int toBeColor, int[] color, int currentNode)
-//    {
-//        // Check all neighbors of the current node
-//        foreach (var neighbor in adjList[currentNode])
-//        {
-//            if (color[neighbor] == toBeColor)
-//            {
-//                return false; // If any neighbor has the same color, return false
-//            }
-//        }
-//        return true;
-//    }
-
-//    public static void Main()
-//    {
-//        // Example graph with 4 vertices (0-based index)
-//        int v = 4;
-//        List<int>[] adjList = new List<int>[v];
-
-//        for (int i = 0; i < v; i++)
+//        // Initialize the list
+//        for (int i = 0; i < n; i++)
 //        {
 //            adjList[i] = new List<int>();
 //        }
 
-//        // Add edges to the graph
-//        adjList[0].Add(1);
-//        adjList[1].Add(0);
-//        adjList[1].Add(2);
-//        adjList[2].Add(1);
-//        adjList[2].Add(3);
-//        adjList[3].Add(2);
+//        // Add element to list now
+//        int rows = mat.Length;
+//        int cols = mat[0].Length;
 
-//        // Number of colors
-//        int m = 3;
-
-//        // Array to store colors assigned to each node
-//        int[] color = new int[v];
-
-//        GraphColoring gc = new GraphColoring();
-
-//        if (gc.Solve(adjList, m, v, 0, color))
+//        for (int i = 0; i < rows; i++)
 //        {
-//            Console.WriteLine("Solution exists with the following colors:");
-//            for (int i = 0; i < v; i++)
+//            int source = mat[i][0];
+//            int dest = mat[i][1];
+
+//            adjList[source].Add(dest);
+//            adjList[dest].Add(source);
+//        }
+
+//        return Recursion(adjList, n, m, 0, color);
+//    }
+
+//    private bool Recursion(List<int>[] adjList, int n, int m, int currentNode, int[] color)
+//    {
+//        // If we have reached a node greater than existing set ones, means we are good and have colored all nodes and can return
+//        if (currentNode == n)
+//        {
+//            return true;
+//        }
+
+//        // start applying colors
+//        for (int i = 1; i <= m; i++)
+//        {
+//            // Check if the current node is good to be colored 
+//            if (IsGoodToColor(currentNode, i, color, adjList))
 //            {
-//                Console.WriteLine($"Vertex {i}: Color {color[i]}");
+//                // color the node
+//                color[currentNode] = i;
+
+//                // Move to next node
+//                if (Recursion(adjList, n, m, currentNode + 1, color))
+//                {
+//                    return true;
+//                }
+
+//                // backtrack
+//                color[currentNode] = 0;
 //            }
 //        }
-//        else
+
+//        return false;
+//    }
+
+//    private bool IsGoodToColor(int currentNode, int proposedColor, int[] color, List<int>[] adjList)
+//    {
+//        foreach (var item in adjList[currentNode])
 //        {
-//            Console.WriteLine("No solution exists.");
+//            if (color[item] == proposedColor)
+//            {
+//                return false;
+//            }
 //        }
+//        return true;
+//    }
+//}
+//class Program
+//{
+//    public static void Main()
+//    {
+//        int[][] mat = new int[][] {
+//            new int[] { 0,1},
+//                new int[] { 0,2},
+//              new int[] { 1,2},
+//                new int[] { 1,3}
+//        };
+
+//        int n = 4, m = 3;
+
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.IsPossible(mat, n, m));
 //    }
 //}
 

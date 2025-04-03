@@ -1,47 +1,50 @@
 ﻿
-
-
 //class Solution
 //{
-//    //The complexity of such a function is typically O(2^n), where n is the length of the array.
-//    //This is because the function explores two possibilities at each step: either include the current element in the subset or exclude it,
-//    public void Solve(int[] arr, int index, IList<int> currentList, IList<IList<int>> resultList)
+//    public IList<IList<int>> PrintSubsequence(int[] arr)
 //    {
-//        // base case, we reached last index
+//        IList<IList<int>> result = new List<IList<int>>();
+//        IList<int> tempList = new List<int>();
+
+//        Recursion(result, tempList, 0, arr);
+
+//        return result;
+//    }
+
+//    private void Recursion(IList<IList<int>> result, IList<int> tempList, int index, int[] arr)
+//    {
+//        // base case
 //        if (index == arr.Length)
 //        {
-//            resultList.Add(new List<int>(currentList));
+//            result.Add(new List<int>(tempList));
 //            return;
 //        }
 
-//        // Take condition
-//        currentList.Add(arr[index]);
+//        // Add the element in list
+//        tempList.Add(arr[index]);
 
-//        // Move to next position
-//        Solve(arr, index + 1, currentList, resultList);
+//        // Recursion
+//        Recursion(result, tempList, index + 1, arr);
 
-//        // Backtrack, nottake
-//        currentList.RemoveAt(currentList.Count - 1);
+//        // Backtracking
+//        tempList.RemoveAt(tempList.Count - 1);
 
-//        // Move to next position
-//        Solve(arr, index + 1, currentList, resultList);
+//        // Move to next in index
+//        Recursion(result, tempList, index + 1, arr);
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
 //        int[] arr = { 3, 1, 2 };
 
-//        Solution h = new Solution();
+//        Solution s = new Solution();
 
-//        IList<IList<int>> resultList = new List<IList<int>>();
+//        var result = s.PrintSubsequence(arr);
 
-//        List<int> currentList = new List<int>();
-
-//        h.Solve(arr, 0, currentList, resultList);
-
-//        foreach (var item in resultList)
+//        foreach (var item in result)
 //        {
 //            for (int i = 0; i < item.Count; i++)
 //            {
@@ -51,3 +54,6 @@
 //        }
 //    }
 //}
+
+////The complexity of such a function is typically O(2^n), where n is the length of the array.
+////This is because the function explores two possibilities at each step: either include the current element in the subset or exclude it,	
