@@ -95,36 +95,28 @@
 //    // Time : O(m*n) , space : O(m)
 //    private int Solve(IList<IList<int>> triangle, int rows, int columns)
 //    {
-//        int[] prev = new int[rows];
+            //int rows = triangle.Count;
+            //int cols = triangle[rows - 1].Count;
 
+            //int[,] dp = new int[rows + 1, cols + 1];
 
-//        // unlike other tabulation case of going from top to bottom, this will be bottom to up
+            //int[] next = new int[cols + 1];
+            //for (int i = rows - 1; i >= 0; i--)
+            //{
+            //    int[] curr = new int[cols + 1];
 
-//        // store last row completely in dp array
+            //    for (int j = i; j >= 0; j--)
+            //    {
+            //        int downPath = triangle[i][j] + next[j];
 
-//        for (int i = 0; i < columns; i++)
-//        {
-//            prev[i] = triangle[rows - 1][i];
-//        }
+            //        int diagPath = triangle[i][j] + next[j + 1];
 
-//        // since last row is already stored, now we start from second last row
-//        for (int i = rows - 2; i >= 0; i--)
-//        {
-//            int[] curr = new int[columns];
+            //        curr[j] = Math.Min(downPath, diagPath);
+            //    }
+            //    next = curr;
+            //}
 
-//            // since its a triangle we will have number of elements in triangle same as row number
-//            for (int j = i; j >= 0; j--)
-//            {
-//                int bottomSum = triangle[i][j] + prev[j];
-
-//                int rightSum = triangle[i][j] + prev[j + 1];
-
-//                curr[j] = Math.Min(bottomSum, rightSum);
-//            }
-//            prev = curr;
-//        }
-
-//        return prev[0];
+            //return next[0];
 //    }
 //}
 //class Program

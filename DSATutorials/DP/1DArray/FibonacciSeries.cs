@@ -50,6 +50,10 @@
 //    // Time: O(n), space : O(1) as it uses constant input space
 //    public int GetFibonacci(int num)
 //    {
+            //if (n <= 1)
+            //{
+            //    return n;
+            //}
 //        int prev2 = 0;
 //        int prev1 = 1;
 

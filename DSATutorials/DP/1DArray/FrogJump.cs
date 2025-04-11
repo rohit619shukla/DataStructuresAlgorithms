@@ -82,6 +82,7 @@
 //    // Time : O(n), space : O(1)
 //    public int Solve(int index, int[] heights)
 //    {
+          // Here we have two zeroes coz from 1 we might end up in -1 if -2 is done
 //        int prev1 = 0;
 //        int prev2 = 0;
 
