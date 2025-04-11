@@ -4,29 +4,29 @@
 //{
 //    // Recursion
 //    // Time : O(index ^ K), for every index(step) we can k jumps, space : O(index)
-    //public int Solve(int[] heights, int index, int k)
-    //{
-    //    if (index == 0)
-    //    {
-    //        return 0;
-    //    }
+//public int Solve(int[] heights, int index, int k)
+//{
+//    if (index == 0)
+//    {
+//        return 0;
+//    }
 
-    //    int minJumpEnergy = int.MaxValue;
+//    int minJumpEnergy = int.MaxValue;
 
-    //    // we will assume to start from 1 jump only
-    //    for (int i = 1; i <= k; i++)
-    //    {
-    //        // Making sure it does not go lesser than 0
-    //        if (index - i >= 0)
-    //        {
-    //            int jumpCost = Solve(heights, index - i, k) + Math.Abs(heights[index] - heights[index - i]);
+//    // we will assume to start from 1 jump only
+//    for (int i = 1; i <= k; i++)
+//    {
+//        // Making sure it does not go lesser than 0
+//        if (index - i >= 0)
+//        {
+//            int jumpCost = Solve(heights, index - i, k) + Math.Abs(heights[index] - heights[index - i]);
 
-    //            minJumpEnergy = Math.Min(jumpCost, minJumpEnergy);
+//            minJumpEnergy = Math.Min(jumpCost, minJumpEnergy);
 
-    //        }
-    //    }
+//        }
+//    }
 
-    //    return minJumpEnergy;
+//    return minJumpEnergy;
 //    //}
 
 //    // Memoization
