@@ -1,142 +1,136 @@
-﻿//using System;
+﻿
+//using System.Runtime.Intrinsics.Arm;
 
-////We are given an array ‘ARR’ with N positive integers.
-////We need to find if there is a subset in “ARR” with a sum equal to K. If there is, return true else return false.
-//class Helper
+//class Solution
 //{
-//    // Recursion
-//    // Time : O(2^n), space : O(n)
+//    // Time  : O(2^n)  , space :O(n)
 //    //public bool Solve(int[] arr, int index, int target)
 //    //{
-//    //    // base case
-//    //    // Target dont exist anymore
+//    //    // Base case: target achieved
 //    //    if (target == 0)
-//    //    {
 //    //        return true;
-//    //    }
 
-//    //    // we just have 1 element left, check if it is the target itself
+//    //    // Base case: only one element left, check if it matches target
 //    //    if (index == 0)
-//    //    {
-//    //        return (arr[index] == target);
-//    //    }
+//    //        return arr[index] == target;
 
-//    //    bool pickSum = false;
+//    //    // Option 1: Do not take current element
+//    //    bool notTake = Solve(arr, index - 1, target);
 
+//    //    // Option 2: Take current element (if possible)
+//    //    bool take = false;
 //    //    if (target >= arr[index])
-//    //    {
-//    //        pickSum = Solve(arr, index - 1, target - arr[index]);
-//    //    }
+//    //        take = Solve(arr, index - 1, target - arr[index]);
 
-//    //    bool notPickSum = Solve(arr, index - 1, target);
-
-//    //    return pickSum || notPickSum;
+//    //    // Result is either of the choices
+//    //    return take || notTake;
 //    //}
 
-//    // Memoization
-//    // Time : O(index * target), space : O(index *target) + O(index)
-//    //public bool Solve(int[] arr, int index, int target, int[,] dp)
+
+//    // Time : O(n*m) , space :O(n*m) + O(n)
+//    //public bool Solve(int[] arr, int index, int target, bool?[,] dp)
 //    //{
-
+//    //    // Base case: target achieved
 //    //    if (target == 0)
-//    //    {
 //    //        return true;
-//    //    }
 
+//    //    // Base case: only one element left, check if it matches target
 //    //    if (index == 0)
-//    //    {
-//    //        return (arr[index] == target);
-//    //    }
+//    //        return arr[index] == target;
 
-//    //    if (dp[index, target] != -1)
-//    //    {
-//    //        return (dp[index, target] == 1 ? true : false);
-//    //    }
+//    //    if (dp[index, target].HasValue)
+//    //        return dp[index, target].Value;
 
-//    //    bool pickSum = false;
+//    //    // Option 1: Do not take current element
+//    //    bool notTake = Solve(arr, index - 1, target, dp);
 
+//    //    // Option 2: Take current element (if possible)
+//    //    bool take = false;
 //    //    if (target >= arr[index])
-//    //    {
-//    //        pickSum = Solve(arr, index - 1, target - arr[index], dp);
-//    //    }
+//    //        take = Solve(arr, index - 1, target - arr[index], dp);
 
-//    //    bool notPickSum = Solve(arr, index - 1, target, dp);
+//    //    // Result is either of the choices
+//    //    //dp[index, target] = take || notTake;
 
-//    //    dp[index, target] = (pickSum || notPickSum == true ? 1 : 0);
-
-//    //    return (dp[index, target] == 1 ? true : false);
+//    //    return (dp[index, target] = take || notTake).Value;
 //    //}
 
-//    // Tabulation
-//    // Time : O(index * target), space : O(index *target) 
-//    //public bool Solve(int[] arr, int index, int target, bool[,] dp)
+//    // Time : O(n*m)  , space :O(n*m)
+//    //public bool Solve(int[] arr, int target, bool[,] dp)
 //    //{
-//    //    // base case
-
-//    //    // target can be tru for any index
 //    //    for (int i = 0; i < arr.Length; i++)
 //    //    {
 //    //        dp[i, 0] = true;
 //    //    }
 
-//    //    if (arr[0] <= target)
-//    //    {
-//    //        dp[0, arr[0]] = true;
-//    //    }
+//    //    dp[0, arr[0]] = true;
 
-//    //    // index
-//    //    for (int i = 1; i < index; i++)
+//    //    for (int i = 1; i < arr.Length; i++)
 //    //    {
-//    //        // target
 //    //        for (int j = 1; j <= target; j++)
 //    //        {
-//    //            bool pickSum = false;
+//    //            // Option 1: Do not take current element
+//    //            bool notTake = dp[i - 1, j];
 
+//    //            // Option 2: Take current element (if possible)
+//    //            bool take = false;
 //    //            if (j >= arr[i])
-//    //            {
-//    //                pickSum = dp[i - 1, j - arr[i]];
-//    //            }
+//    //                take = dp[i - 1, j - arr[i]];
 
-//    //            bool notPickSum = dp[i - 1, j];
-
-//    //            dp[i, j] = (pickSum || notPickSum);
+//    //            dp[i, j] = take || notTake;
 //    //        }
 //    //    }
-//    //    return dp[index, target];          // result will be stored in last cell
+
+//    //    return dp[arr.Length-1, target];
 //    //}
 
+//    // Time : O(n*m) , space :O(n+m)
+//    public bool Solve(int[] arr, int target)
+//    {
+//        bool[] prev = new bool[target+1];
+//        bool[] curr = new bool[target+1];
+
+//        // base case
+//        prev[0] = true;
+
+//        prev[arr[0]] = true;
+
+//        for (int i = 1; i < arr.Length; i++)
+//        {
+//            curr[0] = true; // target 0 always possible
+//            for (int j = 1; j <= target; j++)
+//            {
+//                // Option 1: Do not take current element
+//                bool notTake = prev[j];
+
+//                // Option 2: Take current element (if possible)
+//                bool take = false;
+//                if (j >= arr[i])
+//                    take = prev[j - arr[i]];
+
+//                curr[j] = take || notTake;
+//            }
+//            prev = curr;
+//        }
+
+//        return prev[target];
+//    }
+
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 2, 3, 1, 1 };
+//        int[] arr = { 1, 2, 3, 4 };
+//        int target = 4;
 
-//        Helper h = new Helper();
-
-//        int target = 9;
-
-//        //int[,] dp = new int[arr.Length, target + 1];
-
-//        //for (int i = 0; i < dp.GetLength(0); i++)
-//        //{
-//        //    for (int j = 0; j < dp.GetLength(1); j++)
-//        //    {
-//        //        dp[i, j] = -1;
-//        //    }
-//        //}
+//        Solution s = new Solution();
 
 //        bool[,] dp = new bool[arr.Length, target + 1];
 
-//        for (int i = 0; i < dp.GetLength(0); i++)
-//        {
-//            for (int j = 0; j < dp.GetLength(1); j++)
-//            {
-//                dp[i, j] = false;
-//            }
-//        }
+//        //Console.WriteLine(s.Solve(arr, arr.Length - 1, target));
 
-//        //Console.WriteLine(h.Solve(arr, arr.Length - 1, target, dp));
-
+//        Console.WriteLine(s.Solve(arr, target));
 //    }
 //}

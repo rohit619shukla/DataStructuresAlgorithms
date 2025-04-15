@@ -1,11 +1,30 @@
-﻿//using System;
+﻿//using Newtonsoft.Json.Linq;
+//using System;
+//using System.Reflection;
 
-//class Helper
+//public class Solution
 //{
-//    // Recursion
-//    // Time : O(2^n), space : O(n)
-//    //public bool Solve(int[] arr, int index, int target)
+//    public bool CanPartition(int[] nums)
+//    {
+//        int sum = 0;
+
+//        foreach (int num in nums)
+//        {
+//            sum += num;
+//        }
+//        if (sum % 2 != 0)
+//            return false;
+//        int target = sum / 2;
+
+//        bool[,] dp = new bool[nums.Length, target + 1];
+
+//        return Solve(nums, target);
+//    }
+
+//    // Time : O(2^n) , space :O(n)
+//    //private bool Solve(int[] nums, int index, int target)
 //    //{
+//    //    // base case
 //    //    if (target == 0)
 //    //    {
 //    //        return true;
@@ -13,23 +32,24 @@
 
 //    //    if (index == 0)
 //    //    {
-//    //        return (arr[0] == target);
+//    //        return (nums[index] == target) ? true : false;
 //    //    }
 
-//    //    bool pickSum = false;
+//    //    bool notTake = Solve(nums, index - 1, target);
+//    //    bool take = false;
 
-//    //    if (arr[index] <= target)
+//    //    if (target >= nums[index])
 //    //    {
-//    //        pickSum = Solve(arr, index - 1, target - arr[index]);
+//    //        take = Solve(nums, index - 1, target - nums[index]);
 //    //    }
 
-//    //    bool notPickSum = Solve(arr, index - 1, target);
-
-//    //    return (pickSum || notPickSum);
+//    //    return take || notTake;
 //    //}
 
-//    //public bool Solve(int[] arr, int index, int target, int[,] dp)
+//    // Time :(n*m) , space : (n*m) + O(n)
+//    //private bool Solve(int[] nums, int index, int target, bool?[,] dp)
 //    //{
+//    //    // base case
 //    //    if (target == 0)
 //    //    {
 //    //        return true;
@@ -37,106 +57,97 @@
 
 //    //    if (index == 0)
 //    //    {
-//    //        return (arr[0] == target);
+//    //        return (nums[index] == target) ? true : false;
 //    //    }
 
-//    //    if (dp[index, target] != -1)
+//    //    if (dp[index, target].HasValue)
 //    //    {
-//    //        return (dp[index, target] == 1 ? true : false);
+//    //        return dp[index, target].Value;
 //    //    }
-//    //    bool pickSum = false;
 
-//    //    if (arr[index] <= target)
+//    //    bool notTake = Solve(nums, index - 1, target, dp);
+//    //    bool take = false;
+
+//    //    if (target >= nums[index])
 //    //    {
-//    //        pickSum = Solve(arr, index - 1, target - arr[index], dp);
+//    //        take = Solve(nums, index - 1, target - nums[index], dp);
 //    //    }
 
-//    //    bool notPickSum = Solve(arr, index - 1, target, dp);
-
-//    //    dp[index, target] = (pickSum || notPickSum == true ? 1 : 0);
-
-//    //    return dp[index, target] == 1 ? true : false;
+//    //    return (dp[index, target] = take || notTake).Value;
 //    //}
 
-//    //    // Tabulation
-//    //    // Complexity : O(n*m), space : O(n*m)
-//    //    public bool Solve(int[] arr, int index, int target, bool[,] dp)
+//    // Time : O(n*m) , space :O(n*m)
+//    //private bool Solve(int[] nums, int target, bool[,] dp)
+//    //{
+//    //    for (int i = 0; i < nums.Length; i++)
 //    //    {
-//    //        for (int i = 0; i < arr.Length; i++)
-//    //        {
-//    //            dp[i, 0] = true;
-//    //        }
+//    //        dp[i, 0] = true;
+//    //    }
 
-//    //        if (arr[0] <= target)
-//    //        {
-//    //            dp[0, arr[0]] = true;
-//    //        }
+//    //    dp[0, nums[0]] = true;
 
-//    //        for (int i = 1; i < index; i++)
+//    //    for (int i = 1; i < nums.Length; i++)
+//    //    {
+//    //        for (int j = 1; j <= target; j++)
 //    //        {
-//    //            for (int j = 1; j <= target; j++)
+//    //            bool notTake = dp[i - 1, j];
+//    //            bool take = false;
+
+//    //            if (j >= nums[i])
 //    //            {
-//    //                bool pickSum = false;
-
-//    //                if (j >= arr[i])
-//    //                {
-//    //                    pickSum = dp[i - 1, j - arr[i]];
-//    //                }
-
-//    //                bool notPickSum = dp[i - 1, j];
-
-//    //                dp[i, j] = pickSum || notPickSum;
+//    //                take = dp[i - 1, j - nums[i]];
 //    //            }
+
+//    //            dp[i, j] = take || notTake;
 //    //        }
-//    //        return dp[index - 1, target];
 //    //    }
+
+//    //    return dp[nums.Length - 1, target];
+//    //}
+
+//    // Time : O(n*m) , space :(n+m)
+//    private bool Solve(int[] nums, int target)
+//    {
+//        bool[] prev = new bool[target+1];
+
+//        prev[0] = true;
+
+//        if (target >= nums[0])
+//            prev[nums[0]] = true;
+
+//        for (int i = 1; i < nums.Length; i++)
+//        {
+//            bool[] curr = new bool[target+1];
+//            curr[0] = true;
+
+//            for (int j = 1; j <= target; j++)
+//            {
+//                bool notTake = prev[j];
+//                bool take = false;
+
+//                if (j >= nums[i])
+//                {
+//                    take = prev[j - nums[i]];
+//                }
+
+//                curr[j] = take || notTake;
+//            }
+//            prev = curr;
+//        }
+
+//        return prev[target];
+//    }
+
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 2, 3, 3, 3, 4, 5 };
+//        int[] nums = { 2, 2, 3, 5 };
 
-//        int sum = 0;
+//        Solution s = new Solution();
 
-//        Helper h = new Helper();
-
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            sum += arr[i];
-//        }
-
-
-//        if (sum % 2 == 0)
-//        {
-//            int target = sum / 2;
-//            //int[,] dp = new int[arr.Length, target + 1];
-
-//            //for (int i = 0; i < dp.GetLength(0); i++)
-//            //{
-//            //    for (int j = 0; j < dp.GetLength(1); j++)
-//            //    {
-//            //        dp[i, j] = -1;
-//            //    }
-//            //}
-
-//            bool[,] dp = new bool[arr.Length, target + 1];
-
-//            for (int i = 0; i < dp.GetLength(0); i++)
-//            {
-//                for (int j = 0; j < dp.GetLength(1); j++)
-//                {
-//                    dp[i, j] = false;
-//                }
-//            }
-
-
-//            Console.WriteLine(h.Solve(arr, arr.Length - 1, target, dp));
-
-//        }
-//        else
-//        {
-//            Console.WriteLine(false);
-//        }
+//        Console.WriteLine(s.CanPartition(nums));
 //    }
 //}
