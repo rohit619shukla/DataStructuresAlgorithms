@@ -48,16 +48,16 @@
 
 //    // Tabulation with space optimization
 //    // Time: O(n), space : O(1) as it uses constant input space
-//    public int GetFibonacci(int num)
+//    public int GetFibonacci(int n)
 //    {
-            //if (n <= 1)
-            //{
-            //    return n;
-            //}
+//        if (n <= 1)
+//        {
+//            return n;
+//        }
 //        int prev2 = 0;
 //        int prev1 = 1;
 
-//        for (int i = 2; i <= num; i++)
+//        for (int i = 2; i <= n; i++)
 //        {
 //            int currentValue = prev1 + prev2;
 //            prev2 = prev1;
@@ -85,4 +85,4 @@
 //        //Console.WriteLine($"{f.GetFibonacci(n, dp)}");
 //        Console.WriteLine($"{f.GetFibonacci(n)}");
 //    }
-//}z
+//}

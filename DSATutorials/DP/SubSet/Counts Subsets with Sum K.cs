@@ -1,13 +1,10 @@
-﻿//using System;
-
-////We are given an array ‘ARR’ with N positive integers and an integer K.
-////We need to find the number of subsets whose sum is equal to K.
-//class Helper
+﻿
+//class Solution
 //{
-//    // Recursion
-//    // Time : O(2^n), space : O(n)
+//    // Time : O(2^n) , space :O(n)
 //    //public int Solve(int[] arr, int index, int target)
 //    //{
+//    //    // base case
 //    //    if (target == 0)
 //    //    {
 //    //        return 1;
@@ -15,108 +12,61 @@
 
 //    //    if (index == 0)
 //    //    {
-//    //        return (arr[0] == target ? 1 : 0);
+//    //        return (arr[index] == target) ? 1 : 0;
 //    //    }
 
-//    //    int notPickSum = Solve(arr, index - 1, target);
+//    //    int notTake = Solve(arr, index - 1, target);
+//    //    int take = 0;
 
-//    //    int pickSum = 0;
-
-//    //    if (arr[index] <= target)
+//    //    if (target >= arr[index])
 //    //    {
-//    //        pickSum = Solve(arr, index - 1, target - arr[index]);
+//    //        take = Solve(arr, index - 1, target - arr[index]);
 //    //    }
 
-//    //    return pickSum + notPickSum;
+//    //    // Since we need a total count
+//    //    return take + notTake;
 //    //}
 
-//    // Memoization
-//    // Time : O(index * target) ,space : O(index * target) + O(index), 
-//    //public int Solve(int[] arr, int index, int target, int[,] dp)
-//    //{
-//    //    if (target == 0)
-//    //    {
-//    //        return 1;
-//    //    }
-
-//    //    if (index == 0)
-//    //    {
-//    //        return (arr[0] == target ? 1 : 0);
-//    //    }
-
-//    //    if (dp[index, target] != -1)
-//    //    {
-//    //        return dp[index, target];
-//    //    }
-
-//    //    int notPickSum = Solve(arr, index - 1, target, dp);
-
-//    //    int pickSum = 0;
-
-//    //    if (arr[index] <= target)
-//    //    {
-//    //        pickSum = Solve(arr, index - 1, target - arr[index], dp);
-//    //    }
-
-//    //    return dp[index, target] = pickSum + notPickSum;
-//    //}
-
-//    // Tabulation
-//    // Time : O(index * target) ,space : O(index * target)
-//    public int Solve(int[] arr, int index, int target, int[,] dp)
+//    // Time : O(n*m) , spacew :(n+m)
+//    public int Solve(int[] arr, int target)
 //    {
-//        // base cases
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            dp[i, 0] = 1;
-//        }
+//        int[] prev = new int[target + 1];
 
-//        dp[0, arr[0]] = 1;
+//        prev[0] = 1;
+//        prev[arr[0]] = 1;
 
-//        // index   
-//        for (int i = 1; i <= index; i++)
+//        for (int i = 1; i < arr.Length; i++)
 //        {
-//            // target
-//            for (int j = 0; j <= target; j++)
+//            int[] curr = new int[target + 1];
+//            curr[0] = 1;
+
+//            for (int j = 1; j <= target; j++)
 //            {
-//                int notPickSum = dp[i - 1, j];
+//                int notTake = prev[j];
+//                int take = 0;
 
-//                int pickSum = 0;
-
-//                if (arr[i] <= j)
+//                if (j >= arr[i])
 //                {
-//                    pickSum = dp[i - 1, j - arr[i]];
+//                    take = prev[j - arr[i]];
 //                }
 
-//                dp[i, j] = pickSum + notPickSum;
+//                // Since we need a total count
+//                curr[j] = take + notTake;
 //            }
+//            prev = curr;
 //        }
-
-//        return dp[index, target];
+//        return prev[target];
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 1, 1, 4, 5 };
+//        int[] arr = { 1, 2, 2, 3 };
+//        int target = 3;
 
-//        int target = 5;
-
-//        Helper h = new Helper();
-
+//        Solution s = new Solution();
 //        int[,] dp = new int[arr.Length, target + 1];
-
-//        for (int i = 0; i < dp.GetLength(0); i++)
-//        {
-//            for (int j = 0; j < dp.GetLength(1); j++)
-//            {
-//                //dp[i, j] = -1;  // for memoization
-
-//                dp[i, j] = 0;   // for tabulation
-//            }
-//        }
-
-//        Console.WriteLine(h.Solve(arr, arr.Length - 1, target, dp));
+//        Console.WriteLine(s.Solve(arr, target));
 //    }
 //}
