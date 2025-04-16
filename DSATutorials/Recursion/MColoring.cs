@@ -94,5 +94,5 @@
 //}
 
 
-//// Time : O(M^V *V) , for each verstx v we can have m possibilities.
-//// Space : O(V+E) dues to adjacency List
+//// Time : O(M^V *V) , for each verstx v we can have m possibilities And additional V for checking if good to color
+//// Space : O(V+E) dues to adjacency List + Recursive stck space :O(n)
