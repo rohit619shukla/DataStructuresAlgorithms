@@ -110,4 +110,5 @@
 //    }
 //}
 
-////Time Complexity: O(9(81)), in the worst case, for each cell in the n2 board, we have 9 possible numbers.
+////Time Complexity: O(9^N) where n is number of empty cells, in the worst case, for each cell in the n2 board, we have 9 possible numbers.
+//// Space :O(N) Recursive stack space for n cells
