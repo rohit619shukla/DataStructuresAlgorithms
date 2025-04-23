@@ -86,4 +86,5 @@
 //    }
 //}
 
-//Note : Same code as LCS but with twist of non matching index
+////Note: Same code as LCS but with twist of non matching index
+//// The idea here is that the same char should also appear in another index in same sequence

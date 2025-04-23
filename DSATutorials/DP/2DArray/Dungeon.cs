@@ -73,43 +73,43 @@
 //    //}
 
 //    // Time : O(n*m) , space : O(n*m)
-//    //private int Solve(int[][] dungeon, int rows, int cols, int[,] dp)
-//    //{
-//    //    dp[rows - 1, cols - 1] = Math.Max(1, 1 - dungeon[rows - 1][cols - 1]);
+//    private int Solve(int[][] dungeon, int rows, int cols, int[,] dp)
+//    {
 
-//    //    for (int i = rows - 1; i >= 0; i--)
-//    //    {
-//    //        for (int j = cols - 1; j >= 0; j--)
-//    //        {
-//    //            if (i == rows - 1 && j == cols - 1)
-//    //            {
-//    //                continue;
-//    //            }
-//    //            else
-//    //            {
-//    //                // Explore the minimum HP for down and right paths we will need
-//    //                int down = int.MaxValue, right = int.MaxValue;
-//    //                if (i + 1 < rows)
-//    //                {
-//    //                    down = dp[i + 1, j];
-//    //                }
+//        for (int i = rows - 1; i >= 0; i--)
+//        {
+//            for (int j = cols - 1; j >= 0; j--)
+//            {
+//                if (i == rows - 1 && j == cols - 1)
+//                {
+//                    dp[i, j] = Math.Max(1, 1 - dungeon[i][j]);
+//                    //continue;
+//                }
+//                else
+//                {
+//                    // Explore the minimum HP for down and right paths we will need
+//                    int down = int.MaxValue, right = int.MaxValue;
+//                    if (i + 1 < rows)
+//                    {
+//                        down = dp[i + 1, j];
+//                    }
 
-//    //                if (j + 1 < cols)
-//    //                {
-//    //                    right = dp[i, j + 1];
-//    //                }
+//                    if (j + 1 < cols)
+//                    {
+//                        right = dp[i, j + 1];
+//                    }
 
-//    //                // Now from both the paths get the minimum HP to survive
-//    //                int minHp = Math.Min(down, right);
+//                    // Now from both the paths get the minimum HP to survive
+//                    int minHp = Math.Min(down, right);
 
-//    //                // This is the crux.This will give the HP needed by current cell to survive before it can give some part from itself to it  child
-//    //                dp[i, j] = Math.Max(1, minHp - dungeon[i][j]);
-//    //            }
-//    //        }
-//    //    }
+//                    // This is the crux.This will give the HP needed by current cell to survive before it can give some part from itself to it  child
+//                    dp[i, j] = Math.Max(1, minHp - dungeon[i][j]);
+//                }
+//            }
+//        }
 
-//    //    return dp[0, 0];
-//    //}
+//        return dp[0, 0];
+//    }
 //}
 
 //class Program
