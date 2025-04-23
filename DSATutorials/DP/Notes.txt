@@ -1,0 +1,6 @@
+/*
+  1. Both Dungeon game and Cherry pick are very unique problems, make sure to always keep revise.
+  2. Not all problems require +1 in dp.
+  3. Remember that in DP problems always make sure to double check on boundary conditions
+  4. The key to write correct tabulation resides in how good the Recurrence has been written
+*/

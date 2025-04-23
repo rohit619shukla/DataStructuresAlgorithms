@@ -1,136 +1,191 @@
-﻿//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.Runtime.Intrinsics.Arm;
-
-//class Helper
+﻿//public class Solution
 //{
-//    // Recursion
-//    // Time : exponential, space : O(n)
-//    //public int Solve(string s1, string s2, int i, int j)
+//    public int MinDistance(string word1, string word2)
+//    {
+//        //int[,] dp = new int[word1.Length, word2.Length];
+//        //for (int i = 0; i < word1.Length; i++)
+//        //{
+//        //    for (int j = 0; j < word2.Length; j++)
+//        //    {
+//        //        dp[i, j] = -1;
+//        //    }
+//        //}
+
+//        //return Solve(word1, word2, word1.Length - 1, word2.Length - 1, dp);
+//        return Solve(word1, word2);
+//        //return Solve(word1, word2, word1.Length - 1, word2.Length - 1);
+//    }
+
+
+//    // Time : O(3^(m+n)) , space : O(n+m)
+//    //private int Solve(string word1, string word2, int idx1, int idx2)
 //    //{
 //    //    // base case
-//    //    // 1. string 1 got exhausted, but string 2 is there, so you will need j+1 operation to convert empty string 1 to 2 
-//    //    if (i < 0)
+//    //    // 1. If the word1 is exhauseted, we may still have some char  left in word2
+//    //    if (idx1 < 0)
 //    //    {
-//    //        return j + 1;
+//    //        return idx2 + 1;
 //    //    }
 
-//    //    // 2. string 2 got exhausted, but string 1 is there, so you will need i+1 operation to convert empty string 2 to 1 
-//    //    if (j < 0)
+//    //    // 2. If the word2 is exhauseted, we may still have some char  left in word1
+//    //    if (idx2 < 0)
 //    //    {
-//    //        return i + 1;
+//    //        return idx1 + 1;
 //    //    }
 
-//    //    // characters of string got matched, no operation needs to be performed further but lets shrink size of string
-//    //    if (s1[i] == s2[j])
+//    //    // Match case
+//    //    if (word1[idx1] == word2[idx2])
 //    //    {
-//    //        return Solve(s1, s2, i - 1, j - 1);
+//    //        // No action needed
+//    //        return Solve(word1, word2, idx1 - 1, idx2 - 1);
 //    //    }
-//    //    else
-//    //    {
-//    //        return 1 + Math.Min(
-//    //            Solve(s1, s2, i, j - 1),  // Insert operation, here some char has been inserted in front of i hypothetically
-//    //            Math.Min(
-//    //                Solve(s1, s2, i - 1, j),  // Deletion operation, reduce i by 1
-//    //                Solve(s1, s2, i - 1, j - 1))); // Replace operation, since we have replaced something so there is a match, hence reduce
-//    //    }
+
+//    //    // Not match cases
+//    //    int insertCase = 1 + Solve(word1, word2, idx1, idx2 - 1);   // Since we are hypothetically inserting the char, dont need to move idx1 but indeed idx2
+
+//    //    int deleteCase = 1 + Solve(word1, word2, idx1 - 1, idx2);  // We have delted the idx1 hence we need to search in shrinked string
+
+//    //    int replaceCase = 1 + Solve(word1, word2, idx1 - 1, idx2 - 1); // Replace happened and offcourse they match, hence move backward
+
+//    //    return Math.Min(insertCase, Math.Min(deleteCase, replaceCase));
 //    //}
 
-
-//    // Memoization
-//    // Time : O(n*m) , space :(n*m)
-//    //public int Solve(string s1, string s2, int i, int j, int[,] dp)
+//    // Time : O(n*m) , space :O(n*m) + O(n+m)
+//    //private int Solve(string word1, string word2, int idx1, int idx2, int[,] dp)
 //    //{
-//    //    if (i < 0)
+//    //    // base case
+//    //    // 1. If the word1 is exhauseted, we may still have some char  left in word2
+//    //    if (idx1 < 0)
 //    //    {
-//    //        return j + 1;
+//    //        return idx2 + 1;
 //    //    }
 
-//    //    if (j < 0)
+//    //    // 2. If the word2 is exhauseted, we may still have some char  left in word1
+//    //    if (idx2 < 0)
 //    //    {
-//    //        return i + 1;
+//    //        return idx1 + 1;
 //    //    }
 
-//    //    if (dp[i, j] != -1)
+//    //    if (dp[idx1, idx2] != -1)
 //    //    {
-//    //        return dp[i, j];
+//    //        return dp[idx1, idx2];
 //    //    }
 
-//    //    if (s1[i] == s2[j])
+//    //    // Match case
+//    //    if (word1[idx1] == word2[idx2])
 //    //    {
-//    //        return dp[i, j] = Solve(s1, s2, i - 1, j - 1, dp);
+//    //        // No action needed
+//    //        return Solve(word1, word2, idx1 - 1, idx2 - 1, dp);
 //    //    }
-//    //    else
-//    //    {
-//    //        return dp[i, j] = 1 + Math.Min(
-//    //            Solve(s1, s2, i, j - 1, dp),
-//    //            Math.Min(
-//    //                Solve(s1, s2, i - 1, j, dp),
-//    //                Solve(s1, s2, i - 1, j - 1, dp)));
-//    //    }
+
+//    //    // Not match cases
+//    //    int insertCase = 1 + Solve(word1, word2, idx1, idx2 - 1, dp);   // Since we are hypothetically inserting the char, dont need to move idx1 but indeed idx2
+
+//    //    int deleteCase = 1 + Solve(word1, word2, idx1 - 1, idx2, dp);  // We have delted the idx1 hence we need to search in shrinked string
+
+//    //    int replaceCase = 1 + Solve(word1, word2, idx1 - 1, idx2 - 1, dp); // Replace happened and offcourse they match, hence move backward
+
+//    //    return dp[idx1, idx2] = Math.Min(insertCase, Math.Min(deleteCase, replaceCase));
 //    //}
 
-//    // Tabulation
-//    // Time : O(n*m) , space : O(n*m)
-//    public int Solve(string s1, string s2)
+//    // Time : O(n*m) , space :O(n+m)
+//    //private int Solve(string word1, string word2)
+//    //{
+//    //    int[,] dp = new int[word1.Length + 1, word2.Length + 1];
+
+//    //    // base case :
+//    //    // 1. Word1 is exhausted
+//    //    for (int i = 0; i <= word2.Length; i++)
+//    //    {
+//    //        dp[0, i] = i; // co-ordinate shift
+//    //    }
+
+//    //    // 2. Word2 is exhausted
+//    //    for (int j = 0; j <= word1.Length; j++)
+//    //    {
+//    //        dp[j, 0] = j;
+//    //    }
+
+//    //    for (int i = 1; i <= word1.Length; i++)
+//    //    {
+//    //        for (int j = 1; j <= word2.Length; j++)
+//    //        {
+//    //            if (word1[i - 1] == word2[j - 1])
+//    //            {
+//    //                // No action needed
+//    //                dp[i, j] = dp[i - 1, j - 1];
+//    //            }
+//    //            else
+//    //            {
+//    //                // Not match cases
+//    //                int insertCase = 1 + dp[i, j - 1];   // Since we are hypothetically inserting the char, dont need to move idx1 but indeed idx2
+
+//    //                int deleteCase = 1 + dp[i - 1, j];  // We have delted the idx1 hence we need to search in shrinked string
+
+//    //                int replaceCase = 1 + dp[i - 1, j - 1]; // Replace happened and offcourse they match, hence move backward
+
+//    //                dp[i, j] = Math.Min(insertCase, Math.Min(deleteCase, replaceCase));
+//    //            }
+
+//    //        }
+//    //    }
+
+//    //    return dp[word1.Length, word2.Length];
+//    //}
+
+//    // Space optimization
+//    // Time :O(n*m) , space : O(n+m)
+//    private int Solve(string word1, string word2)
 //    {
-//        int[,] dp = new int[s1.Length + 1, s2.Length + 1];
+//        //int[,] dp = new int[word1.Length + 1, word2.Length + 1];
+//        int[] prev = new int[word2.Length + 1];
 
-//        // base case
-
-//        // 1. string 1 got exhausted
-//        for (int j = 0; j <= s2.Length; j++)
+//        // base case :
+//        // 1. Word1 is exhausted
+//        for (int i = 0; i <= word2.Length; i++)
 //        {
-//            dp[0, j] = j;
+//            prev[i] = i; // co-ordinate shift
 //        }
 
-//        // 2. string 2 got exhausted
-//        for (int i = 0; i <= s1.Length; i++)
+//        for (int i = 1; i <= word1.Length; i++)
 //        {
-//            dp[i, 0] = i;
-//        }
-
-//        for (int i = 1; i <= s1.Length; i++)
-//        {
-//            for (int j = 1; j <= s2.Length; j++)
+//            int[] curr = new int[word2.Length + 1];
+//            curr[0] = i;
+//            for (int j = 1; j <= word2.Length; j++)
 //            {
-//                if (s1[i - 1] == s2[j - 1])
+//                if (word1[i - 1] == word2[j - 1])
 //                {
-//                    dp[i, j] = dp[i - 1, j - 1];
+//                    // No action needed
+//                    curr[j] = prev[j - 1];
 //                }
 //                else
 //                {
-//                    dp[i, j] = 1 + Math.Min(
-//                        dp[i, j - 1],
-//                        Math.Min(
-//                            dp[i - 1, j],
-//                            dp[i - 1, j - 1]));
+//                    // Not match cases
+//                    int insertCase = 1 + curr[j - 1];   // Since we are hypothetically inserting the char, dont need to move idx1 but indeed idx2
+
+//                    int deleteCase = 1 + prev[j];  // We have delted the idx1 hence we need to search in shrinked string
+
+//                    int replaceCase = 1 + prev[j - 1]; // Replace happened and offcourse they match, hence move backward
+
+//                    curr[j] = Math.Min(insertCase, Math.Min(deleteCase, replaceCase));
 //                }
 //            }
+//            prev = curr;
 //        }
-//        return dp[s1.Length, s2.Length];
+
+//        return prev[word2.Length];
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string s1 = "horse";
-//        string s2 = "ros";
+//        string word1 = "intention";
+//        string word2 = "execution";
 
-//        Helper h = new Helper();
+//        Solution s = new Solution();
 
-//        int[,] dp = new int[s1.Length + 1, s2.Length + 1];
-
-//        for (int i = 0; i <= s1.Length; i++)
-//        {
-//            for (int j = 0; j <= s2.Length; j++)
-//            {
-//                dp[i, j] = -1;
-//            }
-//        }
-
-//        //Console.WriteLine(h.Solve(s1, s2, s1.Length - 1, s2.Length - 1, dp));
-//        Console.WriteLine(h.Solve(s1, s2));
+//        Console.WriteLine(s.MinDistance(word1, word2));
 //    }
 //}

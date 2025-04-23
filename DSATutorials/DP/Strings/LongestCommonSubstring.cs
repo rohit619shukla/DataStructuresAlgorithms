@@ -27,7 +27,7 @@
 //                        if (dp[i, j] > max)
 //                        {
 //                            max = dp[i, j];
-//                            endIndex = i - 1;
+//                            endIndex = i;
 //                        }
 //                    }
 //                }
@@ -36,7 +36,7 @@
 
 //        Console.WriteLine($"Length of Longest common Substring is: {max}");
 
-//        Console.WriteLine($"The Longest common substring is: {s1.Substring(endIndex - max + 1, max)}");
+//        Console.WriteLine($"The Longest common substring is: {s1.Substring(endIndex - max, max)}");
 //    }
 //}
 //class Program
