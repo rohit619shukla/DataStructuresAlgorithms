@@ -1,62 +1,110 @@
 ﻿
-//class Solution
+//public class Solution
 //{
-
 //    public IList<int> LargestDivisibleSubset(int[] nums)
 //    {
-//        int[] dp = new int[nums.Length];
-//        int[] old = new int[nums.Length];
+//        //IList<int> result = new List<int>();
 
-//        Array.Fill(dp, 1);
-//        Array.Fill(old, -1);
+//        //// To temporarily store the current list
+//        //IList<int> tempList = new List<int>();
 
+//        // Sort the Array
 //        Array.Sort(nums);
 
+//        //Solve(nums, result, tempList, 0, -1);
+//        return Solve(nums);
+//    }
 
-//        int maxIndex = 0;
+//    // Time : O(2^n * n) , space :O(n)
+//    //private void Solve(int[] nums, IList<int> result, IList<int> tempList, int currentIndex, int prevIndex)
+//    //{
+//    //    //base case
+//    //    if (currentIndex == nums.Length)
+//    //    {
+//    //        if (tempList.Count > result.Count)
+//    //        {
+//    //            result.Clear();
+//    //            foreach (var num in tempList)
+//    //            {
+//    //                result.Add(num);
+//    //            }
+//    //        }
 
-//        for (int curr = 1; curr < nums.Length; curr++)
+//    //        // no new list found
+//    //        return;
+//    //    }
+
+//    //    // Note : Recursion and backtracking funtion
+//    //    // Take case
+//    //    if (prevIndex == -1 || (nums[currentIndex] % nums[prevIndex]) == 0)
+//    //    {
+//    //        tempList.Add(nums[currentIndex]);
+//    //        Solve(nums, result, tempList, currentIndex + 1, currentIndex);
+//    //        // backtrack
+//    //        tempList.RemoveAt(tempList.Count - 1);
+//    //    }
+
+//    //    // Not Take case
+//    //    Solve(nums, result, tempList, currentIndex + 1, prevIndex);
+
+//    //}
+
+//    // O(N^2), space :O(n)
+//    private IList<int> Solve(int[] nums)
+//    {
+//        Array.Sort(nums);
+//        int[] dp = new int[nums.Length];
+//        int[] location = new int[nums.Length];
+
+//        Array.Fill(location, -1);
+//        Array.Fill(dp, 1);
+
+//        // Key Change here 👇
+//        int maxLen = 1, maxIndex = 0;
+
+//        for (int i = 1; i < nums.Length; i++)
 //        {
-//            for (int prev = 0; prev < curr; prev++)
+//            for (int j = 0; j < i; j++)
 //            {
-//                if (nums[curr] % nums[prev] == 0 && dp[prev] + 1 > dp[curr])
+//                if (nums[i] % nums[j] == 0)
 //                {
-//                    dp[curr] = dp[prev] + 1;
-//                    old[curr] = prev;
+//                    if (dp[j] + 1 > dp[i])
+//                    {
+//                        dp[i] = dp[j] + 1;
+//                        // We will continously update the location array
+//                        location[i] = j;
+//                    }
 //                }
 //            }
-
-//            // to keep track of the maxsize of the set at every index
-//            if (dp[curr] > dp[maxIndex])
+//            // maxLen and maxIndex update should be outside inner loop
+//            if (dp[i] > maxLen)
 //            {
-//                maxIndex = curr;
+//                maxLen = dp[i];
+
+//                //. Since we need to keep track of index hence we need this if statement otherwise it can be same as LIS code
+//                maxIndex = i;
 //            }
 //        }
 
-//        List<int> result = new List<int>();
+//        int[] result = new int[maxLen];
+//        int count = maxLen - 1;
 
-//        int index = maxIndex;
-
-
-//        // we use old array for restructuring the array 
-//        while (index >= 0)
+//        while (maxIndex != -1)
 //        {
-//            result.Add(nums[index]);
-//            index = old[index];
+//            result[count] = nums[maxIndex];
+//            maxIndex = location[maxIndex];
+//            count--;
 //        }
 
-//        result.Reverse();
-
 //        return result;
+
 //    }
 //}
-
-
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 2, 3, 4, 9, 8 };
+//        int[] arr = { 3, 8, 15, 32, 64 };
 
 //        Solution s = new Solution();
 
@@ -67,8 +115,4 @@
 //            Console.Write($"{item}" + " ");
 //        }
 //    }
-
 //}
-
-
-//// Time : O(N^2)  and space : O(N)
