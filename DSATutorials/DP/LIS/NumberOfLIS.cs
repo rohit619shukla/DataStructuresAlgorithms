@@ -1,48 +1,54 @@
-﻿
-//class Solution
+﻿//public class Solution
 //{
-//    public void Solve(int[] arr)
+//    // Time O(N^2) , space :O(n)
+//    public int FindNumberOfLIS(int[] nums)
 //    {
-//        // We will take 2 arrays for solving this using DP
-//        int[] dp = new int[arr.Length];    // for storing the dp results
-//        int[] count = new int[arr.Length];  // for storing count
+//        int[] dp = new int[nums.Length];
+//        int[] count = new int[nums.Length];
 
 //        Array.Fill(dp, 1);
 //        Array.Fill(count, 1);
 
-//        for (int curr = 1; curr < arr.Length; curr++)
+//        int maxlen = 1;
+//        for (int i = 1; i < nums.Length; i++)
 //        {
-//            for (int prev = 0; prev < curr; prev++)
+//            for (int j = 0; j < i; j++)
 //            {
-//                if (arr[curr] > arr[prev] && dp[prev] + 1 == dp[curr])
+//                // Usual LIS check
+//                if (nums[i] > nums[j])
 //                {
-//                    count[curr] += count[prev];
-//                }
-//                else if (arr[curr] > arr[prev] && dp[prev] + 1 > dp[curr])
-//                {
-//                    dp[curr] = dp[prev] + 1;
+//                    if (dp[j] + 1 > dp[i])
+//                    {
+//                        dp[i] = dp[j] + 1;
 
-//                    count[curr] = count[prev];
-//                }
+//                        // Since we are seeing this LIS for first time, we might have found a better LIS and it is derived from adding 1 to j
+//                        count[i] = count[j];
+//                    }
+//                    else if (dp[j] + 1 == dp[i])
+//                    {
+//                        // At index j we might have already got a similar sequence length hence add it
 
+//                        count[i] += count[j];
+//                    }
+//                }
 //            }
+
+//            // Will be used at last to get the final count
+//            maxlen = Math.Max(maxlen, dp[i]);
 //        }
 
-//        int longestCount = 0;
-//        int max = int.MinValue;
-
-//        for (int i = 0; i < dp.Length; i++)
+//        int ans = 0;
+//        for (int i = 0; i < nums.Length; i++)
 //        {
-//            if (max < dp[i])
+//            if (dp[i] == maxlen)
 //            {
-//                max = dp[i];
-//                longestCount = count[i];
+//                ans += count[i];
 //            }
 //        }
-
-//        Console.WriteLine(longestCount);
+//        return ans;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
@@ -51,8 +57,6 @@
 
 //        Solution s = new Solution();
 
-//        s.Solve(arr);
+//        Console.WriteLine(s.FindNumberOfLIS(arr));
 //    }
 //}
-
-////Time Complexity: O(n^2) , Space Complexity: O(n)

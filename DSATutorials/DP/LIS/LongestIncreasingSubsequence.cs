@@ -93,43 +93,70 @@
 
 //    // Tabulation : space optimization
 //    // Time : O(n*m) , space : O(n) * 2
-//    public int Solve(int[] arr)
+//    //public int Solve(int[] arr)
+//    //{
+//    //    int n = arr.Length;
+
+//    //    int[] nextRow = new int[arr.Length + 1];
+//    //    int[] currRow = new int[arr.Length + 1];
+
+//    //    //Reverse of memoization
+//    //    for (int curr = n - 1; curr >= 0; curr--)
+//    //    {
+//    //        for (int prev = curr - 1; prev >= -1; prev--)
+//    //        {
+//    //            int notTake = nextRow[prev + 1];
+
+//    //            int take = 0;
+
+//    //            if (prev == -1 || arr[curr] > arr[prev])
+//    //            {
+//    //                take = 1 + nextRow[curr + 1];   // we are doing +1 at second index because at some point it will reach -1
+//    //            }
+
+//    //            currRow[prev + 1] = Math.Max(notTake, take);
+//    //        }
+
+//    //        nextRow = currRow;
+
+//    //    }
+
+//    //    // result would be stored in dp[0,-1[, but since we are doing co-ordinate shift 
+//    //    return nextRow[0];
+//    //}
+
+
+//    // Time : O(n^2) , space :O(n)
+//    public int Solve(int[] nums)
 //    {
-//        int n = arr.Length;
+//        // Create a temp array :
+//        int[] temp = new int[nums.Length];
 
-//        int[] nextRow = new int[arr.Length + 1];
-//        int[] currRow = new int[arr.Length + 1];
+//        // By default every element is a LIS in itself
+//        Array.Fill(temp, 1);
 
-//        //Reverse of memoization
-//        for (int curr = n - 1; curr >= 0; curr--)
+//        int maxSeq = 1;
+
+//        for (int i = 1; i < nums.Length; i++)
 //        {
-//            for (int prev = curr - 1; prev >= -1; prev--)
+//            for (int j = 0; j <= i; j++)
 //            {
-//                int notTake = nextRow[prev + 1];
-
-//                int take = 0;
-
-//                if (prev == -1 || arr[curr] > arr[prev])
+//                if (nums[i] > nums[j])
 //                {
-//                    take = 1 + nextRow[curr + 1];   // we are doing +1 at second index because at some point it will reach -1
+//                    temp[i] = Math.Max(temp[i], temp[j] + 1);
 //                }
-
-//                currRow[prev + 1] = Math.Max(notTake, take);
 //            }
-
-//            nextRow = currRow;
-
+//                    maxSeq = Math.Max(maxSeq, temp[i]);
 //        }
 
-//        // result would be stored in dp[0,-1[, but since we are doing co-ordinate shift 
-//        return nextRow[0];
+//        return maxSeq;
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[] arr = { 10, 9, 2, 5, 3, 7, 101, 18 };
+//        int[] arr = { 7, 7, 7, 7, 7, 7, 7 };
 
 //        Helper h = new Helper();
 //        //Console.WriteLine(h.Solve(0, -1, arr));

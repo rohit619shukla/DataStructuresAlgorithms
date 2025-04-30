@@ -1,138 +1,232 @@
-﻿//using System;
-//using System.Security.Cryptography;
-
-//class Helper
+﻿//public class Solution
 //{
-//    // Memoization
-//    // Time : O(n*m), space : O(n*m)
-//    //public bool Solve(string str, string pattern, int strLength, int patternLength, bool[,] dp)
+//    public bool IsMatch(string source, string pattern)
+//    {
+//        //for (int i = 0; i < dp.GetLength(0); i++)
+//        //{
+//        //    for (int j = 0; j < dp.GetLength(1); j++)
+//        //    {
+//        //        dp[i, j] = null;
+//        //    }
+//        //}
+
+//        //return Solve(source, pattern, source.Length - 1, pattern.Length - 1, dp);
+//        return Solve(source, pattern);
+//    }
+
+//    // Time : O(2^n) , space : O(n+m)
+//    //private bool Solve(string source, string pattern, int idx1, int idx2)
 //    //{
 //    //    // base case
-//    //    if (strLength < 0 && patternLength < 0)
+//    //    // 1. Both the strings are exhausted while comparing, which means we are good
+//    //    if (idx1 < 0 && idx2 < 0)
 //    //    {
 //    //        return true;
 //    //    }
 
-//    //    // 1. if string itslef is exhausted
-//    //    if (strLength < 0 && patternLength >= 0)
-//    //    {
-//    //        for (int k = 0; k <= patternLength; k++)
-//    //        {
-//    //            if (pattern[k] != '*')
-//    //            {
-//    //                return false;
-//    //            }
-//    //        }
-
-//    //        return true;
-//    //    }
-
-//    //    // 2. If pattern is exhausted
-//    //    if (patternLength < 0 && strLength >= 0)
+//    //    // 2. Pattern got exhausted but we still have few chars left in Source. Ideally nothing in pattern is left to compare
+//    //    if (idx1 >= 0 && idx2 < 0)
 //    //    {
 //    //        return false;
 //    //    }
 
-//    //    if (dp[strLength, patternLength] != false)
+//    //    // 3. source is exhausted but there are still few char in pattern
+//    //    if (idx1 < 0 && idx2 >= 0)
 //    //    {
-//    //        return dp[strLength, patternLength];
+//    //        // Make sure all the char in source are '*'
+//    //        for (int i = 0; i <= idx2; i++)
+//    //        {
+//    //            if (pattern[idx2] != '*')
+//    //            {
+//    //                return false;
+//    //            }
+//    //        }
+//    //        return true;
 //    //    }
 
-//    //    if (str[strLength] == pattern[patternLength] || pattern[patternLength] == '?')
+//    //    // Normal cases
+//    //    // We found a match or the current char is a '?', as ? can match with a single word only
+//    //    if (source[idx1] == pattern[idx2] || pattern[idx2] == '?')
 //    //    {
-//    //        return Solve(str, pattern, strLength - 1, patternLength - 1, dp);
+//    //        // Since both matched we can keep on shrinking both the strings for further comparisons
+//    //        return Solve(source, pattern, idx1 - 1, idx2 - 1);
 //    //    }
 
-//    //    if (pattern[patternLength] == '*')
+//    //    // We found a *, which could match with  0 or more number of characters
+//    //    if (pattern[idx2] == '*')
 //    //    {
-//    //It can match or it cannot match with any character
-//    //        return Solve(str, pattern, strLength - 1, patternLength, dp) || Solve(str, pattern, strLength, patternLength - 1, dp);
+//    //        // Here we could have 2 cases in general:
+//    //        // 1. Either the * matches with some char and stays at its location
+//    //        // 2. Or the * does not matches with any char moves
+//    //        return Solve(source, pattern, idx1, idx2 - 1) || Solve(source, pattern, idx1 - 1, idx2);
 //    //    }
 
+//    //    // Nothing matches
 //    //    return false;
 //    //}
 
+//    // Time : O(n*m) , space : O(n*m) + O(n+m)
+//    //private bool Solve(string source, string pattern, int idx1, int idx2, bool?[,] dp)
+//    //{
+//    //    // base case
+//    //    // 1. Both the strings are exhausted while comparing, which means we are good
+//    //    if (idx1 < 0 && idx2 < 0)
+//    //    {
+//    //        return true;
+//    //    }
 
-//    // Tabulation
-//    // Time : O(n*m), space : O(n)
-//    public bool Solve(string str, string pattern)
+//    //    // 2. Pattern got exhausted but we still have few chars left in Source. Ideally nothing in pattern is left to compare
+//    //    if (idx1 >= 0 && idx2 < 0)
+//    //    {
+//    //        return false;
+//    //    }
+
+//    //    // 3. source is exhausted but there are still few char in pattern
+//    //    if (idx1 < 0 && idx2 >= 0)
+//    //    {
+//    //        // Make sure all the char in source are '*'
+//    //        for (int i = 0; i <= idx2; i++)
+//    //        {
+//    //            if (pattern[i] != '*')
+//    //            {
+//    //                return false;
+//    //            }
+//    //        }
+//    //        return true;
+//    //    }
+
+//    //    if (dp[idx1, idx2].HasValue)
+//    //    {
+//    //        return dp[idx1, idx2].Value;
+//    //    }
+
+//    //    // Normal cases
+//    //    // We found a match or the current char is a '?', as ? can match with a single word only
+//    //    if (source[idx1] == pattern[idx2] || pattern[idx2] == '?')
+//    //    {
+//    //        // Since both matched we can keep on shrinking both the strings for further comparisons
+//    //        return (dp[idx1, idx2] = Solve(source, pattern, idx1 - 1, idx2 - 1, dp)).Value;
+//    //    }
+
+//    //    // We found a *, which could match with  0 or more number of characters
+//    //    if (pattern[idx2] == '*')
+//    //    {
+//    //        // Here we could have 2 cases in general:
+//    //        // 1. Either the * matches with some char and stays at its location
+//    //        // 2. Or the * does not matches with any char moves
+//    //        return (dp[idx1, idx2] = Solve(source, pattern, idx1, idx2 - 1, dp) || Solve(source, pattern, idx1 - 1, idx2, dp)).Value;
+//    //    }
+
+//    //    // Nothing matches
+//    //    return (dp[idx1, idx2] = false).Value;
+//    //}
+
+//    // Time : O(n*m) , spae :O(n*m)
+//    //private bool Solve(string source, string pattern)
+//    //{
+//    //    bool[,] dp = new bool[source.Length + 1, pattern.Length + 1];
+
+//    //    // both strings got exhausted
+//    //    dp[0, 0] = true;
+
+//    //    // you're using i - 1 because pattern is a 0-based array, and your loop starts from i = 1 to align with the dp table,
+//    //    // which has 1-based indexing semantics. This is a very common pattern in tabulation.
+//    //    for (int i = 1; i <= pattern.Length; i++)
+//    //    {
+//    //        if (pattern[i - 1] != '*')
+//    //        {
+//    //            dp[0, i] = false;
+//    //            break;
+//    //        }
+//    //        else
+//    //        {
+//    //            dp[0, i] = true;
+//    //        }
+//    //    }
+
+//    //    for (int i = 1; i <= source.Length; i++)
+//    //    {
+//    //        for (int j = 1; j <= pattern.Length; j++)
+//    //        {
+//    //            if (source[i - 1] == pattern[j - 1] || pattern[j - 1] == '?')
+//    //            {
+//    //                // Since both matched we can keep on shrinking both the strings for further comparisons
+//    //                dp[i, j] = dp[i - 1, j - 1];
+//    //            }
+
+//    //            // We found a *, which could match with  0 or more number of characters
+//    //            else if (pattern[j - 1] == '*')
+//    //            {
+//    //                // Here we could have 2 cases in general:
+//    //                // 1. Either the * matches with some char and stays at its location
+//    //                // 2. Or the * does not matches with any char moves
+//    //                dp[i, j] = dp[i, j - 1] || dp[i - 1, j];
+//    //            }
+//    //        }
+//    //    }
+
+//    //    return dp[source.Length, pattern.Length];
+//    //}
+
+//    //Time : O(n*m) , space : O(n*m)
+//    private bool Solve(string source, string pattern)
 //    {
-//        bool[,] dp = new bool[str.Length + 1, pattern.Length + 1];
+//        //bool[,] dp = new bool[source.Length + 1, pattern.Length + 1];
+//        bool[] prev = new bool[pattern.Length + 1];
 
-//        // base case
+//        // both strings got exhausted
+//        prev[0] = true;
 
-//        // 1. Both got exhausted
-//        dp[0, 0] = true;
-
-
-//        // 2. string got exhausted but pattern is left with some char
+//        // you're using i - 1 because pattern is a 0-based array, and your loop starts from i = 1 to align with the dp table,
+//        // which has 1-based indexing semantics. This is a very common pattern in tabulation.
 //        for (int i = 1; i <= pattern.Length; i++)
 //        {
 //            if (pattern[i - 1] != '*')
 //            {
-//                dp[0, i] = false;
+//                prev[i] = false;
 //                break;
 //            }
 //            else
 //            {
-//                dp[0, i] = true;
-
+//                prev[i] = true;
 //            }
-
 //        }
 
-//        // 3. pattern got exhasuted
-//        for (int j = 1; j <= str.Length; j++)
+//        for (int i = 1; i <= source.Length; i++)
 //        {
-//            dp[j, 0] = false;
-//        }
-
-//        // Recurrence
-//        for (int i = 1; i <= str.Length; i++)
-//        {
+//            bool[] curr = new bool[pattern.Length + 1];
 //            for (int j = 1; j <= pattern.Length; j++)
 //            {
-//                if (str[i - 1] == pattern[j - 1] || pattern[j - 1] == '?')
+//                if (source[i - 1] == pattern[j - 1] || pattern[j - 1] == '?')
 //                {
-//                    dp[i, j] = dp[i - 1, j - 1];
+//                    // Since both matched we can keep on shrinking both the strings for further comparisons
+//                    curr[j] = prev[j - 1];
 //                }
-//                else
-//                {
-//                    if (pattern[j - 1] == '*')
-//                    {
-//                        dp[i, j] = dp[i - 1, j] || dp[i, j - 1];
-//                    }
-//                }
-//            }
-//        }
-//        return dp[str.Length, pattern.Length];
-//    }
 
-//    private bool IsAllStars(string s, int indx)
-//    {
-//        for (int i = 0; i < indx; i++)
-//        {
-//            if (s[i] != '*')
-//            {
-//                return false;
+//                // We found a *, which could match with  0 or more number of characters
+//                else if (pattern[j - 1] == '*')
+//                {
+//                    // Here we could have 2 cases in general:
+//                    // 1. Either the * matches with some char and stays at its location
+//                    // 2. Or the * does not matches with any char moves
+//                    curr[j] = curr[j - 1] || prev[j];
+//                }
 //            }
+//            prev = curr;
 //        }
-//        return true;
+
+//        return prev[pattern.Length];
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str = "aa";
+//        string source = "aa";
 //        string pattern = "*";
 
-//        Helper h = new Helper();
-
-//        bool[,] dp = new bool[str.Length + 1, pattern.Length + 1];
-
-//        //Console.WriteLine(h.Solve(str, pattern, str.Length - 1, pattern.Length - 1, dp));
-
-//        Console.WriteLine(h.Solve(str, pattern));
+//        Solution s = new Solution();
+//        Console.WriteLine(s.IsMatch(source, pattern));
 //    }
 //}
