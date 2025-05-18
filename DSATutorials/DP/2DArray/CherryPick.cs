@@ -116,6 +116,7 @@
 //    //        return int.MinValue;
 //    //    }
 
+             //// We have reached last cell
 //    //    if (r1 == rows - 1 && c1 == cols - 1)
 //    //    {
 //    //        return grid[r1][c1];
@@ -127,7 +128,9 @@
 //    //    }
 
 //    //    int cherryPick = 0;
+            
 
+            //// If both point to same cell we will take it once only
 //    //    if (r1 == r2 && c1 == c2)
 //    //    {
 //    //        cherryPick += grid[r1][c1];
@@ -146,7 +149,9 @@
 
 //    //    return dp[r1, c1, r2] = cherryPick + maxAns;
 //    //}
+        
 
+        // Since we are moving both we need to take both into account
 //    //private bool IsSafe(int[][] grid, int rows, int cols, int r1, int c1, int r2, int c2)
 //    //{
 //    //    if (r1 >= 0 && r1 < rows && c1 >= 0 && c1 < cols &&

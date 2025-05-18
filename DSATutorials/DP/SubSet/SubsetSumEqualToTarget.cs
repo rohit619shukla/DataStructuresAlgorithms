@@ -58,6 +58,7 @@
 //    // Time : O(n*m)  , space :O(n*m)
 //    //public bool Solve(int[] arr, int target, bool[,] dp)
 //    //{
+            //// Target can be zero for any index
 //    //    for (int i = 0; i < arr.Length; i++)
 //    //    {
 //    //        dp[i, 0] = true;
@@ -87,8 +88,8 @@
 //    // Time : O(n*m) , space :O(n+m)
 //    public bool Solve(int[] arr, int target)
 //    {
-//        bool[] prev = new bool[target+1];
-//        bool[] curr = new bool[target+1];
+//        bool[] prev = new bool[target + 1];
+//        bool[] curr = new bool[target + 1];
 
 //        // base case
 //        prev[0] = true;

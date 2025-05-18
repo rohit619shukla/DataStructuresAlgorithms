@@ -3,4 +3,17 @@
   2. Not all problems require +1 in dp.
   3. Remember that in DP problems always make sure to double check on boundary conditions
   4. The key to write correct tabulation resides in how good the Recurrence has been written
+  5. In DP grid the dp array is from 0 to n-1 like dp[n,m]. However for Subsets it from dp[n+1, m+1] to adjust the targets also sometime doing co-ordinate shifting
+  6. IN problems like cherrypick for memo we use -1 to say the path is not computed but in tabu we use min.value saying initially all paths are invalid
+
+
+  DP Patterns :
+
+  1D Array : one jump or 2 jump
+
+  2D Array : right, down or up , left
+
+  Subsets : Take  and not take  + (+1 in dp for target)
+
+  
 */
