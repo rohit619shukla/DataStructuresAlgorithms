@@ -5,7 +5,8 @@
 //    public int Solve(int[,] mat, int rows, int columns)
 //    {
 //        int[,] dp = new int[rows + 1, columns + 1];
-
+        
+//        // store the first row to start DP
 //        for (int i = 0; i < columns; i++)
 //        {
 //            dp[0, i] = mat[0, i];
