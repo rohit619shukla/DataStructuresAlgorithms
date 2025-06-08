@@ -60,7 +60,7 @@
 //        Array.Fill(dp, 1);
 
 //        // Key Change here 👇
-//        int maxLen = 1, maxIndex = 0;
+//        int maxLen = 1, maxIndex = -1;
 
 //        for (int i = 1; i < nums.Length; i++)
 //        {

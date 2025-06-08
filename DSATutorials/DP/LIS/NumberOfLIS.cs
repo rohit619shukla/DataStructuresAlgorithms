@@ -26,7 +26,8 @@
 //                    }
 //                    else if (dp[j] + 1 == dp[i])
 //                    {
-//                        // At index j we might have already got a similar sequence length hence add it
+//                        // Think of j as giving us sources from which we can extend to reach index i.
+//                        // We cannot do i++ becuase at dp[j] we might have a lis whose count maybe not 1 but bigger than one, and those will also get added to i
 
 //                        count[i] += count[j];
 //                    }

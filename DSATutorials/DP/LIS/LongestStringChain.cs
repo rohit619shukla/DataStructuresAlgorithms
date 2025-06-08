@@ -1,68 +1,65 @@
-﻿//public class Solution
+﻿
+//public class Solution
 //{
-
-//    // Time : O(N^2 * L) , space : O(N)
+//    // Time : O(nlogn) + O(n^2 *n), space :O(n)
 //    public int LongestStrChain(string[] words)
 //    {
-
-//        // 1. Sort the array based on length of words, it will make life easier
-//        Array.Sort(words, new SortClass());
-
-//        // 2. Apply LIS with modified check 
+//        // sort the array
+//        Array.Sort(words, new StringComparison());
 
 //        int[] dp = new int[words.Length];
 
 //        Array.Fill(dp, 1);
 
-//        int maxLen = 0;
-//        for (int curr = 1; curr < words.Length; curr++)
+//        int maxLen = 1;
+
+//        // Apply LIS
+//        for (int curr_idx = 1; curr_idx < words.Length; curr_idx++)
 //        {
-//            for (int prev = 0; prev < curr; prev++)
+//            for (int prev_idx = 0; prev_idx <= curr_idx; prev_idx++)
 //            {
-//                if (IsOkToProceed(words[prev], words[curr]))
+//                if (CanFormLis(prev_idx, curr_idx, words))
 //                {
-//                    dp[curr] = Math.Max(dp[prev] + 1, dp[curr]);
+//                    dp[curr_idx] = Math.Max(dp[curr_idx], dp[prev_idx] + 1);
 //                }
 //            }
 
-//            maxLen = Math.Max(maxLen, dp[curr]);
+//            maxLen = Math.Max(maxLen, dp[curr_idx]);
 //        }
 
 //        return maxLen;
 //    }
 
-//    private bool IsOkToProceed(string prev, string curr)
+//    private bool CanFormLis(int prev_idx, int curr_idx, string[] words)
 //    {
-//        // The difference between the string should be exactly 1
-//        // Since the array is already sorted we are good
-//        if (curr.Length - prev.Length != 1)
+//        string s1 = words[prev_idx];
+//        string s2 = words[curr_idx];
+
+//        if (s2.Length - s1.Length != 1)
 //        {
 //            return false;
 //        }
+//        int i = 0, j = 0;
 
-//        // keep 2 pointers and increment to check for comparisons
-//        int prev_ptr = 0, curr_ptr = 0;
-
-//        // Since we expect the length of prev to be either same or 1 less than curr
-//        while (prev_ptr < prev.Length && curr_ptr < curr.Length)
+//        while (i < s1.Length && j < s2.Length)
 //        {
-//            if (prev[prev_ptr] == curr[curr_ptr])
+//            if (s1[i] == s2[j])
 //            {
-//                prev_ptr++;
+//                i++;
 //            }
-//            curr_ptr++;
+//            j++;
+
 //        }
 
-//        // The prev pointer has reached end of string meaning we are good and go the answer
-//        return prev_ptr == prev.Length;
+//        return (i == s1.Length);
 //    }
 //}
 
-//internal class SortClass : IComparer<string>
+//internal class StringComparison : IComparer<string>
 //{
-//    public int Compare(string a, string b)
+//    public int Compare(string n1, string n2)
 //    {
-//        return a.Length - b.Length;
+//        return n1.Length - n2.Length;
 //    }
 //}
 
