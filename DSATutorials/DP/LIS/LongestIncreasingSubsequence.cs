@@ -91,39 +91,6 @@
 //    //        return dp[0, 0];
 //    //    }
 
-//    // Tabulation : space optimization
-//    // Time : O(n*m) , space : O(n) * 2
-//    //public int Solve(int[] arr)
-//    //{
-//    //    int n = arr.Length;
-
-//    //    int[] nextRow = new int[arr.Length + 1];
-//    //    int[] currRow = new int[arr.Length + 1];
-
-//    //    //Reverse of memoization
-//    //    for (int curr = n - 1; curr >= 0; curr--)
-//    //    {
-//    //        for (int prev = curr - 1; prev >= -1; prev--)
-//    //        {
-//    //            int notTake = nextRow[prev + 1];
-
-//    //            int take = 0;
-
-//    //            if (prev == -1 || arr[curr] > arr[prev])
-//    //            {
-//    //                take = 1 + nextRow[curr + 1];   // we are doing +1 at second index because at some point it will reach -1
-//    //            }
-
-//    //            currRow[prev + 1] = Math.Max(notTake, take);
-//    //        }
-
-//    //        nextRow = currRow;
-
-//    //    }
-
-//    //    // result would be stored in dp[0,-1[, but since we are doing co-ordinate shift 
-//    //    return nextRow[0];
-//    //}
 
 
 //    // Time : O(n^2) , space :O(n)

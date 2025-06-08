@@ -15,5 +15,10 @@
 
   Subsets : Take  and not take  + (+1 in dp for target)
 
+  MCM : general formula :
+      arr[i-1] * arr[k] * arr[j]
   
+
+  Recursion funda : Pick a value , keep digging deep till you hit base case and return the value, then try with new value and repeat the process.
+  try best value from all above values obtained
 */
