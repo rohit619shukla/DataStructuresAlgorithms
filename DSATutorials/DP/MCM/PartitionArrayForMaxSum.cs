@@ -1,65 +1,70 @@
 ﻿
-
-//class Solution
+//public class Solution
 //{
-//    // Time : O(N^2) , Space  : O(N) + O(N)
-//    //public int Solve(int[] arr, int index, int k, int[] dp)
-//    //{
-//    //    // base case
-//    //    if (index == arr.Length)
-//    //    {
-//    //        return 0;
-//    //    }
+//    public int MaxSumAfterPartitioning(int[] arr, int k)
+//    {
+//        //int[] dp = new int[arr.Length];
 
-//    //    if (dp[index] != -1)
-//    //    {
-//    //        return dp[index];
-//    //    }
+//        //Array.Fill(dp, -1);
 
-//    //    int maxNumber = int.MinValue;
-//    //    int maxSum = int.MinValue;
+//        //return Solve(arr, 0, k, dp);
 
-//    //    // we dont want to run over hence we are using Math.Min in for loop
-//    //    We use k +index because it that place where we want to stop after we have taken those many cuts
-//    //    for (int i = index; i < Math.Min(k + index, arr.Length); i++)
-//    //    {
-//    //        maxNumber = Math.Max(maxNumber, arr[i]);
-
-//    //        int currentSum = ((i - index + 1) * maxNumber) + Solve(arr, i + 1, k, dp);
-
-//    //        maxSum = Math.Max(maxSum, currentSum);
-//    //    }
-
-//    //    return dp[index] = maxSum;
-
-//    //}
+//        return Solve(arr, k);
+//    }
 
 
-//    // Time : O(N^2) , Space  : O(N) 
-//    public int Solve(int[] arr, int k)
+//    // Time : O(K^n) , space :O(n) + O(n)
+//    private int Solve(int[] arr, int startIndex, int k, int[] dp)
+//    {
+//        // base case
+//        if (startIndex >= arr.Length)
+//        {
+//            return 0;
+//        }
+
+//        if (dp[startIndex] != -1)
+//        {
+//            return dp[startIndex];
+//        }
+
+//        int currentMax = int.MinValue;
+//        int maxSum = int.MinValue;
+
+//        for (int j = startIndex; j < arr.Length && j - startIndex + 1 <= k; j++)
+//        {
+//            currentMax = Math.Max(currentMax, arr[j]);
+
+//            int multipliedValue = currentMax * (j - startIndex + 1);
+
+//            maxSum = Math.Max(maxSum, multipliedValue + Solve(arr, j + 1, k, dp));
+//        }
+
+//        return dp[startIndex] = maxSum;
+//    }
+
+//    // Time : O(n*k) , space : O(n)
+//    private int Solve(int[] arr, int k)
 //    {
 //        int[] dp = new int[arr.Length + 1];
 
-//        for (int index = arr.Length - 1; index >= 0; index--)
+//        for (int startIndex = arr.Length - 1; startIndex >= 0; startIndex--)
 //        {
-//            int maxNumber = int.MinValue;
+//            int currentMax = int.MinValue;
 //            int maxSum = int.MinValue;
 
-//            // we dont want to run over hence we are using Math.Min in for loop
-//            for (int i = index; i < Math.Min(k + index, arr.Length); i++)
+//            for (int j = startIndex; j < arr.Length && j - startIndex + 1 <= k; j++)
 //            {
-//                maxNumber = Math.Max(maxNumber, arr[i]);
+//                currentMax = Math.Max(currentMax, arr[j]);
 
-//                int currentSum = ((i - index + 1) * maxNumber) + dp[i + 1];
+//                int multipliedValue = currentMax * (j - startIndex + 1);
 
-//                maxSum = Math.Max(maxSum, currentSum);
+//                maxSum = Math.Max(maxSum, multipliedValue + dp[j + 1]);
 //            }
 
-//            dp[index] = maxSum;
+//            dp[startIndex] = maxSum;
 //        }
 
 //        return dp[0];
-
 //    }
 //}
 //class Program
@@ -70,13 +75,6 @@
 
 //        Solution s = new Solution();
 
-//        int k = 3;
-//        //int[] dp = new int[arr.Length + 1];
-
-//        //Array.Fill(dp, -1);
-
-//        //Console.WriteLine(s.Solve(arr, 0, k, dp));
-
-//        Console.WriteLine(s.Solve(arr, k));
+//        Console.WriteLine(s.MaxSumAfterPartitioning(arr, 3));
 //    }
 //}
