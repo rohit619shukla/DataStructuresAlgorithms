@@ -4,61 +4,61 @@
 //{
 //    // Recursion
 //    // Time : O(index ^ K), for every index(step) we can k jumps, space : O(index)
-//public int Solve(int[] heights, int index, int k)
-//{
-//    if (index == 0)
+//    public int Solve(int[] heights, int index, int k)
 //    {
-//        return 0;
-//    }
-
-//    int minJumpEnergy = int.MaxValue;
-
-//    // we will assume to start from 1 jump only
-//    for (int i = 1; i <= k; i++)
-//    {
-//        // Making sure it does not go lesser than 0
-//        if (index - i >= 0)
+//        if (index == 0)
 //        {
-//            int jumpCost = Solve(heights, index - i, k) + Math.Abs(heights[index] - heights[index - i]);
-
-//            minJumpEnergy = Math.Min(jumpCost, minJumpEnergy);
-
+//            return 0;
 //        }
+
+//        int minJumpEnergy = int.MaxValue;
+
+//        // we will assume to start from 1 jump only
+//        for (int i = 1; i <= k; i++)
+//        {
+//            // Making sure it does not go lesser than 0
+//            if (index - i >= 0)
+//            {
+//                int jumpCost = Solve(heights, index - i, k) + Math.Abs(heights[index] - heights[index - i]);
+
+//                minJumpEnergy = Math.Min(jumpCost, minJumpEnergy);
+
+//            }
+//        }
+
+//        return minJumpEnergy;
 //    }
 
-//    return minJumpEnergy;
-//    //}
+//        // Memoization
+//        // Time : O(index * k) for every step (index) we are jumping k steps , space : O(index)
+//        //public int Solve(int[] heights, int index, int k, int[] dp)
+//        //{
+//        //    if (index == 0)
+//        //    {
+//        //        return 0;
+//        //    }
 
-//    // Memoization
-//    // Time : O(index * k) for every step (index) we are jumping k steps , space : O(index)
-//    //public int Solve(int[] heights, int index, int k, int[] dp)
-//    //{
-//    //    if (index == 0)
-//    //    {
-//    //        return 0;
-//    //    }
+//        //    if (dp[index] != -1)
+//        //    {
+//        //        return dp[index];
+//        //    }
 
-//    //    if (dp[index] != -1)
-//    //    {
-//    //        return dp[index];
-//    //    }
+//        //    int minjumpCost = int.MaxValue;
 
-//    //    int minjumpCost = int.MaxValue;
+//        //    for (int i = 1; i <= k; i++)
+//        //    {
+//        //        if (index - i >= 0)
+//        //        {
+//        //            int currentMinJumpCost = Solve(heights, index - i, k, dp) + Math.Abs(heights[index] - heights[index - i]);
 
-//    //    for (int i = 1; i <= k; i++)
-//    //    {
-//    //        if (index - i >= 0)
-//    //        {
-//    //            int currentMinJumpCost = Solve(heights, index - i, k, dp) + Math.Abs(heights[index] - heights[index - i]);
+//        //            minjumpCost = Math.Min(minjumpCost, currentMinJumpCost);
+//        //        }
+//        //    }
+//        //    return dp[index] = minjumpCost;
+//        //}
 
-//    //            minjumpCost = Math.Min(minjumpCost, currentMinJumpCost);
-//    //        }
-//    //    }
-//    //    return dp[index] = minjumpCost;
-//    //}
-
-//    // Tabulation
-//    // Time : O(index * k) for every step (index) we are jumping k steps , space : O(index)
+//        // Tabulation
+//        // Time : O(index * k) for every step (index) we are jumping k steps , space : O(index)
 //    public int Solve(int[] heights, int index, int k, int[] dp)
 //    {
 //        dp[0] = 0;

@@ -65,7 +65,6 @@
 //    // Time : O(m*n) , space : O(m*n)
 //    //private int Solve(IList<IList<int>> triangle, int rows, int columns, int[,] dp)
 //    //{
-//    //    // unlike other tabulation case of going from top to bottom, this will be bottom to up
 
 //    //    // store last row completely in dp array
 
