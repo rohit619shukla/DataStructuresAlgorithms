@@ -58,7 +58,7 @@
 //    //{
 //    //    int[] dp = new int[arr.Length + 1];
 
-//    //    dp[0] = 0;
+//    //    dp[0] = arr[0];
 
 //    //    for (int i = 1; i < arr.Length; i++)
 //    //    {
