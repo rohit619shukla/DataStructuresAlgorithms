@@ -53,22 +53,24 @@
 
 //        for (int i = 0; i <= n; i++)
 //        {
-//            for (int j = 0; j <= n; j++)
-//            {
-//                dp[i, j] = (int)1e9;
-//            }
+//            dp[i, 0] = 0;
 //        }
 
-//        dp[0, 0] = 0;
+//        for (int i = 1; i <= n; i++)
+//        {
+//            dp[0, i] = (int)1e9;
+//        }
 
+//        // Fill DP table
 //        for (int index = 1; index <= n; index++)
 //        {
-//            for (int wallsRemain = 0; wallsRemain <= n; wallsRemain++)
+//            for (int wallsRemain = 1; wallsRemain <= n; wallsRemain++)
 //            {
+//                // Don't pick the current painter
 //                int notPick = dp[index - 1, wallsRemain];
 
-//                // Will keep index-1 instead of index as in memo to avpid oob
-//                int pick = cost[index - 1] + dp[index - 1, Math.Max(0, wallsRemain - 1 - time[index - 1])];
+//                // Pick the current painter (index - 1 due to 1-based shift)
+//                int pick = cost[index] + dp[index - 1, Math.Max(0, wallsRemain - 1 - time[index - 1])];
 
 //                dp[index, wallsRemain] = Math.Min(pick, notPick);
 //            }
@@ -76,7 +78,6 @@
 
 //        return dp[n, n];
 //    }
-
 
 //}
 
