@@ -1,76 +1,78 @@
-﻿
-//public class Solution
+﻿//public class Solution
 //{
 //    // Time : O(nlogn) + O(n^2 *n), space :O(n)
 //    public int LongestStrChain(string[] words)
 //    {
-//        // sort the array
-//        Array.Sort(words, new StringComparison());
+//        // Sort the word array so that we can get a better answer. We will sort on legnth of each words
+//        // No where mentioned not to sort
+
+//        Array.Sort(words, new Comparison());
 
 //        int[] dp = new int[words.Length];
 
+//        // Every word is LIS in itself
 //        Array.Fill(dp, 1);
 
-//        int maxLen = 1;
+//        int max = int.MinValue;
 
-//        // Apply LIS
-//        for (int curr_idx = 1; curr_idx < words.Length; curr_idx++)
+//        // Perform modified LIS but core logic remains same
+//        for (int curr = 1; curr < words.Length; curr++)
 //        {
-//            for (int prev_idx = 0; prev_idx <= curr_idx; prev_idx++)
+//            for (int prev = 0; prev < curr; prev++)
 //            {
-//                if (CanFormLis(prev_idx, curr_idx, words))
+//                if (IsSubsequence(words[prev], words[curr]))
 //                {
-//                    dp[curr_idx] = Math.Max(dp[curr_idx], dp[prev_idx] + 1);
+//                    dp[curr] = Math.Max(dp[curr], dp[prev] + 1);
 //                }
 //            }
-
-//            maxLen = Math.Max(maxLen, dp[curr_idx]);
+//            max = Math.Max(max, dp[curr]);
 //        }
-
-//        return maxLen;
+//        return max;
 //    }
 
-//    private bool CanFormLis(int prev_idx, int curr_idx, string[] words)
+//    private bool IsSubsequence(string s1, string s2)
 //    {
-//        string s1 = words[prev_idx];
-//        string s2 = words[curr_idx];
-
+//        // The difference has to be equal to 1, as we need to insert exactly 1 word only
 //        if (s2.Length - s1.Length != 1)
 //        {
 //            return false;
 //        }
-//        int i = 0, j = 0;
 
-//        while (i < s1.Length && j < s2.Length)
+//        int x = 0;
+//        int y = 0;
+
+//        while (x < s1.Length && y < s2.Length)
 //        {
-//            if (s1[i] == s2[j])
+//            if (s1[x] == s2[y])
 //            {
-//                i++;
+//                x++;
 //            }
-//            j++;
-
+//            // y will anyway keep on increase
+//            y++;
 //        }
 
-//        return (i == s1.Length);
+//        // as we have gone over x we know that subsequence is there
+//        return x == s1.Length;
 //    }
 //}
 
-//internal class StringComparison : IComparer<string>
+
+//internal class Comparison : IComparer<string>
 //{
-//    public int Compare(string n1, string n2)
+//    public int Compare(string s1, string s2)
 //    {
-//        return n1.Length - n2.Length;
+//        return s1.Length.CompareTo(s2.Length);
 //    }
 //}
-
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string[] words = { "a" };
+//        string[] words = { "xbc", "pcxbcf", "xb", "cxbc", "pcxbc" };
 
 //        Solution s = new Solution();
 
 //        Console.WriteLine(s.LongestStrChain(words));
+
 //    }
 //}

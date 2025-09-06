@@ -12,9 +12,10 @@
 //            {
 //                if (i == 0 || j == 0)
 //                {
-//                    dp[i, j] = 0;
+//                    continue;
 //                }
-//                else if (str1[i - 1] == str2[j - 1])
+
+//                if (str1[i - 1] == str2[j - 1])
 //                {
 //                    dp[i, j] = 1 + dp[i - 1, j - 1];
 //                }
@@ -25,10 +26,10 @@
 //            }
 //        }
 
-//        int scs_length = dp[str1.Length, str2.Length];
+//        int lcs_length = dp[str1.Length, str2.Length];
 //        int x = str1.Length, y = str2.Length;
 //        // This is the whole crux. The SCS of two string is given by followinf formula
-//        char[] charArray = new char[str1.Length + str2.Length - scs_length];
+//        char[] charArray = new char[str1.Length + str2.Length - lcs_length];
 //        int count = charArray.Length;
 
 //        while (x > 0 && y > 0)

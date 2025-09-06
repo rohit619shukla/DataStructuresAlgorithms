@@ -9,7 +9,7 @@
 
 //    //    // base case
 
-//    //    // If we are running over the bount starting from 0 to n-1
+//    //    // If we are running over the bound starting from 0 to n-1
 //    //    if (currIndex == arr.Length)
 //    //    {
 //    //        return 0;
@@ -113,7 +113,7 @@
 //                    temp[i] = Math.Max(temp[i], temp[j] + 1);
 //                }
 //            }
-//                    maxSeq = Math.Max(maxSeq, temp[i]);
+//            maxSeq = Math.Max(maxSeq, temp[i]);
 //        }
 
 //        return maxSeq;
