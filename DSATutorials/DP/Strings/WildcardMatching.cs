@@ -23,6 +23,7 @@
 //    //    {
 //    //        return true;
 //    //    }
+//    //    }
 
 //    //    // 2. Pattern got exhausted but we still have few chars left in Source. Ideally nothing in pattern is left to compare
 //    //    if (idx1 >= 0 && idx2 < 0)
@@ -183,7 +184,6 @@
 //        {
 //            if (pattern[i - 1] != '*')
 //            {
-//                prev[i] = false;
 //                break;
 //            }
 //            else

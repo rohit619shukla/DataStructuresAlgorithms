@@ -5,7 +5,6 @@
 //{
 //    public int Solve(string s1, string s2)
 //    {
-//        //int[,] dp = new int[s1.Length + 1, s2.Length + 1];
 
 //        int[] prev = new int[s2.Length + 1];
 //        for (int i = 0; i <= s1.Length; i++)
