@@ -28,7 +28,7 @@
 //    //    if (s1[i] == s2[j])
 //    //    {
 //    //        //case1:
-// either both of them matches or else we iognore the char from first string and try it out another char in second string
+//              either both of them matches or else we ignore the char from first string and try it out another char in second string
 //    //        return dp[i, j] = Solve(s1, s2, i - 1, j - 1, dp) + Solve(s1, s2, i - 1, j, dp);
 //    //    }
 //    //    else

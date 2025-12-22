@@ -31,17 +31,14 @@
 //        int x = s1.Length;
 //        int y = s2.Length;
 
-//// We wont be going till 0 coz at 0 the string is xonsidered to be empty
+//        // We wont be going till 0 coz at 0 the string is considered to be empty
 //        while (x > 0 && y > 0)
 //        {
 //            if (s1[x - 1] == s2[y - 1])
 //            {
-//                charArray[size - 1] = s1[x - 1];
+//                charArray[--size] = s1[x - 1];
 //                x--;
 //                y--;
-
-
-//                size--;
 //            }
 //            else if (dp[x - 1, y] > dp[x, y - 1])
 //            {
@@ -67,4 +64,4 @@
 //        Helper h = new Helper();
 //        h.Solve(s1, s2);
 //    }
-//}	
+//}

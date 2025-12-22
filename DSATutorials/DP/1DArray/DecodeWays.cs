@@ -1,84 +1,55 @@
-﻿//public class Solution
+﻿
+
+//using System;
+//using System.Reflection;
+
+//class Soltuion
 //{
 //    public int NumDecodings(string s)
 //    {
 //        //int[] dp = new int[s.Length + 1];
+
 //        //Array.Fill(dp, -1);
 
-//        ////return Solve(s, 0);
 //        //return Solve(s, 0, dp);
 
 //        return Solve(s);
 //    }
 
-//    //Time : O(2^n) , space :O(n)
-//    private int Solve(string s, int i)
+//    //Time : O(n) , space :O(n) +O(n)
+//    private int Solve(string str, int index, int[] dp)
 //    {
 //        // base case
-//        // We have reached end of string while performing partitions, which means we got the answer
-//        if (i >= s.Length)
+//        if (index >= str.Length)
 //        {
+//            // we have reached the end of the string and found a way to decode
 //            return 1;
 //        }
 
-//        // This is not a valid case as we cannot have any mapping
-//        if (s[i] == '0')
+//        if (str[index] == '0')
 //        {
+//            // we cannot decode a string starting with 0
 //            return 0;
 //        }
 
-//        // Note : The mapping of char are from 1 - 26
-
-//        // This means we will take 1 char and move
-//        int oneJump = Solve(s, i + 1);
-
-
-//        // This means, we will take 2 char and move i. We cannot beyond 2 chars as only between 1 - 26
-//        int twoJump = 0;
-
-//        // This is critical, s[i] =='1' means we dont care and should be ok.
-//        // S[i] ='2' && s[i+1] <='6' , means we should not extend beyond 26 actual english chars while taking 2 char
-//        if (i + 1 < s.Length)
+//        if (dp[index] != -1)
 //        {
-//            if (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))
+//            return dp[index];
+//        }
+//        int one_Char = Solve(str, index + 1, dp);
+
+//        int two_Char = 0;
+
+//        // check if we can take two characters
+//        if (index + 1 < str.Length)
+//        {
+//            if (str[index] == '1' || (str[index] == '2' && str[index + 1] <= '6'))
 //            {
-//                twoJump = Solve(s, i + 2);
+//                two_Char = Solve(str, index + 2, dp);
 //            }
 //        }
 
-//        return oneJump + twoJump;
-//    }
-
-//    private int Solve(string s, int i, int[] dp)
-//    {
-//        if (i >= s.Length)
-//        {
-//            return 1;
-//        }
-
-//        if (dp[i] != -1)
-//        {
-//            return dp[i];
-//        }
-
-//        if (s[i] == '0')
-//        {
-//            return 0;
-//        }
-
-//        int oneJump = Solve(s, i + 1, dp);
-
-//        int twoJump = 0;
-
-//        if (i + 1 < s.Length)
-//        {
-//            if (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))
-//            {
-//                twoJump = Solve(s, i + 2, dp);
-//            }
-//        }
-
-//        return dp[i] = oneJump + twoJump;
+//        return dp[index] = one_Char + two_Char;
 //    }
 
 //    // Time : O(n) , space :O(n)
@@ -87,45 +58,38 @@
 //        int[] dp = new int[s.Length + 1];
 
 //        dp[s.Length] = 1;
+
 //        for (int i = s.Length - 1; i >= 0; i--)
 //        {
-
 //            if (s[i] == '0')
 //            {
-//                dp[i] = 0;
+//                continue;
 //            }
-//            else
+
+//            int one_Char = dp[i + 1];
+
+//            int two_Char = 0;
+
+//            // check if we can take two characters
+//            if (i + 1 < s.Length)
 //            {
-//                int oneJump = 0;
-//                int twoJump = 0;
-//                oneJump = dp[i + 1];
-
-//                twoJump = 0;
-
-//                if (i + 1 < s.Length)
+//                if (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))
 //                {
-//                    if (s[i] == '1' || (s[i] == '2' && s[i + 1] <= '6'))
-//                    {
-//                        twoJump = dp[i + 2];
-//                    }
+//                    two_Char = dp[i + 2];
 //                }
-
-//                dp[i] = oneJump + twoJump;
 //            }
+//            dp[i] = one_Char + two_Char;
 //        }
 
 //        return dp[0];
 //    }
 //}
-
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string str = "06";
+//        Soltuion s = new Soltuion();
 
-//        Solution s = new Solution();
-
-//        Console.WriteLine(s.NumDecodings(str));
+//        Console.WriteLine(s.NumDecodings("06"));
 //    }
 //}
