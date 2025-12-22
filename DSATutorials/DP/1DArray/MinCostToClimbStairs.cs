@@ -54,22 +54,24 @@
 //    {
 //        int[] dp = new int[cost.Length + 1];
 
-//        // base case : As per leetcode requirement
 //        if (cost.Length == 2)
 //        {
-//            // Try with recursion tree and you will arrive here.
 //            return Math.Min(cost[0], cost[1]);
 //        }
 
+//        // The questions states that you can start from either step 0 or step 1. So if you start from step 0 or step 1, the cost will be the cost of that step.
 //        dp[0] = cost[0];
 //        dp[1] = cost[1];
 
-//        for (int index = 2; index < cost.Length; index++)
+//        for (int i = 2; i < cost.Length; i++)
 //        {
-//            dp[index] = cost[index] + Math.Min(dp[index - 1], dp[index - 2]);
+//            int one_Jump = cost[i] + dp[i - 1];
+//            int two_Jump = cost[i] + dp[i - 2];
+
+//            dp[i] = Math.Min(one_Jump, two_Jump);
 //        }
 
-//        // We are required top of the floor : ek kadam zyada
+//        // As i need to return the cost of top of the floor which comes after the last step, i will return the minimum cost of reaching either of the last two steps.
 //        return Math.Min(dp[cost.Length - 1], dp[cost.Length - 2]);
 //    }
 //}

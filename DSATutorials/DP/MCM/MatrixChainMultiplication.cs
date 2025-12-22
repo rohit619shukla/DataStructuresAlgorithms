@@ -21,7 +21,7 @@
 //    //    {
 //    //        int cost = (arr[i - 1] * arr[k] * arr[j]) +
 //    //            Solve(arr, i, k) +
-//    //            Solve(arr, k + 1, j);'
+//    //            Solve(arr, k + 1, j);
 
 //    //        minCost = Math.Min(minCost, cost);
 //    //    }
@@ -72,7 +72,7 @@
 //            for (int j = i + 1; j < arr.Length; j++)
 //            {
 //                int minCost = int.MaxValue;
-//                for (int k = i; k < j; k++)  // the reason why wer are not going till j-1 is because this time i is moving from N-1 to 1 and k will also safely move move with it
+//                for (int k = i; k <= j - 1; k++)  // the reason why wer are not going till j-1 is because this time i is moving from N-1 to 1 and k will also safely move move with it
 //                {
 //                    int cost = arr[i - 1] * arr[k] * arr[j] +
 //                        dp[i, k] +
