@@ -15,3 +15,21 @@ DP Patterns :
    - Every element is a LIS in itself. (Golden Rule) 
    - Here we have a single index and a variable which keeps track of the previous index.
    - We have 2 choices either to take or not to take the current index based on certain conditions.
+
+
+4. Strings :
+   - This is mostly around LCS based questions with quiet similar approach of i-1, j-1
+
+
+5. Subsets :
+	- This follows the take or not take approach.
+	- Most of the times we have a target achieve. In case we dont have a target explicitly given then we need to dig in the statement to find it.It will definitely be there.
+
+
+6. 2D :
+	- We deal with matrix based problems.
+	- Mostly down and right directions
+
+
+7. 1D :
+	- 1 jump or 2 jump 

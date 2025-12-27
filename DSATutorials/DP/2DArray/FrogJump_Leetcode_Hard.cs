@@ -32,6 +32,7 @@
 //    //    // in order to simulate k jumps we will write it in loop
 //    //    for (int nextJump = previousJump - 1; nextJump <= previousJump + 1; nextJump++)
 //    //    {
+//              // To make sure this goe always in forward direction
 //    //        if (nextJump > 0)
 //    //        {
 //    //            // We need to get the next stone that we will jump on
@@ -95,11 +96,11 @@
 //        int n = stones.Length;
 
 //        // dp[i, j] = true means: from stone i with previousJump j, frog can reach end
-//        bool[,] dp = new bool[n, n]; // second dim indices: 0 .. n-1
+//        bool[,] dp = new bool[n+1, n+1]; // second dim indices: 0 .. n-1
 
 //        // Base case: frog is at last stone
 //        // valid previousJump values are 1..n-1
-//        for (int j = 0; j < n; j++)
+//        for (int j = 0; j <= n; j++)
 //        {
 //            dp[n - 1, j] = true;
 //        }
@@ -108,7 +109,7 @@
 //        for (int i = n - 2; i >= 0; i--)
 //        {
 //            // previousJump valid range: 0 .. n-1
-//            for (int previousJump = 0; previousJump < n; previousJump++)
+//            for (int previousJump = n-1; previousJump >=0; previousJump--)
 //            {
 //                bool result = false;
 
@@ -116,7 +117,7 @@
 //                for (int nextJump = previousJump - 1; nextJump <= previousJump + 1; nextJump++)
 //                {
 //                    // nextJump must be a valid jump (1..n-1) before using it as an index
-//                    if (nextJump > 0 && nextJump < stones.Length)
+//                    if (nextJump > 0 )
 //                    {
 //                        int nextStone = stones[i] + nextJump;
 

@@ -6,12 +6,12 @@
 //    // Time : O(2^n) , space : O(m-1) + O(n-1) based on path length
 //    //public int UniquePaths(int currentRow, int currentColumn)
 //    //{
-       //   we went below the bounds
-//    //    if (currentRow == -1 || currentColumn == -1)
-//    //    {
-//    //        return 0;
-//    //    }
-            // have reached dest cell
+//    //we went below the bounds
+//       //    if (currentRow == -1 || currentColumn == -1)
+//       //    {
+//       //        return 0;
+//       //    }
+//       //have reached dest cell
 //    //    if (currentRow == 0 && currentColumn == 0)
 //    //    {
 //    //        return 1;
@@ -27,15 +27,15 @@
 
 //    public int UniquePaths(int m, int n)
 //    {
-//        //int[,] dp = new int[m + 1, n + 1];
+//        int[,] dp = new int[m + 1, n + 1];
 
-//        //for (int i = 0; i < dp.GetLength(0); i++)
-//        //{
-//        //    for (int j = 0; j < dp.GetLength(1); j++)
-//        //    {
-//        //        dp[i, j] = -1;
-//        //    }
-//        //}
+//        for (int i = 0; i < dp.GetLength(0); i++)
+//        {
+//            for (int j = 0; j < dp.GetLength(1); j++)
+//            {
+//                dp[i, j] = -1;
+//            }
+//        }
 
 //        return Solve(m, n);
 //    }
