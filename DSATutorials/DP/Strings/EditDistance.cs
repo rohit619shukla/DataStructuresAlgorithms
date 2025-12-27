@@ -20,6 +20,7 @@
 //    // Time : O(3^(m+n)) , space : O(n+m)
 //    //private int Solve(string word1, string word2, int idx1, int idx2)
 //    //{
+           // Note we dont need to check for id1 or id2 <0 as any values < 0 i.e -1 +1 = 0
 //    //    // base case
 //    //    // 1. If the word1 is exhauseted, we may still have some char  left in word2
 //    //    if (idx1 < 0)
