@@ -1,52 +1,52 @@
-﻿//using System.Text;
+﻿//using System.Drawing;
+//using System.Runtime.InteropServices;
+//using System.Text;
 
 //public class Solution
 //{
+
+//   // Time : O(2^2n) , space : O(2n)
 //    public IList<string> GenerateParenthesis(int n)
 //    {
 //        IList<string> result = new List<string>();
 
-//        StringBuilder sb = new StringBuilder();
-
-//        Recursion(n, 0, 0, sb, result); // Fix: Added open & close counters
+//        Solve(n, result, new StringBuilder(), 0, 0);
 
 //        return result;
 //    }
 
-//    private void Recursion(int n, int open, int close, StringBuilder sb, IList<string> result)
+//    private void Solve(int n, IList<string> result, StringBuilder temp, int open, int close)
 //    {
 //        // base case
-//        // As we will have 2*n braces in any given sequence
-//        if (sb.Length == 2 * n)
+//        if (temp.Length == 2 * n)
 //        {
-//            result.Add(sb.ToString());
+//            result.Add(temp.ToString());
 //            return;
 //        }
 
-//        // This will make sure we dont have more than n open braces
-//        // Ex : n= 2 then 2*n = 4 braces, for them to be good it will be 2 open and 2 closed
+//        // We will add till the point we are lesser than accepted value of n
 //        if (open < n)
 //        {
-//            sb.Append('(');
+//            temp.Append('(');
 
-//            // Recurse to next
-//            Recursion(n, open + 1, close, sb, result);
+//            Solve(n, result, temp, open + 1, close);
 
-//            // Backtrack
-//            sb.Length--;
+//            temp.Remove(temp.Length - 1, 1);
 //        }
 
-//        // This will make sure we dont have more close braces than open
+//        // Check for other possibility
+//        // We will now try to add closing braces till it is not greater than opening one
 //        if (close < open)
 //        {
-//            sb.Append(')');
+//            temp.Append(')');
 
-//            Recursion(n, open, close + 1, sb, result);
+//            Solve(n, result, temp, open, close + 1);
 
-//            sb.Length--;
+//            temp.Remove(temp.Length - 1, 1);
 //        }
 //    }
 //}
+
 
 //class Program
 //{
@@ -58,11 +58,9 @@
 
 //        var result = s.GenerateParenthesis(n);
 
-//        foreach (string str in result)
+//        foreach (var item in result)
 //        {
-//            Console.WriteLine(str);
+//            Console.WriteLine(item);
 //        }
 //    }
 //}
-
-//// Time : O(2^2n) , space : O(2n)

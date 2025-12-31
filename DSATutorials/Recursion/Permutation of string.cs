@@ -1,63 +1,76 @@
 ﻿
+
+//using System;
 //using System.Collections.Generic;
 
 //class Solution
 //{
-//    public IList<IList<string>> Solve(string str)
+//    // Time: O(n * n!), space : O(n)
+//    public IList<string> Permute(string str)
 //    {
-//        IList<IList<string>> result = new List<IList<string>>();
+//        IList<string> result = new List<string>();
 
-//        char[] currString = str.ToCharArray();
-
-//        Recursion(result, currString, 0, str.Length - 1);
+//        Solve(str, 0, result);
 
 //        return result;
+
 //    }
 
-//    private void Recursion(IList<IList<string>> result, char[] currString, int lb, int ub)
+//    private void Solve(string str, int index, IList<string> result)
 //    {
-//        if (lb == ub)
+//        // base case
+//        if (index == str.Length)
 //        {
-//            result.Add(new List<string> { new string(currString) });
+//            result.Add(new string(str));
 //            return;
 //        }
 
-//        for (int i = lb; i <= ub; i++)
+//        for (int i = index; i < str.Length; i++)
 //        {
-//            Swap(currString, lb, i);
+//            str = Swap(str, index, i);
 
-//            Recursion(result, currString, lb + 1, ub);
+//            Solve(str, index + 1, result);
 
-//            Swap(currString, lb, i);
+//            str = Swap(str, index, i);
 //        }
 //    }
 
-//    private void Swap(char[] currString, int ub, int lb)
+//    private string Swap(string str, int i, int j)
 //    {
-//        char temp = currString[lb];
-//        currString[lb] = currString[ub];
-//        currString[ub] = temp;
+//        char[] charArray = str.ToCharArray();
+
+//        while (i < j)
+//        {
+//            char temp = charArray[i];
+//            charArray[i] = charArray[j];
+//            charArray[j] = temp;
+
+//            i++;
+//            j--;
+//        }
+
+//        return new string(charArray);
 //    }
 //}
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Solution s = new Solution();
-
 //        string str = "ABC";
 
-//        var result = s.Solve(str);
+//        Solution s = new Solution();
 
-//        foreach (var item in result)
+//        var result = s.Permute(str);
+
+//        for (int i = 0; i < result.Count; i++)
 //        {
-//            for (int i = 0; i < item.Count; i++)
+//            var temp = result[i];
+
+//            foreach (var item in temp)
 //            {
-//                Console.Write($"{item[i]}" + " ");
+//                Console.Write($"{item}" + " ");
 //            }
 //            Console.WriteLine();
 //        }
 //    }
 //}
-
-//// Time: O(n * n!), space : O(n)
