@@ -66,7 +66,7 @@
 //    {
 //        foreach (var item in adjList[currentNode])
 //        {
-//            if (color[item] == proposedColor)
+//            if (color[item] != 0 && color[item] == proposedColor)
 //            {
 //                return false;
 //            }
@@ -82,7 +82,8 @@
 //            new int[] { 0,1},
 //                new int[] { 0,2},
 //              new int[] { 1,2},
-//                new int[] { 1,3}
+//                new int[] { 1,3},
+//                new int[]{0,3}
 //        };
 
 //        int n = 4, m = 3;

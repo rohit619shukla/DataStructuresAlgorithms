@@ -26,6 +26,11 @@
 //        int rows, int cols, StringBuilder result)
 //    {
 
+//        if (!IsOkToVisit(arr, visited, currRowNode, currColNode, rows, cols))
+//        {
+//            return;
+//        }
+
 //        // base case
 //        if (currRowNode == rows - 1 && currColNode == cols - 1)
 //        {
@@ -34,30 +39,29 @@
 //            return;
 //        }
 
+//        // Mark the given node as visited
+//        visited[currRowNode, currColNode] = 1;
+
 //        // Explore the 4 directions
 //        for (int i = 0; i < 4; i++)
 //        {
 //            int newRow = currRowNode + deltaRows[i];
 //            int newCol = currColNode + deltaCols[i];
 
-//            if (IsOkToVisit(arr, visited, newRow, newCol, rows, cols))
-//            {
-//                // Mark the given node as visited
-//                visited[currRowNode, currColNode] = 1;
 
-//                // Move to next call for new nodes and add to string
-//                Maze(arr, visited,
-//                     deltaRows, deltaCols, directions,
-//                     newRow, newCol,
-//                     rows, cols, result.Append(directions[i]));
+//            // Move to next call for new nodes and add to string
+//            Maze(arr, visited,
+//                 deltaRows, deltaCols, directions,
+//                 newRow, newCol,
+//                 rows, cols, result.Append(directions[i]));
 
-//                //backtracking
-//                visited[currRowNode, currColNode] = 0;
 
-//                result.Length--;
-//            }
+//            result.Length--;
+
 //        }
 
+//        //backtracking
+//        visited[currRowNode, currColNode] = 0;
 
 //    }
 
