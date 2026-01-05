@@ -1,0 +1,10 @@
+Recursion:
+
+1) There are 2 kinds of patterns we have seen so far :
+   a) Permutations
+   b) Subsets
+
+
+2) For permutation we usually have a for loop
+
+3) For subsets we usually have 2 choices at each step (include or exclude)
