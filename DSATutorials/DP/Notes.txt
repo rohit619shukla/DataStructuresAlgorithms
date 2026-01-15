@@ -33,3 +33,9 @@ DP Patterns :
 
 7. 1D :
 	- 1 jump or 2 jump 
+
+
+
+	Very Important Tips :
+	1. Whenever you see a problem where pop, burst, remove is involved in that you will need to think of keeping the element till last moment to get maximum benefit out of it.
+	  ex : Burst Balloons, Remove boxes etc.

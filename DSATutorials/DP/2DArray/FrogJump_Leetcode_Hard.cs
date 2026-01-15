@@ -109,6 +109,7 @@
 //        for (int i = n - 2; i >= 0; i--)
 //        {
 //            // previousJump valid range: 0 .. n-1
+              // Hence prev will always be previous to current
 //            for (int previousJump = n-1; previousJump >=0; previousJump--)
 //            {
 //                bool result = false;
