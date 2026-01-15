@@ -61,11 +61,14 @@
 //            return 1;
 //        }
 
-//        // 2. If the target or idx goes over or under bound
+
+//       // Note that different sequences are counted as different combinations.
+        // Here we
+//                // 2. If the target or idx goes over or under bound
 //        if (idx >= nums.Length || target < 0)
-//        {
-//            return 0;
-//        }
+//            {
+//                return 0;
+//            }
 
 //        if (dp[idx, target] != -1)
 //        {
@@ -137,10 +140,11 @@
 //{
 //    public static void Main()
 //    {
-//        int[] nums = { 1, 2, 3 };
-//        int target = 4;
+//        int[] nums = { 1, 2, 2, 3 };
+//        int target = 3;
 
 //        Solution s = new Solution();
 //        Console.WriteLine(s.CombinationSum4(nums, target));
 //    }
 //}
+

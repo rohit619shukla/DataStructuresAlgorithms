@@ -68,7 +68,7 @@
 //        // N-1 to 1
 //        for (int i = arr.Length - 1; i >= 1; i--)
 //        {
-//            // i+1 to N-1 (bascially j will always be right to i)
+//            // i+1 to N-1 (bascially j will always be right to i) Rule : When we set j to be on right of i , both of them will move in opposite direction
 //            for (int j = i + 1; j < arr.Length; j++)
 //            {
 //                int minCost = int.MaxValue;

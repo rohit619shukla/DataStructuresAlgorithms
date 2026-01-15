@@ -44,6 +44,7 @@
 //        }
 //        else
 //        {
+              // Unlike other problem where in case we are asked min we return 0, here we return a big value as it is asked in question to return -1
 //            return 1e9;
 //        }
 //    }
