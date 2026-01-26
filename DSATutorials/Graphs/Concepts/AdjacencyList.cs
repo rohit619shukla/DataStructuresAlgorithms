@@ -1,59 +1,57 @@
-﻿//using System;
-//using System.Collections.Generic;
-
+﻿
 //class Graph
 //{
-//    public int v;
-//    public LinkedList<int>[] adj;
+//    private int _vertices;
+//    private List<int>[] _adjMatrix;
 
 //    public Graph(int vertices)
 //    {
-//        v = vertices;
-//        adj = new LinkedList<int>[v];
+//        _vertices = vertices;
+//        _adjMatrix = new List<int>[_vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            adj[i] = new LinkedList<int>();
+//            _adjMatrix[i] = new List<int>();
 //        }
 //    }
 
-//    public void InsertEdge(int source, int destination)
+//    public void AddEdge(int source, int destination)
 //    {
-//        this.adj[source].AddLast(destination);
-//        this.adj[destination].AddLast(source);
+//        _adjMatrix[source].Add(destination);
 //    }
 
 //    public void PrintGraph()
 //    {
-//        for (int i = 0; i < this.v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            Console.Write($"{i}" + " -> ");
-
-//            foreach (var item in this.adj[i])
+//            Console.Write($"{i} => ");
+//            foreach (var neightBors in _adjMatrix[i])
 //            {
-//                Console.Write($"{item}" + " -> ");
+//                Console.Write($"{neightBors} , ");
 //            }
-
 //            Console.WriteLine();
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
 //        Graph g = new Graph(5);
 
-//        g.InsertEdge(0, 1);
-//        g.InsertEdge(0, 4);
-//        g.InsertEdge(1, 2);
-//        g.InsertEdge(1, 3);
-//        g.InsertEdge(1, 4);
-//        g.InsertEdge(2, 3);
-//        g.InsertEdge(3, 4);
+//        g.AddEdge(0, 1);
+//        g.AddEdge(0, 4);
+//        g.AddEdge(1, 2);
+//        g.AddEdge(1, 3);
+//        g.AddEdge(1, 4);
+//        g.AddEdge(2, 3);
+//        g.AddEdge(3, 4);
 
 //        g.PrintGraph();
+
 //    }
+
 //}
 
-//// Complexity : O(V+2E) : Space
+//// Complexity : O(V+E) : Space

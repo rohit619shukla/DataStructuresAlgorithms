@@ -1,113 +1,99 @@
-﻿//using System;
+﻿
 
-//class Edge : IComparable<Edge>
+//class Solution
 //{
-//    public int s;
-//    public int d;
-//    public int w;
-
-//    public int CompareTo(Edge ed)
+//    public void Kruskals(int v, int[][] edges)
 //    {
-//        return w - ed.w;
-//    }
-//}
-//class Graph
-//{
-//    public Edge[] adj;
-//    public int e;
-//    public int v;
+//        // 1. Sort the edges based on weight
+//        Array.Sort(edges, (e1, e2) => e1[2].CompareTo(e2[2]));
 
-//    public Graph(int vertices, int edges)
-//    {
-//        v = vertices;
-//        e = edges;
+//        // 2. keep a sum for mimum weight edges we will include
+//        int cost = 0;
 
-//        adj = new Edge[e];
+//        int count = 0;
 
-//        for (int i = 0; i < e; i++)
-//        {
-//            adj[i] = new Edge();
-//        }
-//    }
-
-//    public void AddEdge(int source, int destination, int weight, ref int count)
-//    {
-//        adj[count].s = source;
-//        adj[count].d = destination;
-//        adj[count].w = weight;
-
-//        count++;
-//    }
-
-//    public void KruskalAlgorithm()
-//    {
+//        // 3. keep track of parent and size for DSU operation
 //        int[] parent = new int[v];
-//        Edge[] output = new Edge[v - 1];
+//        int[] size = new int[v];
 
-//        for (int x = 0; x < v; x++)
+//        for (int i = 0; i < v; i++)
 //        {
-//            parent[x] = x;
+//            parent[i] = i;
+//            size[i] = 1;
 //        }
 
-//        int edgeCount = 0;
-//        int i = 0;
-
-//        Array.Sort(adj);
-
-//        while (edgeCount != v - 1)
+//        // Start algorithm : As per the algo we will only consider v-1 edges
+//        for (int i = 0; i < edges.Length; i++)
 //        {
-//            Edge ed = adj[i];
+//            int[] currentEdge = edges[i];
 
-//            int source = ed.s;
-//            int destination = ed.d;
-
-//            int sourceParent = FindParent(source, parent);
-//            int destinationParent = FindParent(destination, parent);
-
-//            if (sourceParent != destinationParent)
+//            // Make sure we dont have cycle
+//            if (FindParent(currentEdge[0], parent) != FindParent(currentEdge[1], parent))
 //            {
-//                parent[destinationParent] = sourceParent;
-//                output[edgeCount] = ed;
-//                edgeCount++;
+//                Console.WriteLine($"{currentEdge[0]} - {currentEdge[1]} - {currentEdge[2]}");
+
+//                cost += currentEdge[2];
+//                // Join the components
+//                UnionBySize(currentEdge[0], currentEdge[1], parent, size);
+
+//                if (++count == v - 1)
+//                {
+//                    break;
+//                }
 //            }
-//            i++;
 //        }
 
-//        for (int j = 0; j < edgeCount; j++)
-//        {
-//            Console.WriteLine($" From source: {output[j].s} , to destination: {output[j].d}. the weight: {output[j].w}");
-//        }
+//        Console.WriteLine($"{cost}");
 //    }
 
-//    private int FindParent(int v, int[] parent)
+//    private int FindParent(int node, int[] parent)
 //    {
-//        if (parent[v] == v)
+//        if (node == parent[node])
 //        {
-//            return v;
+//            return node;
+//        }
+
+//        return parent[node] = FindParent(parent[node], parent);
+//    }
+
+//    private void UnionBySize(int node1, int node2, int[] parent, int[] size)
+//    {
+//        int parent1 = FindParent(node1, parent);
+//        int parent2 = FindParent(node2, parent);
+
+//        if (parent1 == parent2)
+//        {
+//            return;
+//        }
+
+//        if (size[parent1] > size[parent2])
+//        {
+//            size[parent1] += size[parent2];
+//            parent[parent2] = parent1;
 //        }
 //        else
 //        {
-//            return FindParent(parent[v], parent);
+//            size[parent2] += size[parent1];
+//            parent[parent1] = parent2;
 //        }
+
 //    }
 //}
-
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(5, 7);
-//        int count = 0;
+//        int[][] edges = {
+//            new int[] {0, 1, 10},
+//            new int[] {1, 3, 15},
+//            new int[] {2, 3, 4},
+//            new int[] {2, 0, 6},
+//            new int[] {0, 3, 5}
+//        };
 
-//        g.AddEdge(0, 1, 4, ref count);
-//        g.AddEdge(0, 2, 8, ref count);
-//        g.AddEdge(1, 3, 6, ref count);
-//        g.AddEdge(1, 2, 2, ref count);
-//        g.AddEdge(2, 3, 3, ref count);
-//        g.AddEdge(2, 4, 9, ref count);
-//        g.AddEdge(3, 4, 5, ref count);
+//        Solution s = new Solution();
 
-//        g.KruskalAlgorithm();
+//        s.Kruskals(4, edges);
 //    }
 //}
 

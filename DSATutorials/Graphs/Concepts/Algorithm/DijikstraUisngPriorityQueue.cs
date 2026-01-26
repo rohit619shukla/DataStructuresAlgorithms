@@ -1,77 +1,74 @@
 ﻿
 //class Graph
 //{
-//    private int v;
-//    private List<int[]>[] adj;
+//    private int _vertices;
+//    private List<int[]>[] _adjList;
 
 //    public Graph(int vertices)
 //    {
-//        v = vertices;
-//        adj = new List<int[]>[v];
+//        _vertices = vertices;
+//        _adjList = new List<int[]>[_vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            adj[i] = new List<int[]>();
+//            _adjList[i] = new List<int[]>();
 //        }
 //    }
 
 //    public void AddEdge(int source, int destination, int weight)
 //    {
-//        adj[source].Add(new int[] { destination, weight });
-//        adj[destination].Add(new int[] { source, weight });
+//        _adjList[source].Add(new int[] { destination, weight });
+//        _adjList[destination].Add(new int[] { source, weight });
 //    }
 
 //    public void Solve(int startNode)
 //    {
-//        int[] parent = new int[v];
-//        int[] distance = new int[v];
+//        // Declare a PQ
+//        PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
 
-//        for (int i = 0; i < v; i++)
+//        // create a distance array to keep track
+//        int[] result = new int[_vertices];
+
+//        // All the vertices will have the distance as Max
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            parent[i] = -1;
-//            distance[i] = int.MaxValue;
+//            result[i] = int.MaxValue;
 //        }
 
-//        SortedSet<int[]> pq = new SortedSet<int[]>(new DistanceComparer());
 
-//        pq.Add(new int[] { startNode, 0 });
-//        distance[startNode] = 0;
+//        // Add the start node to the queue
+//        pq.Enqueue(startNode, 0);
 
+//        // The distance of the sourceNode will be 0
+//        result[startNode] = 0;
+
+//        // start the algorithm
 //        while (pq.Count > 0)
 //        {
-//            int[] nodeArr = pq.Min;
-//            int currNode = nodeArr[0];
+//            // get the current min priority node from PQ
+//            if (!pq.TryDequeue(out int currentNode, out int distance)) continue;
+//
+//            if(result[currentNode] < distance) continue; this guarantees thst V+E you were confused about in BFS or lese you will again explore the path
 
-//            pq.Remove(nodeArr);
-
-//            foreach (var neigh in adj[currNode])
+//            // Explore the neighbors
+//            foreach (int[] neighbour in _adjList[currentNode])
 //            {
-//                int destNode = neigh[0];
-//                int destWeight = neigh[1];
+//                int neighbourNode = neighbour[0];
+//                int neighbourWeight = neighbour[1];
 
-//                if (distance[currNode] + destWeight < distance[destNode])
+//                // perform relaxation
+//                if (distance + neighbourWeight < result[neighbourNode])
 //                {
-//                    distance[destNode] = distance[currNode] + destWeight;
-//                    parent[destNode] = currNode;
-//                    pq.Add(new int[] { destNode, distance[destNode] });
+//                    result[neighbourNode] = distance + neighbourWeight;
+//                    pq.Enqueue(neighbourNode, result[neighbourNode]);
 //                }
 //            }
-
 //        }
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < result.Length; i++)
 //        {
-//            Console.WriteLine($"From {startNode} to {i}  the cost is : {distance[i]}");
+//            Console.WriteLine($"{startNode} - >  {result[i]}");
 //        }
-
-//    }
-//}
-
-//internal class DistanceComparer : IComparer<int[]>
-//{
-//    public int Compare(int[] x, int[] y)
-//    {
-//        return x[1] - y[1];
 //    }
 //}
 
@@ -83,15 +80,15 @@
 
 //        g.AddEdge(0, 1, 4);
 //        g.AddEdge(0, 2, 8);
-//        g.AddEdge(1, 2, 2);
-//        g.AddEdge(1, 3, 5);
-//        g.AddEdge(2, 3, 5);
-//        g.AddEdge(2, 4, 9);
-//        g.AddEdge(3, 4, 4);
+//        g.AddEdge(1, 2, 3);
+//        g.AddEdge(1, 4, 6);
+//        g.AddEdge(2, 3, 2);
+//        g.AddEdge(4, 3, 10);
+
 
 //        g.Solve(0);
+
 //    }
 //}
 
-
-//// Complexity : O(VLogV + OELogV) = > O((V+E) LogV)
+//// Time :VLogV+ELogV, space :O(V+E) , for PQ its just E

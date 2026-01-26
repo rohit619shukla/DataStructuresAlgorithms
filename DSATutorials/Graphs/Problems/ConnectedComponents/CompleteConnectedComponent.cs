@@ -1,74 +1,118 @@
 ﻿
-//class Graph
+
+//public class Solution
 //{
-//    private int v;
-//    private List<int>[] adj;
-
-//    public Graph(int ver)
+//    public int CountCompleteComponents(int n, int[][] edges)
 //    {
-//        v = ver;
-//        adj = new List<int>[v];
+//        // Create a parent and size array
+//        int[] parent = new int[n];
+//        int[] size = new int[n];
 
-//        for (int i = 0; i < v; i++)
+//        // Map to store number of edges count per group post union find
+//        Dictionary<int, int> map = new Dictionary<int, int>();
+
+//        int result = 0;
+
+//        for (int i = 0; i < n; i++)
 //        {
-//            adj[i] = new List<int>();
+//            parent[i] = i;
+//            size[i] = 1;
 //        }
-//    }
-//    public void AddEdge(int source, int destination)
-//    {
-//        adj[source].Add(destination);
-//        adj[destination].Add(source);
-//    }
-//    public int CountCompleteComponents()
-//    {
-//        int[] explored = new int[v];
-//        int finalCount = 0;
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < edges.Length; i++)
 //        {
-//            int nodes = 0, edges = 0;
+//            // to fill the parent and size
+//            UnionBySize(edges[i][0], edges[i][1], parent, size);
+//        }
 
-//            if (explored[i] == 0)
+//        // Fill the map for how many edges per region
+//        for (int i = 0; i < edges.Length; i++)
+//        {
+//            int[] currentEdge = edges[i];
+
+//            int parentInCurrentEdge = FindParent(currentEdge[0], parent);
+//            if (map.ContainsKey(parentInCurrentEdge))
 //            {
-//                DFS(i, explored, ref nodes, ref edges);
+//                map[parentInCurrentEdge]++;
+//            }
+//            else
+//            {
+//                map.Add(parentInCurrentEdge, 1);
+//            }
+//        }
 
-//                // since this is undirected graph, hence we are focused on unique edges only
-//                edges /= 2;
+//        for (int i = 0; i < n; i++)
+//        {
+//            int currentParent = FindParent(i, parent);
 
-//                if (edges == nodes * (nodes - 1) / 2)
+//            // Get how many vertices, per cluster
+//            if (currentParent == i)
+//            {
+//                // Means it has more than 1 vertices per cluster
+//                if (map.ContainsKey(currentParent))
 //                {
-//                    finalCount++;
+//                    int currentEdges = map[currentParent];
+
+//                    int vertices = size[currentParent];
+
+//                    if (vertices * (vertices - 1) / 2 == currentEdges)
+//                    {
+//                        result++;
+//                    }
+//                }
+//                else
+//                {
+//                    // An individual node is also a completely connected component
+//                    result++;
 //                }
 //            }
+
 //        }
-//        return finalCount;
+
+
+//        return result;
 //    }
 
-//    private void DFS(int node, int[] explored, ref int nodes, ref int edges)
+//    private int FindParent(int node, int[] parent)
 //    {
-//        explored[node] = 1;
-
-//        nodes++;
-
-//        edges += adj[node].Count;
-
-//        foreach (var neigh in adj[node])
+//        if (node == parent[node])
 //        {
-//            if (explored[neigh] == 0)
-//            {
-//                DFS(neigh, explored, ref nodes, ref edges);
-//            }
+//            return node;
 //        }
+
+//        return parent[node] = FindParent(parent[node], parent);
 //    }
 
+//    private void UnionBySize(int node1, int node2, int[] parent, int[] size)
+//    {
+//        int parent1 = FindParent(node1, parent);
+//        int parent2 = FindParent(node2, parent);
 
+//        if (parent1 == parent2)
+//        {
+//            return;
+//        }
+
+//        if (size[parent1] > size[parent2])
+//        {
+//            size[parent1] += size[parent2];
+//            parent[parent2] = parent1;
+//        }
+//        else
+//        {
+//            size[parent2] += size[parent1];
+//            parent[parent1] = parent2;
+//        }
+//    }
 //}
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[][] edges = new int[][] {
+//        int n = 6;
+
+//        int[][] edges = {
 //            new int[] { 0,1},
 //            new int[] { 0,2},
 //            new int[] { 1,2},
@@ -76,18 +120,10 @@
 //            new int[] { 3,5}
 //        };
 
-//        Graph g = new Graph(6);
+//        Solution s = new Solution();
 
-//        foreach (var edge in edges)
-//        {
-//            int i = edge[0];
-//            int j = edge[1];
-
-//            g.AddEdge(i, j);
-//        }
-
-//        Console.WriteLine(g.CountCompleteComponents());
+//        Console.WriteLine($"{s.CountCompleteComponents(n, edges)}");
 //    }
 //}
 
-//// Complexity : O(v+E) both space and time. As each node will be explored once .The DFS traverses each vertex and its edges exactly once
+//// Time  : O(E * Aplha(v) + v)

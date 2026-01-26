@@ -1,61 +1,69 @@
-﻿//using System;
-//using System.Collections.Generic;
-
+﻿
 //class Graph
 //{
-//    public int v;
-//    public List<int>[] adj;
+//    private int _vertices;
+//    private List<int>[] _adjList;
+
 //    public Graph(int vertices)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        _vertices = vertices;
+//        _adjList = new List<int>[_vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            adj[i] = new List<int>();
+//            _adjList[i] = new List<int>();
 //        }
 //    }
 
 //    public void AddEdge(int source, int destination)
 //    {
-//        adj[source].Add(destination);
+//        _adjList[source].Add(destination);
+//        _adjList[destination].Add(source);
 //    }
 
-//    public void DFS(int start, int[] explored)
+//    public void DFS()
 //    {
-//        explored[start] = 1;
+//        // create a visited array
+//        int[] visited = new int[_vertices];
 
-//        Console.Write($"{start}" + "-> ");
+//        Solve(0, visited);
+//    }
 
-//        foreach (var item in adj[start])
+//    private void Solve(int currentNode, int[] visited)
+//    {
+
+//        // Mark it as visited
+//        visited[currentNode] = 1;
+
+//        // Print it
+//        Console.Write($"{currentNode}" + " ");
+
+//        // Apply DFS
+//        foreach (int neighbor in _adjList[currentNode])
 //        {
-//            if (explored[item] == 0)
+//            if (visited[neighbor] == 0)
 //            {
-//                DFS(item, explored);
+//                Solve(neighbor, visited);
 //            }
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(4);
+//        Graph g = new Graph(5);
 
-//        int[] explored = new int[g.v];
-
-//        g.AddEdge(0, 1);
 //        g.AddEdge(0, 2);
-//        g.AddEdge(1, 2);
-//        g.AddEdge(2, 0);
-//        g.AddEdge(2, 3);
-//        g.AddEdge(3, 3);
+//        g.AddEdge(0, 3);
+//        g.AddEdge(0, 1);
+//        g.AddEdge(2, 4);
 
-
-//        g.DFS(2, explored);
+//        g.DFS();
 //    }
 //}
 
-////Complexity Analysis: 
-////Time complexity: O(V + E), where V is the number of vertices and E is the number of edges in the graph.
-////Space Complexity: O(V).Since an extra visited array is needed of size V.
+
+//// Time : O(V+E)
+//// Aux : O(2V) for visited and recursive stack, and Actual space : O(V+E) for adjlist

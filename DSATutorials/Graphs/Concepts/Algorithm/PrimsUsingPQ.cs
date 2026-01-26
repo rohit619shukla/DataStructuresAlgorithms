@@ -1,97 +1,81 @@
-﻿
+﻿//using Microsoft.Azure.Cosmos;
+//using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 
-//class Graph
+//class Solution
 //{
-//    private int v;
-//    private List<(int, int)>[] adj;
+//    private int _vertices;
+//    private List<int[]>[] _adjList;
 
-//    public Graph(int vertices)
+//    public Solution(int vertices)
 //    {
-//        v = vertices;
-//        adj = new List<(int, int)>[v];
+//        _vertices = vertices;
+//        _adjList = new List<int[]>[_vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            adj[i] = new List<(int, int)>();
+//            _adjList[i] = new List<int[]>();
 //        }
 //    }
 
-//    public void AddEdge(int source, int destination, int weight)
+//    public void AddEdge(int source, int dest, int weight)
 //    {
-//        adj[source].Add((destination, weight));
-//        adj[destination].Add((source, weight));
+//        _adjList[source].Add(new int[] { dest, weight });
+//        _adjList[dest].Add(new int[] { source, weight });
 //    }
 
-
-//    public void Solve(int startNode)
+//    public void Prims(int sourceNode)
 //    {
-//        int[] parent = new int[v];
-//        int[] weight = new int[v];
-//        int[] visited = new int[v];
+//        // The idea is to start with vertex with min weight and explore the connected weights with less size
+//        // MST is basically a tree with V-1 edges
 
-//        for (int i = 0; i < v; i++)
-//        {
-//            weight[i] = int.MaxValue;
-//        }
+//        int result = 0;
 
-//        weight[startNode] = 0;
+//        // Create a visisted array
+//        int[] visited = new int[_vertices];
 
-//        // Create a min heap
-//        SortedSet<int[]> pq = new SortedSet<int[]>(new DistanceComparer());
+//        // Keep track of Parent array
+//        int[] parent = new int[_vertices];
 
-//        // Add start node to heap
-//        pq.Add(new int[] { startNode, 0 });
+//        Array.Fill(parent, -1);
 
-//        // V
+//        PriorityQueue<int[], int> pq = new PriorityQueue<int[], int>();
+
+//        pq.Enqueue(new int[] { 0, 0 }, 0);
+
 //        while (pq.Count > 0)
 //        {
-//            int[] nodeArr = pq.Min;
+//            if (!pq.TryDequeue(out int[] node, out int weight)) continue;
 
-//            // get the min node
-//            int node = nodeArr[0];
+//            int currentNode = node[0];
 
-//            // Log E
-//            pq.Remove(nodeArr);
-
-//            if (visited[node] == 1)
+//            if (visited[currentNode] != 0)
 //            {
 //                continue;
 //            }
 
-//            // mark the node as visited
-//            visited[node] = 1;
+//            visited[currentNode] = 1;
+//            result += weight;
+//            parent[currentNode] = node[1];
 
-//            // explore adjacent nodes
-//            // E Log E
-//            foreach (var neigh in adj[node])
+
+//            foreach (var neighbors in _adjList[currentNode])
 //            {
-//                int destNode = neigh.Item1;
-//                int destCost = neigh.Item2;
+//                int neighborNode = neighbors[0];
 
-//                if (visited[destNode] == 0)
+//                if (visited[neighborNode] == 0)
 //                {
-//                    if (destCost < weight[destNode])
-//                    {
-//                        weight[destNode] = destCost;
-//                        parent[destNode] = node;
-//                        pq.Add(new int[] { destNode, weight[destNode] });
-//                    }
+//                    pq.Enqueue(new int[] { neighborNode, currentNode }, neighbors[1]);
 //                }
 //            }
 //        }
 
-//        for (int i = 0; i < v; i++)
-//        {
-//            Console.WriteLine($"{parent[i]} to {i} : {weight[i]}");
-//        }
-//    }
-//}
 
-//internal class DistanceComparer : IComparer<int[]>
-//{
-//    public int Compare(int[] x, int[] y)
-//    {
-//        return x[1] - y[1];
+//        for (int i = 0; i < _vertices; i++)
+//        {
+//            Console.WriteLine($"{i} - {parent[i]}");
+//        }
+
+//        Console.WriteLine($"Total cost is {result}");
 //    }
 //}
 
@@ -99,7 +83,7 @@
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(5);
+//        Solution g = new Solution(5);
 
 //        g.AddEdge(0, 1, 4);
 //        g.AddEdge(0, 2, 8);
@@ -109,8 +93,10 @@
 //        g.AddEdge(2, 4, 9);
 //        g.AddEdge(3, 4, 5);
 
-//        g.Solve(0);
+//        g.Prims(0);
+
 //    }
 //}
 
-//// Complexity : O(v LogE + E LogE) => O(V+E)LogE
+//// Time : (V+E)LogE
+

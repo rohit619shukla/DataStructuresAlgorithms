@@ -1,132 +1,90 @@
-﻿//using System;
+﻿
 
-//class Edge
+//class Solution
 //{
-//    public int Source;
-//    public int Destination;
-//    public int Weight;
-
-//}
-//class Graph
-//{
-//    public int Vertices;
-//    public int E;
-//    public Edge[] edges;
-//    public int edgeCount;
-
-//    public Graph(int v, int e)
+//    public int[] BellManFord(int v, int[,] edges, int src)
 //    {
-//        Vertices = v;
-//        E = e;
+//        // create a result array 
+//        int[] distance = new int[v];
 
-//        edges = new Edge[E];
-
-//        for (int i = 0; i < E; i++)
+//        // Assign max value to all initially
+//        for (int i = 0; i < v; i++)
 //        {
-//            edges[i] = new Edge();
-//        }
-//    }
-
-//    public void PrintShortestPath(int start)
-//    {
-//        int[] distance = new int[Vertices];
-
-//        // intialize  all nodes to infinity
-//        for (int i = 0; i < Vertices; i++)
-//        {
-//            distance[i] = int.MaxValue;
+//            distance[i] = (int)1e9;
 //        }
 
-//        // Set the start node to 0
-//        distance[start] = 0;
+//        // the source node will have distance as 0
+//        distance[src] = 0;
 
-//        // Relaxing E edges V-1 times
-//        for (int i = 0; i < Vertices - 1; i++)
+//        int ed = edges.GetLength(0);
+
+//        // The core algorithm idea is to relax the the edges V-1 times, as longest possible path between 2 nodes without revisitng the ndoes contains V-1 edges 
+//        for (int i = 0; i < v; i++)
 //        {
-//            // start with edges 1 by one
-//            for (int j = 0; j < E; j++)
+//            // Lets pick 1 edge at a time and relax
+//            for (int j = 0; j < ed; j++)
 //            {
-//                // get the edge
-//                Edge e = edges[j];
+//                int source = edges[j, 0];
+//                int dest = edges[j, 1];
+//                int weight = edges[j, 2];
 
-//                int s = e.Source;
-//                int d = e.Destination;
-//                int weight = e.Weight;
-
-//                // start relaxing the neighbouring vertices
-//                if (distance[s] + weight < distance[d])
+//                // relax
+//                if (distance[source] != (int)1e9 && distance[dest] > distance[source] + weight)
 //                {
-//                    distance[d] = distance[s] + weight;
+//                    distance[dest] = distance[source] + weight;
 //                }
 //            }
 //        }
 
-//        for (int i = 0; i < Vertices; i++)
+//        // relax 1 more time to check for a cycle
+//        // Lets pick 1 edge at a time and relax
+//        for (int j = 0; j < ed; j++)
 //        {
-//            Console.WriteLine($"form source : {start}, to destination {i} , the weight is : {distance[i]}");
-//        }
+//            int source = edges[j, 0];
+//            int dest = edges[j, 1];
+//            int weight = edges[j, 2];
 
-//        // Check if the graph contains cycle as well
-
-//        for (int j = 0; j < E; j++)
-//        {
-//            // get the edge
-//            Edge e = edges[j];
-
-//            int s = e.Source;
-//            int d = e.Destination;
-//            int weight = e.Weight;
-
-//            // start relaxing the neighbouring vertices
-//            if (distance[s] + weight < distance[d])
+//            // relax
+//            if (distance[dest] > distance[source] + weight)
 //            {
-//                Console.WriteLine("Cycle exists");
-//                return;
+//                return new int[] { -1 };
 //            }
 //        }
-//    }
 
-//    public void AddEdge(int s, int d, int w)
-//    {
-//        edges[edgeCount].Source = s;
-//        edges[edgeCount].Destination = d;
-//        edges[edgeCount].Weight = w;
-
-//        edgeCount++;
+//        return distance;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(5, 8);
-//        g.AddEdge(0, 1, -1);
-//        g.AddEdge(0, 2, 4);
-//        g.AddEdge(1, 2, 3);
-//        g.AddEdge(1, 3, 2);
-//        g.AddEdge(1, 4, 2);
-//        g.AddEdge(3, 2, 5);
-//        g.AddEdge(3, 1, 1);
-//        g.AddEdge(4, 3, -3);
 
-//        //g.AddEdge(0, 1, 4);
-//        //g.AddEdge(0, 2, 8);
-//        //g.AddEdge(1, 2, 2);
-//        //g.AddEdge(1, 3, 5);
-//        //g.AddEdge(2, 3, 5);
-//        //g.AddEdge(2, 4, 9);
-//        //g.AddEdge(3, 4, 4);
+//        Solution s = new Solution();
 
+//        // Number of vertices in the graph
+//        int V = 5;
 
-//        g.PrintShortestPath(0);
+//        // Edge list: each row represents {source, destination, weight}
+//        int[,] edges = {
+//            { 1, 3, 2 },
+//            { 4, 3, -1 },
+//            { 2, 4, 1 },
+//            { 1, 2, 1 },
+//            { 0, 1, 5 }
+//        };
+
+//        // Source vertex
+//        int src = 0;
+
+//        // Call Bellman-Ford and store the result
+//        int[] ans = s.BellManFord(V, edges, src);
+
+//        // Print the shortest distances from source to all vertices
+//        foreach (int d in ans)
+//            Console.Write(d + " ");
 //    }
 //}
 
-////Time Complexity:  O(V * E), where V is the number of vertices in the graph and E is the number of edges in the graph
-////Auxiliary Space: O(E)
 
-////Notes:
-
-////Negative weights are found in various applications of graphs. For example, instead of paying the cost for a path, we may get some advantage if we follow the path.
-////Bellman-Ford works better (better than Dijkstra’s) for distributed systems. Unlike Dijkstra’s where we need to find the minimum value of all vertices, in Bellman - Ford, edges are considered one by one.
-////Bellman - Ford does not work with an undirected graph with negative edges as it will be declared as a negative cycle.
+//// Time : O(V*E), space : O(V) Aux

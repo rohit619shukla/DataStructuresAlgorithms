@@ -73,15 +73,15 @@
 //    {
 //        Solution s = new Solution();
 
-//        //char[][] board = new char[][] {
-//        //    new char[] {'A','B','C','E' },
-//        //    new char[] { 'S','F','C','S'},
-//        //    new char[] { 'A','D','E','E'},
-//        //};
-
 //        char[][] board = new char[][] {
-//        new char[] { 'a'}
+//            new char[] {'A','B','C','E' },
+//            new char[] { 'S','F','C','S'},
+//            new char[] { 'A','D','E','E'},
 //        };
+
+//        //char[][] board = new char[][] {
+//        //new char[] { 'a'}
+//        //};
 
 //        string word = "a";
 

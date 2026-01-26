@@ -1,85 +1,90 @@
-//using System;
+
 
 //class Graph
 //{
-//    public int v;
-//    public int[] parent;
-//    public int[] rank;
+//    private int _vertices;
+//    private int[] parent;
+//    private int[] rank;
+//    private int[] size;
 
-//    public int[] size;
 //    public Graph(int vertices)
 //    {
-//        v = vertices;
-//        parent = new int[v];
-//        rank = new int[v];
-//        size = new int[v];
+//        _vertices = vertices;
+//        parent = new int[_vertices];
+//        rank = new int[_vertices];
+//        size = new int[_vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
+//            // each node will be a parent of itself
 //            parent[i] = i;
 //            size[i] = 1;
 //        }
 //    }
 
-//    public int FindParent(int i)
+//    public int FindParent(int node)
 //    {
-//        if (i == parent[i])
+//        // if the node is the parent of himself
+//        if (node == parent[node])
 //        {
-//            return i;
+//            return node;
 //        }
-//        else
-//        {
-//            return parent[i] = FindParent(parent[i]);
-//        }
+
+//        // path compression to get the ultimate parent
+//        return parent[node] = FindParent(parent[node]);
 //    }
 
-//    public void UnionByRank(int u, int v)
+//    public void UnionByRank(int node1, int node2)
 //    {
-//        int parentOfU = FindParent(u);
-//        int parentOfV = FindParent(v);
+//        // Get the ultimate parents of bot the node
+//        int parent1 = FindParent(node1);
+//        int parent2 = FindParent(node2);
 
-//        if (parentOfU == parentOfV)
+
+//        // if both the parents are same , means they belong to same compnonent
+//        if (parent1 == parent2)
 //        {
 //            return;
 //        }
 
-//        if (rank[parentOfU] < rank[parentOfV])
+//        // If the rank is greater no need to update the rank
+//        if (rank[parent1] > rank[parent2])
 //        {
-//            parent[parentOfU] = parentOfV;
+//            parent[parent2] = parent1;
 //        }
-//        else if (rank[parentOfV] < rank[parentOfU])
+//        else if (rank[parent2] > rank[parent1])
 //        {
-//            parent[parentOfV] = parentOfU;
+//            parent[parent1] = parent2;
 //        }
 //        else
 //        {
-//            parent[parentOfV] = parentOfU;
-//            rank[parentOfU]++;   // rank will always increase by 1
+//            // if the rank is same, assign anyone as parent and increase the parent's rank
+//            parent[parent2] = parent1;
+//            rank[parent1]++;
 //        }
 //    }
 
-//    public void UnionBySize(int u, int v)
+//    public void UnionBySize(int node1, int node2)
 //    {
-//        int parentOfU = FindParent(u);
-//        int parentOfV = FindParent(v);
+//        int parent1 = FindParent(node1);
+//        int parent2 = FindParent(node2);
 
-//        if (parentOfU == parentOfV)
+//        if (parent1 == parent2)
 //        {
 //            return;
 //        }
 
-//        if (size[parentOfU] < size[parentOfV])
+//        if (size[parent1] > size[parent2])
 //        {
-//            parent[parentOfU] = parentOfV;
-//            size[parentOfV] += size[parentOfU];
+//            parent[parent2] = parent1;
+//            size[parent1] += size[parent2];
 //        }
 //        else
 //        {
-//            parent[parentOfV] = parentOfU;
-//            size[parentOfU] += size[parentOfV];    // we dont increase by 1 but rather how many components small one has
+//            parent[parent1] = parent2;
+//            size[parent2] += size[parent1];
 //        }
 //    }
-
 //}
 //class Program
 //{
@@ -98,7 +103,7 @@
 //        }
 //        else
 //        {
-//            Console.WriteLine(" not same")[;
+//            Console.WriteLine(" not same");
 //        }
 
 

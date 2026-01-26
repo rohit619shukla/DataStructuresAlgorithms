@@ -1,34 +1,37 @@
-﻿//using System;
-
+﻿
 //class Graph
 //{
-//    public int v;
-//    public int[,] adj;
+//    private int vertices;
+//    private int[,] adjMatrix;
 
-//    public Graph(int vertices)
+//    public Graph(int vert)
 //    {
-//        v = vertices;
-//        adj = new int[v, v];
+//        vertices = vert;
+//        adjMatrix = new int[vertices, vertices];
 //    }
 
-//    public void AddEdge(int source, int destination)
+//    public void AddEdge(int source, int dest)
 //    {
-//        this.adj[source, destination] = 1;
-//        this.adj[destination, source] = 1;
+//        adjMatrix[source, dest] = 1;
+//        adjMatrix[dest, source] = 1;
 //    }
 
 //    public void PrintGraph()
 //    {
-//        for (int i = 0; i < this.v; i++)
+//        int rows = adjMatrix.GetLength(0);
+//        int cols = adjMatrix.GetLength(1);
+
+//        for (int i = 0; i < rows; i++)
 //        {
-//            for (int j = 0; j < this.v; j++)
+//            for (int j = 0; j < cols; j++)
 //            {
-//                Console.Write($"{this.adj[i, j]}" + " ");
+//                Console.Write($"{adjMatrix[i, j]}" + " ");
 //            }
 //            Console.WriteLine();
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
@@ -38,10 +41,10 @@
 //        g.AddEdge(0, 1);
 //        g.AddEdge(0, 2);
 //        g.AddEdge(1, 2);
-//        g.AddEdge(2, 0);
 //        g.AddEdge(2, 3);
 
 //        g.PrintGraph();
+
 //    }
 //}
 

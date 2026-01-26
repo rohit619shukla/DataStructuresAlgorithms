@@ -1,82 +1,77 @@
-﻿//using System;
-//using System.Collections.Generic;
+﻿
 //class Graph
 //{
-//    public int v;
-//    public List<int>[] adj;
+//    private int _vertices;
+//    private List<int>[] _adjList;
 
 //    public Graph(int vertices)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        _vertices = vertices;
+//        _adjList = new List<int>[_vertices];
 
-//        for (int i = 0; i < this.v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            adj[i] = new List<int>();
+//            _adjList[i] = new List<int>();
 //        }
 //    }
 
 //    public void AddEdge(int source, int destination)
 //    {
-//        this.adj[source].Add(destination);
+//        _adjList[source].Add(destination);
+//        _adjList[destination].Add(source);
 //    }
 
-//    public void BFS(int start)
+//    public void BFS()
 //    {
-//        int[] explored = new int[this.v];
+//        // create a visisted array
+//        int[] visited = new int[_vertices];
 
-//        explored[start] = 1;
+//        // Create a queue to store nodes
+//        Queue<int> queue = new Queue<int>();
 
-//        Queue<int> q = new Queue<int>();
-//        q.Enqueue(start);
+//        // Add the start node to the queue
+//        queue.Enqueue(0);
 
-//        while (q.Count != 0)
+//        // Mark the start node as visisted
+//        visited[0] = 1;
+
+//        // start BFS
+//        while (queue.Count > 0)
 //        {
-//            int temp = q.Peek();
-//            q.Dequeue();
+//            // get the front node
+//            int currentNode = queue.Dequeue();
 
-//            Console.Write($"{temp}" + " -> ");
+//            Console.Write($"{currentNode}" + " ");
 
-//            foreach (var item in this.adj[temp])
+//            //Explore its neighbors
+//            foreach (int neighbour in _adjList[currentNode])
 //            {
-//                if (explored[item] == 0)
+//                // Only if the node is not visited
+//                if (visited[neighbour] == 0)
 //                {
-//                    explored[item] = 1;
-//                    q.Enqueue(item);
+//                    queue.Enqueue(neighbour);
+//                    visited[neighbour] = 1;
 //                }
 //            }
 //        }
 //    }
-
-//    public void PrintGraph()
-//    {
-//        for (int i = 0; i < this.v; i++)
-//        {
-//            Console.Write($"{i}" + "->");
-
-//            foreach (var item in this.adj[i])
-//            {
-//                Console.Write($"{item}" + "->");
-//            }
-//        }
-//    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(4);
+//        Graph g = new Graph(5);
 
-//        g.AddEdge(0, 1);
 //        g.AddEdge(0, 2);
-//        g.AddEdge(1, 2);
-//        g.AddEdge(2, 0);
-//        g.AddEdge(2, 3);
-//        g.AddEdge(3, 3);
+//        g.AddEdge(0, 3);
+//        g.AddEdge(0, 1);
+//        g.AddEdge(2, 4);
 
-//        g.BFS(2);
+//        g.BFS();
+
 //    }
 //}
 
 ////Time Complexity: O(V + E), where V is the number of nodes and E is the number of edges.
-////Auxiliary Space: O(V)
+////Auxiliary Space: O(V), total space : O(V+E) for creating adjList

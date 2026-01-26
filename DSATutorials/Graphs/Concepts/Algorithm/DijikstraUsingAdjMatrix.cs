@@ -1,80 +1,83 @@
-﻿//using System;
-
+﻿
 //class Graph
 //{
-//    public int v;
-//    public int[,] adj;
+//    private int _vertices;
+//    private int[,] _adjMatrix;
 
 //    public Graph(int vertices)
 //    {
-//        v = vertices;
-//        adj = new int[v, v];
+//        _vertices = vertices;
+//        _adjMatrix = new int[_vertices, _vertices];
 //    }
 
 //    public void AddEdge(int source, int destination, int weight)
 //    {
-//        adj[source, destination] = weight;
-//        adj[destination, source] = weight;
+//        _adjMatrix[source, destination] = weight;
+//        _adjMatrix[destination, source] = weight;
 //    }
 
-//    public void PrintShorestPathFromSource(int start)
+//    public void PrintShorestPathFromSource(int startNode)
 //    {
-//        int[] explored = new int[v];
-//        int[] distance = new int[v];
+//        // create a distance array to keep track of distance
+//        int[] distance = new int[_vertices];
 
-//        // Mark initial distance of all nodes as infinity
-//        for (int i = 0; i < v; i++)
+//        // visisted array
+//        int[] visited = new int[_vertices];
+
+//        // Set the distance of all nodes to Max
+//        for (int i = 0; i < _vertices; i++)
 //        {
 //            distance[i] = int.MaxValue;
 //        }
 
-//        // Mark distance of start node as 0
-//        distance[start] = 0;
+//        // set distance for first Node as 0
+//        distance[0] = 0;
 
-//        // start extracting all nodes
-//        for (int i = 0; i < v; i++)
+//        // start algo
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            // Get min node
-//            int minNode = GetMinNode(explored, distance);
+//            // get the minvertex
+//            int minVertex = FindMinVertex(visited, distance);
 
-//            // Mark the MinNode as visited
-//            explored[minNode] = 1;
+//            // mark this node as visisted
+//            visited[minVertex] = 1;
 
-//            // determine distance of destination node from source
-//            for (int j = 0; j < v; j++)
+//            // From minvertex explore all paths and realx them
+//            for (int j = 0; j < _vertices; j++)
 //            {
-//                // detsination should have not been visited and a path should have existed
-//                if (explored[j] == 0 && adj[minNode, j] != 0)
+//                if (_adjMatrix[minVertex, j] != 0 && visited[j] == 0)
 //                {
-//                    if (distance[minNode] + adj[minNode, j] < distance[j])
+//                    // relaxation
+//                    if (distance[minVertex] + _adjMatrix[minVertex, j] < distance[j])
 //                    {
-//                        distance[j] = distance[minNode] + adj[minNode, j];
+//                        distance[j] = distance[minVertex] + _adjMatrix[minVertex, j];
 //                    }
 //                }
 //            }
 //        }
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            Console.WriteLine($" from source : {start} to destination : {distance[i]}");
+//            Console.WriteLine($"{startNode} - >  {i} => {distance[i]}");
 //        }
-
 //    }
 
-//    private int GetMinNode(int[] explored, int[] distance)
+//    private int FindMinVertex(int[] visited, int[] distance)
 //    {
-//        int minNode = -1;
+//        int minVertex = -1;
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            if (explored[i] == 0 && (minNode == -1 || distance[minNode] > distance[i]))
+//            if (visited[i] == 0 && (minVertex == -1 || distance[minVertex] > distance[i]))
 //            {
-//                minNode = i;
+//                minVertex = i;
 //            }
 //        }
-//        return minNode;
+
+//        return minVertex;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
@@ -91,6 +94,7 @@
 
 //        g.PrintShorestPathFromSource(0);
 //    }
+
 //}
 
-//// Complexity : O(N^2)
+//// Time Complexity : O(N^2) as outer lop is for N , then we have 2 independent loops of size N as well

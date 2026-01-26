@@ -1,40 +1,20 @@
-﻿
-
-//using System.ComponentModel;
-
-//class Graph
+﻿//public class Solution
 //{
-//    private int v;
-//    private List<int>[] adj;
-
-//    public Graph(int vertices)
+//    // Time :  O(V^2) , space :O(V)
+//    public int FindCircleNum(int[][] isConnected)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        int vertices = isConnected.Length;
 
-//        for (int i = 0; i < v; i++)
-//        {
-//            adj[i] = new List<int>();
-//        }
-//    }
-
-//    public void AddEdge(int source, int destination)
-//    {
-//        adj[source].Add(destination);
-//        adj[destination].Add(source);
-//    }
-
-//    public int Solve()
-//    {
-//        int[] explored = new int[v];
+//        // Create a visited matrix
+//        bool[] visited = new bool[vertices];
 
 //        int count = 0;
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            if (explored[i] == 0)
+//            if (visited[i] == false)
 //            {
-//                DFS(i, explored);
+//                DFS(i, visited, isConnected, vertices);
 //                count++;
 //            }
 //        }
@@ -42,32 +22,34 @@
 //        return count;
 //    }
 
-//    private void DFS(int v, int[] explored)
+//    private void DFS(int startNode, bool[] visited, int[][] isConnected, int vertices)
 //    {
-//        explored[v] = 1;
+//        visited[startNode] = true;
 
-//        foreach (int neigh in adj[v])
+
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            if (explored[neigh] == 0)
+//            if (isConnected[startNode][i] == 1 && visited[i] == false)
 //            {
-//                DFS(neigh, explored);
+//                DFS(i, visited, isConnected, vertices);
 //            }
 //        }
 //    }
 //}
 
-//class Helper
+
+//class Program
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(5);
+//        int[][] connected = new int[][] {
+//            new int[] { 1,1,0},
+//            new int[] { 1,1,0},
+//            new int[]{ 0,0,1}
+//        };
 
-//        g.AddEdge(1, 0);
-//        g.AddEdge(2, 1);
-//        g.AddEdge(3, 4);
+//        Solution s = new Solution();
 
-//        Console.WriteLine(g.Solve());
+//        Console.WriteLine(s.FindCircleNum(connected));
 //    }
 //}
-
-//// Complexity : O(V+E) , time  and space both
