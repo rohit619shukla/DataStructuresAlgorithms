@@ -88,6 +88,7 @@
 
 //        for (int i = temp.Length - 1; i >= 0; i--)
 //        {
+              // Here j  cannot be i as we need atleast 1 connect to work 
 //            for (int j = i + 1; j < temp.Length; j++)
 //            {
 //                if (j - i == 1)

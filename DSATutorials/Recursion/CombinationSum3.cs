@@ -9,6 +9,7 @@
 
 //        IList<int> temp = new List<int>();
 
+//        // We will startt with 1 as range is between 1- 9 only
 //        Solve(k, 1, n, result, temp);
 
 //        return result;
@@ -27,8 +28,8 @@
 //            }
 //            return;
 //        }
-            
-//// To prevet overflow
+
+//        // To prevet overflow
 //        if (index > 9)
 //        {
 //            return;

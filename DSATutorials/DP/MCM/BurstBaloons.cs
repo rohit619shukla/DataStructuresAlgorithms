@@ -28,7 +28,7 @@
 //        }
 
 //        // we will start with i = 1 as 0th will have the walls 
-//        //int result = Solve(baloons, 1, nums.Length);
+//       // int result = Solve(baloons, 1, baloons.Length - 2);
 
 //        //int result = Solve(baloons, 1, nums.Length, memo);
 
@@ -106,7 +106,7 @@
 
 //        for (int i = n - 2; i >= 1; i--)
 //        {
-                // Here we are keeping j = i and not i+1 as we can even burst single baloon too
+//            //Here we are keeping j = i and not i + 1 as we can even burst single baloon too
 //            for (int j = i; j <= n - 2; j++)
 //            {
 //                int maxCost = int.MinValue;

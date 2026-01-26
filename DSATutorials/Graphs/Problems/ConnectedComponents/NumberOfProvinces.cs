@@ -1,38 +1,20 @@
-﻿
-
-//class Graph
+﻿//public class Solution
 //{
-//    private int v;
-//    private List<int>[] adj;
-
-//    public Graph(int vertices)
+//    // Time :  O(V^2) , space :O(V)
+//    public int FindCircleNum(int[][] isConnected)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        int vertices = isConnected.Length;
 
-//        for (int i = 0; i < v; i++)
-//        {
-//            adj[i] = new List<int>();
-//        }
-//    }
+//        // Create a visited matrix
+//        bool[] visited = new bool[vertices];
 
-//    public void AddEdge(int source, int destination)
-//    {
-//        adj[source].Add(destination);
-//        adj[destination].Add(source);
-//    }
-
-//    public int Solve()
-//    {
 //        int count = 0;
 
-//        int[] explored = new int[v];
-
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            if (explored[i] == 0)
+//            if (visited[i] == false)
 //            {
-//                DFS(i, explored);
+//                DFS(i, visited, isConnected, vertices);
 //                count++;
 //            }
 //        }
@@ -40,48 +22,34 @@
 //        return count;
 //    }
 
-//    private void DFS(int v, int[] explored)
+//    private void DFS(int startNode, bool[] visited, int[][] isConnected, int vertices)
 //    {
-//        explored[v] = 1;
+//        visited[startNode] = true;
 
-//        foreach (var item in adj[v])
+
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            if (explored[item] == 0)
+//            if (isConnected[startNode][i] == 1 && visited[i] == false)
 //            {
-//                DFS(item, explored);
+//                DFS(i, visited, isConnected, vertices);
 //            }
 //        }
 //    }
 //}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[][] arr = new int[][] {
-//            new int[] { 0,1,0},
-//            new int[] { 1,0,0},
-//            new int[] { 0,0,0}
+//        int[][] connected = new int[][] {
+//            new int[] { 1,1,0},
+//            new int[] { 1,1,0},
+//            new int[]{ 0,0,1}
 //        };
 
-//        int rows = arr.Length;
-//        int cols = arr[0].Length;
+//        Solution s = new Solution();
 
-//        Graph g = new Graph(rows);
-
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            for (int j = 0; j < arr[0].Length; j++)
-//            {
-//                if (arr[i][j] == 1)
-//                {
-//                    g.AddEdge(i, j);
-//                }
-//            }
-//        }
-
-//        Console.WriteLine(g.Solve());
+//        Console.WriteLine(s.FindCircleNum(connected));
 //    }
 //}
-
-//// Complexity : O(V+E)

@@ -36,6 +36,8 @@
 //                // Backtrack: remove the last added substring to try other possibilities
 //                temp.RemoveAt(temp.Count - 1);
 //            }
+
+            //// Note : here we dont need another exploration as for loop takes of this
 //        }
 //    }
 

@@ -23,10 +23,10 @@
 //        HashSet<int> set = new HashSet<int>();
 //        for (int i = index; i < nums.Length; i++)
 //        {
-//            if (set.Contains(nums[i]))
-//            {
-//                continue;
-//            }
+//            //if (set.Contains(nums[i]))
+//            //{
+//            //    continue;
+//            //}
 //            set.Add(nums[i]);
 
 //            Swap(nums, index, i);
@@ -42,5 +42,28 @@
 //        int temp = nums[i];
 //        nums[i] = nums[j];
 //        nums[j] = temp;
+//    }
+//}
+
+//class Program
+//{
+//    public static void Main()
+//    {
+//        Solution s = new Solution();
+
+//        int[] nums = { 1, 1, 2 };
+
+//        var result = s.PermuteUnique(nums);
+
+//        for (int i = 0; i < result.Count; i++)
+//        {
+//            var inter = result[i];
+
+//            foreach (var item in inter)
+//            {
+//                Console.Write($"{item}" + " ");
+//            }
+//            Console.WriteLine();
+//        }
 //    }
 //}

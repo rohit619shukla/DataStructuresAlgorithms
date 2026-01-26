@@ -1,51 +1,56 @@
-﻿//using System;
-
-//class Graph
+﻿
+//class Solution
 //{
-//    public int v;
-//    public Graph(int vertices)
+//    public void FloydWarshall(int[,] dist)
 //    {
-//        v = vertices;
-//    }
+//        int v = dist.GetLength(0);
 
-//    public void FlyodWarshall(int[,] adj)
-//    {
+//        int[,] result = new int[v, v];
+
+//        // This is all pairs shortes path where we take an intermediate to see if we can reach a given dest node from source with that edge
 //        for (int k = 0; k < v; k++)
 //        {
 //            for (int i = 0; i < v; i++)
 //            {
 //                for (int j = 0; j < v; j++)
 //                {
-//                    adj[i, j] = Math.Min(adj[i, j], adj[i, k] + adj[k, j]);
+//                    dist[i, j] = Math.Min(dist[i, j], dist[i, k] + dist[k, j]);
 //                }
 //            }
 //        }
+//    }
+//}
 
-//        for (int i = 0; i < v; i++)
+//class Program
+//{
+//    public static void Main()
+//    {
+//        int[,] dist = {
+//            {0, 4, (int)1e9, 5, (int)1e9},
+//            {(int)1e9, 0, 1, (int)1e9, 6},
+//            {2, (int)1e9, 0, 3, (int)1e9},
+//            {(int)1e9, (int)1e9, 1, 0, 2},
+//            {1, (int)1e9, (int)1e9, 4, 0}
+//        };
+
+//        int rows = dist.GetLength(0);
+//        int cols = dist.GetLength(1);
+
+//        Solution s = new Solution();
+//        s.FloydWarshall(dist);
+
+
+//        for (int i = 0; i < rows; i++)
 //        {
-//            for (int j = 0; j < v; j++)
+//            for (int j = 0; j < cols; j++)
 //            {
-//                Console.Write($"{adj[i, j]}" + " ");
+//                Console.Write($"{dist[i, j]}" + " ");
 //            }
 //            Console.WriteLine();
 //        }
 //    }
 //}
-//class Program
-//{
-//    public static void Main()
-//    {
-//        Graph g = new Graph(4);
 
-//        int[,] adj = {
-//            { 0, 5, 99999, 10},
-//            { 99999, 0, 3, 99999},
-//            { 99999, 99999, 0,1},
-//            { 99999, 99999, 99999,0}
-//        };
-//        g.FlyodWarshall(adj);
-//    }
-//}
 
 ////Time Complexity: O(V3)
 ////Auxiliary Space: O(V2)

@@ -1,0 +1,5 @@
+
+1. In Dijikstra : we tnd to keep on visisting a node till we can find a better option from PQ
+
+
+2. In Prims : the moment you pop a node we dont care further and mark it visited as we are trying to be absolute;y connected to its neighbors

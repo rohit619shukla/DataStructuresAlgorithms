@@ -8,3 +8,10 @@ Recursion:
 2) For permutation we usually have a for loop
 
 3) For subsets we usually have 2 choices at each step (include or exclude)
+
+4) For permutation based problem if duplicates are given in array , use set to exclude duplicates at same level.
+
+5) For subsets based problem if duplicates are given in array, first sort the array and then use a while loop to move out
+
+6) In combination sum problem we will also go till target == 0. Unlike susbet problem where we also go till index == 0. As this makes sure that anytome we get a target we count as success,
+rather in Subset problem we will travserse till entire list till index ==0 in a hope

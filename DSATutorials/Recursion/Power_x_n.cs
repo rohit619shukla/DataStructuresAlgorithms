@@ -1,47 +1,49 @@
 ﻿//public class Solution
 //{
 //    // Time : Log(n) as we are each time doing divide by 2
+
 //    public double MyPow(double x, int n)
 //    {
+//        // n is a -ve number
+//        if (n < 0)
+//        {
+//            return Solve(1 / x, -((long)n));
+//        }
+
 //        return Solve(x, (long)n);
 //    }
 
 //    private double Solve(double x, long n)
 //    {
-//        // base case
-//        // Any number to 0 is always 1
-//        if (n == 0)
+//        double ans = 1;
+
+//        // as anything raise to 0 is 1
+//        while (n > 0)
 //        {
-//            return 1;
+//            // check for even or odd number
+//            if (n % 2 == 0)
+//            {
+//                x *= x;
+//                n = n / 2;
+//            }
+//            else
+//            {
+//                ans *= x;
+//                n = n - 1;
+//            }
 //        }
 
-//        // For -ve numbers
-//        if (n < 0)
-//        {
-//            return Solve(1 / x, -n);
-//        }
-
-//        // For evevn or odd numbers
-//        if (n % 2 == 0)
-//        {
-//            return Solve(x * x, n / 2);   // We kept on returning the answer to the root
-//        }
-//        else
-//        {
-//            return x * Solve(x * x, (n - 1) / 2);
-//        }
+//        return ans;
 //    }
-
 //}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        double x = 2.00000;
-//        int n = 4;
-
 //        Solution s = new Solution();
-//        Console.WriteLine(s.MyPow(x, n));
+
+//        Console.WriteLine($"{s.MyPow(2.00000, -2147483648)}");
 //    }
 //}

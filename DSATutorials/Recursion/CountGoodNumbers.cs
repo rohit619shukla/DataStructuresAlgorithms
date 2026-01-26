@@ -6,6 +6,7 @@
 //    // Time :O(Logn)
 //    public int CountGoodNumbers(long n)
 //    {
+//        //This is basically like we can place 5 even numbers at even index and 4 prime numbers at odd indexes
 //        long evenIndices = (n + 1) / 2;
 //        long oddIndices = n / 2;
 
@@ -47,4 +48,4 @@
 //    }
 //}
 
-// Note : In modulo arithmetic we tend to do MOD at every place where we multiply
+////Note: In modulo arithmetic we tend to do MOD at every place where we multiply
