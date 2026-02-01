@@ -1,76 +1,68 @@
-﻿//// Leetcode 733 (Medium)
+﻿
 
 //public class Solution
 //{
 //    public int[][] FloodFill(int[][] image, int sr, int sc, int color)
 //    {
-//        // This will be the source color to recognize the connected nodes
-//        int initialColor = image[sr][sc];
-
 //        int rows = image.Length;
 //        int cols = image[0].Length;
 
-//        int[,] explored = new int[rows, cols];
+//        int[][] visited = new int[rows][];
 
-//        // for traversing in 4 directions
+//        for (int i = 0; i < visited.Length; i++)
+//        {
+//            visited[i] = new int[cols];
+//        }
+
+//        int originalColor = image[sr][sc];
+
+//        Queue<(int, int)> q = new Queue<(int, int)>();
+
+//        q.Enqueue((sr, sc));
+//        image[sr][sc] = color;
+//        visited[sr][sc] = 1;
+
 //        int[] deltaRow = { -1, 0, 1, 0 };
-//        int[] deltaCol = { 0, 1, 0, -1 };
+//        int[] deltaCols = { 0, 1, 0, -1 };
 
-//        // start DFS floodfill from given co-ordinates
-//        DFS(sr, sc, rows, cols, deltaRow, deltaCol, initialColor, image, explored, color);
+//        while (q.Count > 0)
+//        {
+//            (int sourceNode, int destNode) = q.Dequeue();
+
+//            for (int i = 0; i < 4; i++)
+//            {
+//                int newRow = sourceNode + deltaRow[i];
+//                int newCol = destNode + deltaCols[i];
+
+//                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && image[newRow][newCol] == originalColor && visited[newRow][newCol] != 1)
+//                {
+//                    q.Enqueue((newRow, newCol));
+//                    visited[newRow][newCol] = 1;
+//                    image[newRow][newCol] = color;
+//                }
+//            }
+//        }
 
 //        return image;
 //    }
-
-//    private void DFS(int currRow, int currCol, int rows, int cols, int[] deltaRow, int[] deltaCol, int initialColor, int[][] image, int[,] explored, int color)
-//    {
-//        // mark the given node co-ordinates as visited
-//        explored[currRow, currCol] = 1;
-
-//        // fill the node with color
-//        image[currRow][currCol] = color;
-
-//        // start exploring the adjacent nodes
-//        for (int i = 0; i < 4; i++)
-//        {
-//            int newRow = currRow + deltaRow[i];
-//            int newCol = currCol + deltaCol[i];
-
-//            if (IsGoodToFill(newRow, newCol, image, explored, rows, cols, initialColor))
-//            {
-//                DFS(newRow, newCol, rows, cols, deltaRow, deltaCol, initialColor, image, explored, color);
-//            }
-
-//        }
-//    }
-
-//    private bool IsGoodToFill(int newRow, int newCol, int[][] image, int[,] explored, int rows, int cols, int initialColor)
-//    {
-//        if (newRow >= 0 && newRow < rows &&
-//            newCol >= 0 && newCol < cols &&
-//            explored[newRow, newCol] == 0 &&
-//            image[newRow][newCol] == initialColor)
-//        {
-//            return true;
-//        }
-
-//        return false;
-//    }
 //}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[][] image = new int[][] {
+//        int[][] image = {
 //            new int[] { 1,1,1},
 //            new int[] { 1,1,0},
 //            new int[] { 1, 0, 1 }
 //        };
 
-//        Solution g = new Solution();
+//        int sr = 1, sc = 1, color = 2;
 
-//        int[][] result = g.FloodFill(image, 1, 1, 2);
+//        Solution s = new Solution();
+
+//        var result = s.FloodFill(image, sr, sc, color);
 
 //        for (int i = 0; i < result.Length; i++)
 //        {
@@ -83,5 +75,5 @@
 //    }
 //}
 
-//////Time Complexity: O(N * M)
-//////Auxiliary Space: O(N * M)
+////Time Complexity: O(N * M)
+////Auxiliary Space: O(N * M)
