@@ -22,6 +22,8 @@
 //        for (int i = 0; i < edges.Length; i++)
 //        {
 //            // to fill the parent and size
+//            // The parent array will tell us how many possible regions are there
+//            // The size array tell us for each of these parent node how many vertices per that region
 //            UnionBySize(edges[i][0], edges[i][1], parent, size);
 //        }
 
@@ -30,7 +32,9 @@
 //        {
 //            int[] currentEdge = edges[i];
 
+//            // Post Union above both nodes paretn will be same
 //            int parentInCurrentEdge = FindParent(currentEdge[0], parent);
+
 //            if (map.ContainsKey(parentInCurrentEdge))
 //            {
 //                map[parentInCurrentEdge]++;
@@ -43,17 +47,15 @@
 
 //        for (int i = 0; i < n; i++)
 //        {
-//            int currentParent = FindParent(i, parent);
-
-//            // Get how many vertices, per cluster
-//            if (currentParent == i)
+//            // Process only id the cluster is there
+//            if (parent[i] == i)
 //            {
 //                // Means it has more than 1 vertices per cluster
-//                if (map.ContainsKey(currentParent))
+//                if (map.ContainsKey(i))
 //                {
-//                    int currentEdges = map[currentParent];
+//                    int currentEdges = map[i];
 
-//                    int vertices = size[currentParent];
+//                    int vertices = size[i];
 
 //                    if (vertices * (vertices - 1) / 2 == currentEdges)
 //                    {
@@ -116,8 +118,8 @@
 //            new int[] { 0,1},
 //            new int[] { 0,2},
 //            new int[] { 1,2},
-//            new int[] { 3,4},
-//            new int[] { 3,5}
+//            new int[] { 3,4}
+//            //new int[] { 3,5}
 //        };
 
 //        Solution s = new Solution();
