@@ -1,9 +1,7 @@
 ﻿//public class Solution
 //{
-//    public int[] FindOrder(int numCourses, int[][] prerequisites)
+//    public bool CanFinish(int numCourses, int[][] prerequisites)
 //    {
-//        int[] result = new int[numCourses];
-
 //        int rows = prerequisites.Length;
 
 //        List<int>[] adjList = new List<int>[numCourses];
@@ -17,8 +15,8 @@
 
 //        for (int i = 0; i < rows; i++)
 //        {
-//            AddEdges(prerequisites[i][1], prerequisites[i][0], adjList);
-//            indegree[prerequisites[i][0]]++;
+//            AddEdges(prerequisites[i][0], prerequisites[i][1], adjList);
+//            indegree[prerequisites[i][1]]++;
 //        }
 
 //        Queue<int> q = new Queue<int>();
@@ -33,16 +31,11 @@
 
 //        int count = 0;
 
-//        int k = 0;
-
 //        while (q.Count > 0)
 //        {
 //            int node = q.Dequeue();
 
 //            count++;
-
-//            result[k] = node;
-//            k++;
 
 //            foreach (var neighbors in adjList[node])
 //            {
@@ -53,15 +46,7 @@
 //                }
 //            }
 //        }
-
-//        if (count == numCourses)
-//        {
-//            return result;
-//        }
-//        else
-//        {
-//            return [];
-//        }
+//        return count == numCourses ? true : false;
 //    }
 
 //    private void AddEdges(int src, int dest, List<int>[] adjList)
@@ -83,7 +68,7 @@
 
 //        Solution s = new Solution();
 
-//        Console.WriteLine(s.FindOrder(numCourses, prerequisites));
+//        Console.WriteLine(s.CanFinish(numCourses, prerequisites));
 //    }
 //}
 ////Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.

@@ -1,81 +1,76 @@
-﻿
-
-//class Graph
+﻿//public class Solution
 //{
-//    public int v;
-//    public List<int>[] adj;
 
-//    public Graph(int vertices)
-//    {
-//        v = vertices;
-//        adj = new List<int>[v];
-
-//        for (int i = 0; i < v; i++)
-//        {
-//            adj[i] = new List<int>();
-//        }
-//    }
-
-//    public void AddEdge(int src, int dest)
-//    {
-//        adj[src].Add(dest);
-//        adj[dest].Add(src);
-//    }
-//}
-
-//public class Solution
-//{
 //    public bool IsBipartite(int[][] graph)
 //    {
-//        Graph g = new Graph(graph.Length);
+//        int rows = graph.Length;
 
-//        int[] color = new int[g.v];
+//        int[] color = new int[rows];
 
 //        Array.Fill(color, -1);
 
-//        // Add Edges
-//        for (int i = 0; i < graph.Length; i++)
+//        // Create adjlist
+//        List<int>[] adjList = new List<int>[rows];
+
+//        for (int i = 0; i < rows; i++)
+//        {
+//            adjList[i] = new List<int>();
+
+
+//        }
+
+//        for (int i = 0; i < rows; i++)
 //        {
 //            for (int j = 0; j < graph[i].Length; j++)
 //            {
-//                g.AddEdge(i, graph[i][j]);
-
+//                AddEdge(i, graph[i][j], adjList);
 //            }
 //        }
 
-//        for (int i = 0; i < g.v; i++)
+//        for (int i = 0; i < rows; i++)
 //        {
 //            if (color[i] == -1)
 //            {
-//                if (!BFS(color, i, g.adj))
+//                if (!BFS(adjList, color, i))
 //                {
 //                    return false;
 //                }
+
 //            }
 //        }
-
 //        return true;
 //    }
 
-//    private bool BFS(int[] color, int node, List<int>[] adj)
+//    private void AddEdge(int source, int dest, List<int>[] adjList)
 //    {
-//        Queue<int> q = new Queue<int>();
-//        q.Enqueue(node);
+//        adjList[source].Add(dest);
+//    }
 
-//        color[node] = 0;
+
+//    private bool BFS(List<int>[] adjList, int[] color, int startNode)
+//    {
+
+//        Queue<int> q = new Queue<int>();
+
+//        // Add the start node ot queue
+//        q.Enqueue(startNode);
+
+//        // Mark the color to something : 0 / 1
+//        color[startNode] = 0;
 
 //        while (q.Count > 0)
 //        {
-//            int source = q.Dequeue();
+//            int currentNode = q.Dequeue();
 
-//            foreach (var neigh in adj[source])
+//            foreach (var neighbours in adjList[currentNode])
 //            {
-//                if (color[neigh] == -1)
+//                // Color the node if not visited
+//                if (color[neighbours] == -1)
 //                {
-//                    color[neigh] = (color[source] == 0) ? 1 : 0;
-//                    q.Enqueue(neigh);
+//                    color[neighbours] = 1 - color[currentNode];
+//                    q.Enqueue(neighbours);
 //                }
-//                else if (color[neigh] == color[source])
+//                else if (color[neighbours] == color[currentNode])
 //                {
 //                    return false;
 //                }
@@ -85,24 +80,22 @@
 //        return true;
 //    }
 //}
+
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Solution s = new Solution();
-
-//        int[][] graph = new int[][]
-//        {
-//                    new int[] {1, 2,3},
-//                    new int[] {0,3,4},
-//                    new int[] {0,3},
-//                    new int[] {0,1,2},
-//                     new int[] {0},
-
+//        int[][] graph = {
+//             new int[] {1,3},
+//             new int[] {0,2 },
+//             new int []{1,3 },
+//             new int []{0,2 },
 //        };
 
+//        Solution s = new Solution();
 //        Console.WriteLine(s.IsBipartite(graph));
 //    }
 //}
 
-//// Time : (V+E), space : O(V+E)
+//// Time : (V+E), space : O(V+E)  , since this is jagged array we already have each node and its adj nodes next to it

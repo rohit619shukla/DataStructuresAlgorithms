@@ -1,98 +1,113 @@
-﻿
-
-//class Graph
+﻿//class Solution
 //{
-//    private int v;
-//    private List<int>[] adj;
-
-//    public Graph(int vertices)
+//    public string FindOrder(string[] words)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        string result = "";
 
-//        for (int i = 0; i < v; i++)
+//        // Since something has to appear something and we maintain a chain we will apply topo sort
+//        // Since we have not been given the number of vertices,we will deduce it
+//        // The set will store all distinct char in word as vertices
+//        HashSet<char> set = new HashSet<char>();
+
+//        // Time : O(N*L) , for each word in list of N words we iterate over L length
+//        foreach (string word in words)
 //        {
-//            adj[i] = new List<int>();
-//        }
-//    }
-
-//    public void AddEdge(int source, int destination)
-//    {
-//        adj[source].Add(destination);
-//    }
-
-//    public void AlienDictionary(string[] arr, int n, int k)
-//    {
-//        // Iterate over each word in dictionary and try creating a DAG
-//        // We will do n-1 comprison because we are doing the comaprison in pairs
-//        for (int i = 0; i < n - 1; i++)
-//        {
-//            string str1 = arr[i];
-//            string str2 = arr[i + 1]; // next in sequence
-
-//            // Which ever is smaller we will compare
-//            int len = Math.Min(str1.Length, str2.Length);
-
-//            for (int j = 0; j < len; j++)
+//            foreach (char ch in word)
 //            {
-//                if (str1[j] != str2[j])
+//                set.Add(ch);
+//            }
+//        }
+
+//        // Create a adj list
+//        List<int>[] adjList = new List<int>[26];
+
+//        for (int i = 0; i < 26; i++)
+//        {
+//            adjList[i] = new List<int>();
+//        }
+
+//        bool mismatchFound = false;
+//        int[] indegree = new int[26];
+
+//        // Create edges
+//        for (int i = 0; i < words.Length - 1; i++)   // O(N)
+//        {
+//            string word1 = words[i];
+//            string word2 = words[i + 1];
+
+//            // We will iterate over minimum length of two words
+//            int minLength = Math.Min(word1.Length, word2.Length);
+//            for (int j = 0; j < minLength; j++)   // O(L)
+//            {
+//                if (word1[j] != word2[j])
 //                {
-//                    // Create DAG
-//                    AddEdge(str1[j] - 'a', str2[j] - 'a');
+//                    AddEdge(word1[j] - 'a', word2[j] - 'a', adjList);
+//                    indegree[word2[j] - 'a']++;
+//                    mismatchFound = true;
 //                    break;
+//                }
+//            }
+
+//            // Rules :
+//            // 1. So long as we got a difference we dont care much
+//            // 2. Only if a difference is not found and word1 > word2 then we have invalid case and need to return
+//            // 3. This is becoz if we dont have mismatch and word1> word2 then we will not have a sequecne with all the char in the word
+//            if (!mismatchFound && word1.Length > word2.Length)
+//            {
+//                return "";
+//            }
+//            mismatchFound = false;
+//        }
+
+//        // store all nodes with indegree 0 in queue
+//        Queue<int> q = new Queue<int>();
+
+//        foreach (char ch in set)
+//        {
+//            if (indegree[ch - 'a'] == 0)
+//            {
+//                q.Enqueue(ch - 'a');
+//            }
+//        }
+
+//        int count = 0;
+
+//        // start BFS
+//        while (q.Count > 0)
+//        {
+//            int node = q.Dequeue();
+//            count++;
+
+//            result += (char)(node + 'a');
+//            foreach (var neighbor in adjList[node])
+//            {
+//                indegree[neighbor]--;
+//                if (indegree[neighbor] == 0)
+//                {
+//                    q.Enqueue(neighbor);
 //                }
 //            }
 //        }
 
-
-//        int[] visited = new int[k];
-
-//        // start DFS for ordering using Topo sort and here we will store the node in 0 based numeric indexing
-
-//        Stack<int> st = new Stack<int>();
-
-//        for (int i = 0; i < k; i++)
-//        {
-//            if (visited[i] == 0)
-//            {
-//                DFS(i, st, visited);
-//            }
-//        }
-
-//        // Now print the numbers back to char format
-//        while (st.Count > 0)
-//        {
-//            Console.Write($"{(char)(st.Pop() + 'a')}" + " ");
-//        }
+//        return count == set.Count ? result : "";
 //    }
 
-//    private void DFS(int node, Stack<int> st, int[] visited)
+//    private void AddEdge(int src, int dest, List<int>[] adjList)
 //    {
-//        visited[node] = 1;
-
-//        foreach (var neigh in adj[node])
-//        {
-//            if (visited[neigh] == 0)
-//            {
-//                DFS(neigh, st, visited);
-//            }
-//        }
-
-//        st.Push(node);
+//        adjList[src].Add(dest);
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        string[] arr = { "baa", "abcd", "abca", "cab", "cad" };
-//        int k = 4;
-//        int N = 5;
-//        Graph g = new Graph(k);
-//        g.AlienDictionary(arr, N, k);
+//        string[] word = { "baa", "abcd", "abca", "cab", "cad" };
+
+//        Solution s = new Solution();
+
+//        Console.WriteLine(s.FindOrder(word));
 //    }
 //}
 
-
-//// O(N*len)+O(K+E), where N is the number of words in the dictionary, ‘len’ is the length up to the index where the first inequality occurs, K = no. of nodes, and E = no. of edges.
-//// Space : O(N)
+//// Time : O(N*L) , space: O(1) : as we will only store unique chars in queue
