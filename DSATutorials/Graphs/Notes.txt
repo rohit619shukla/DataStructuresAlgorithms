@@ -3,3 +3,7 @@
 
 
 2. In Prims : the moment you pop a node we dont care further and mark it visited as we are trying to be absolute;y connected to its neighbors
+
+3. Topo sort : Helps in telling that given a directed graph and 2 edges u and v, where u -> v means u will always come beofre v
+
+4. Whenever the question has keyword Shortest, there is Dijikstra hidden somewhere

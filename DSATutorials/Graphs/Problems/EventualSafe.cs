@@ -1,43 +1,49 @@
-﻿//// Leetcode 802 (Medium)
+﻿//using System.Xml.Linq;
 
 //public class Solution
 //{
+
 //    public IList<int> EventualSafeNodes(int[][] graph)
 //    {
-//        int nodes = graph.Length;
+//        int vertices = graph.Length;
 
-//        Graph g = new Graph(nodes);
+//        List<int> result = new List<int>();
 
+//        List<int>[] adjList = new List<int>[vertices];
 
-//        for (int i = 0; i < nodes; i++)
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            int nodeCols = graph[i].Length;
+//            adjList[i] = new List<int>();
+//        }
 
-//            for (int j = 0; j < nodeCols; j++)
+//        for (int i = 0; i < vertices; i++)
+//        {
+//            int[] currentRow = graph[i];
+
+//            foreach (var neigh in currentRow)
 //            {
-//                g.AddEdge(i, graph[i][j]);
+//                AddEgde(i, neigh, adjList);
 //            }
 //        }
 
-//        IList<int> result = new List<int>();
+//        bool[] visited = new bool[vertices];
+//        bool[] pathVisited = new bool[vertices];
 
-//        int[] explored = new int[nodes];
-//        int[] pathVisited = new int[nodes];
-
-//        for (int i = 0; i < nodes; i++)
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            if (explored[i] == 0)
+//            if (visited[i] == false)
 //            {
-//                DFS(i, explored, pathVisited, g.adj);
+//                if (DFS(i, adjList, visited, pathVisited))
+//                {
+//                    continue;
+//                }
 //            }
 //        }
 
-
-//        // The idea behind using path visited is that all the nodes which are part of cycle will not lead to terminal nodes 
-//        // Also any node leading to cycle will also be not part of terminal node path
-//        for (int i = 0; i < nodes; i++)
+//        // Idea is any node which is not part the cycle will eventually lead to a terminal node
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            if (pathVisited[i] == 0)
+//            if (pathVisited[i] == false)
 //            {
 //                result.Add(i);
 //            }
@@ -46,66 +52,50 @@
 //        return result;
 //    }
 
-//    private bool DFS(int currentNode, int[] explored, int[] pathVisited, List<int>[] adj)
+//    private bool DFS(int node, List<int>[] adjList, bool[] visited, bool[] pathVisited)
 //    {
-//        explored[currentNode] = 1;
+//        visited[node] = true;
+//        pathVisited[node] = true;
 
-//        pathVisited[currentNode] = 1;
-
-//        foreach (var neigh in adj[currentNode])
+//        foreach (var neigbor in adjList[node])
 //        {
-//            if (explored[neigh] == 0)
+//            if (visited[neigbor] == false)
 //            {
-//                if (DFS(neigh, explored, pathVisited, adj))
+//                if (DFS(neigbor, adjList, visited, pathVisited))
 //                {
 //                    return true;
 //                }
 //            }
-//            else
+//            else if (pathVisited[neigbor] == true)
 //            {
-//                if (pathVisited[neigh] == 1)
-//                {
-//                    return true;
-//                }
+//                // cycle exist
+//                return true;
 //            }
 //        }
 
-//        pathVisited[currentNode] = 0;
+
+//        // backtrack
+//        pathVisited[node] = false;
+
 //        return false;
 //    }
-//}
 
-//public class Graph
-//{
-//    public int v;
-//    public List<int>[] adj;
-
-//    public Graph(int vertices)
+//    private void AddEgde(int src, int dest, List<int>[] adjList)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
-
-//        for (int i = 0; i < v; i++)
-//        {
-//            adj[i] = new List<int>();
-//        }
-//    }
-
-//    public void AddEdge(int source, int dest)
-//    {
-//        adj[source].Add(dest);
+//        adjList[src].Add(dest);
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[][] graph = new int[][] {
-//            new int[] {1,2 },
-//            new int[] { 2,3},
-//            new int[] {5 },
-//            new int[] {0 },
-//            new int[] {5 },
+//        int[][] graph = {
+//            new int[] { 1,2},
+//            new int[] {2,3 },
+//            new int[] { 5},
+//            new int[] { 0},
+//            new int[] { 5},
 //            new int[] { },
 //            new int[] { }
 //        };
@@ -120,7 +110,3 @@
 //        }
 //    }
 //}
-
-//// Time Complexity: O(V + E) + O(V), where V = no.of nodes and E = no. of edges. There can be at most V components. So, another O(V) time complexity.
-
-//// Space Complexity: O(3N) + O(N) ~O(3N): O(3N) for three arrays required during dfs calls and O(N) for recursive stack space.

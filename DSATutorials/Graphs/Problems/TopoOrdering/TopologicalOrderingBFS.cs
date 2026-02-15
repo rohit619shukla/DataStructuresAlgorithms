@@ -1,43 +1,43 @@
 ﻿
+//using System.ComponentModel.DataAnnotations;
 
-//class Graph
+//class Solution
 //{
-//    private int v;
-//    private List<int>[] adj;
+//    private int _vertices;
+//    private List<int>[] _adjList;
 
-//    public Graph(int vertices)
+//    public Solution(int vertices)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        _vertices = vertices;
+//        _adjList = new List<int>[vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            adj[i] = new List<int>();
+//            _adjList[i] = new List<int>();
 //        }
 //    }
 
-//    public void AddEdge(int source, int destination)
+//    public void AddEdge(int src, int dest)
 //    {
-//        adj[source].Add(destination);
+//        _adjList[src].Add(dest);
 //    }
 
-
-//    public void TopologicalSort()
+//    public void TopoSortBFS()
 //    {
-//        Queue<int> q = new Queue<int>();
+//        // Create indegree for the vertex in graph
+//        int[] indegree = new int[_vertices];
 
-//        // Create an indegree array
-//        int[] indegree = new int[v];
-
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            foreach (var neigh in adj[i])
+//            foreach (var neighbor in _adjList[i])
 //            {
-//                indegree[neigh]++;
+//                indegree[neighbor]++;
 //            }
 //        }
 
-//        // put all nodes with indegree 0 in queue
+//        Queue<int> q = new Queue<int>();
+
+//        // All nodes with indegree 0 will be put in the q
 //        for (int i = 0; i < indegree.Length; i++)
 //        {
 //            if (indegree[i] == 0)
@@ -46,23 +46,22 @@
 //            }
 //        }
 
-//        // start BFS for all nodes with indegree 0 and present in queue
-
 //        while (q.Count > 0)
 //        {
 //            int node = q.Dequeue();
 
-//            Console.Write($"{node}" + " ");
-//            // Explore its adjacent edges
-//            foreach (var neigh in adj[node])
-//            {
-//                indegree[neigh]--;
+//            Console.WriteLine($"{node}" + " ");
 
-//                if (indegree[neigh] == 0)
+
+//            foreach (var neighbour in _adjList[node])
+//            {
+//                indegree[neighbour]--;
+//                if (indegree[neighbour] == 0)
 //                {
-//                    q.Enqueue(neigh);
+//                    q.Enqueue(neighbour);
 //                }
 //            }
+
 //        }
 //    }
 //}
@@ -71,7 +70,7 @@
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(6);
+//        Solution g = new Solution(6);
 //        g.AddEdge(5, 2);
 //        g.AddEdge(5, 0);
 //        g.AddEdge(4, 0);
@@ -79,10 +78,6 @@
 //        g.AddEdge(2, 3);
 //        g.AddEdge(3, 1);
 
-//        Console.WriteLine(
-//          "Following is a Topological Sort of");
-//        g.TopologicalSort();
+//        g.TopoSortBFS();
 //    }
 //}
-
-////Time Complexity: O(V + E).

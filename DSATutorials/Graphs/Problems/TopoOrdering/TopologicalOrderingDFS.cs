@@ -1,75 +1,70 @@
 ﻿
 
-//using DS_Tutorials.Linked_list.Types;
-
-//class Graph
+//class Solution
 //{
-//    private int v;
-//    private List<int>[] adj;
 
-//    public Graph(int vertices)
+//    private int _vertices;
+//    private List<int>[] _adjList;
+
+
+//    public Solution(int vertices)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        _vertices = vertices;
+//        _adjList = new List<int>[vertices];
 
-//        for (int i = 0; i < v; i++)
+//        for (int i = 0; i < vertices; i++)
 //        {
-//            adj[i] = new List<int>();
+//            _adjList[i] = new List<int>();
 //        }
 //    }
 
-//    public void AddEdge(int source, int dest)
+//    public void AddEdge(int sr, int dest)
 //    {
-//        adj[source].Add(dest);
+//        _adjList[sr].Add(dest);
 //    }
 
-//    public void TopologicalSort()
+//    public void TopoSortDFS()
 //    {
-//        // Topo sort is only for Directed acyclic graph since u should always come before v
-
-//        int[] visited = new int[v];
-
 //        Stack<int> st = new Stack<int>();
 
-//        // Start DFS
-//        for (int i = 0; i < v; i++)
+//        bool[] visited = new bool[_vertices];
+
+//        for (int i = 0; i < _vertices; i++)
 //        {
-//            if (visited[i] == 0)
+//            if (visited[i] == false)
 //            {
-//                DFS(visited, i, st);
+//                DFS(visited, i, _adjList, st);
 //            }
 //        }
 
 //        while (st.Count > 0)
 //        {
-//            Console.Write($"{st.Pop()}" + " ");
+//            Console.Write($"{st.Peek()}" +" ");
+//            st.Pop();
 //        }
 //    }
 
-//    private void DFS(int[] visited, int node, Stack<int> st)
+//    private void DFS(bool[] visited, int node, List<int>[] _adjList, Stack<int> st)
 //    {
-//        // mark the node as visited
-//        visited[node] = 1;
+//        visited[node] = true;
 
-//        // Explore adjacent nodes
-//        foreach (var neigh in adj[node])
+//        foreach (var neighbors in _adjList[node])
 //        {
-//            if (visited[neigh] == 0)
+//            if (visited[neighbors] == false)
 //            {
-//                DFS(visited, neigh, st);
+//                DFS(visited, neighbors, _adjList, st);
 //            }
 //        }
 
-//        // once a node has been explored we can add it to the stack
+//        // The moment you cant go any more further put it in stack
 //        st.Push(node);
 //    }
 //}
-
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Graph g = new Graph(6);
+//        Solution g = new Solution(6);
 //        g.AddEdge(5, 2);
 //        g.AddEdge(5, 0);
 //        g.AddEdge(4, 0);
@@ -77,13 +72,8 @@
 //        g.AddEdge(2, 3);
 //        g.AddEdge(3, 1);
 
-//        Console.WriteLine(
-//          "Following is a Topological Sort of");
-//        g.TopologicalSort();
+//        g.TopoSortDFS();
 //    }
 //}
 
-//Time Complexity: O(V + E).
-//The outer for loop will be executed V number of times and the inner for loop will be executed E number of times.
-//Auxiliary Space: O(V).
-//The queue needs to store all the vertices of the graph. So the space required is O(V)
+//// Time  : O(V+E)
