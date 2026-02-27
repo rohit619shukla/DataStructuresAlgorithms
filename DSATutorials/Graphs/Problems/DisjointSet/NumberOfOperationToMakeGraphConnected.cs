@@ -1,102 +1,90 @@
-﻿
-//public class DisjointSet
-//{
-//    public int[] Parent;
-//    public int[] Size;
-//    public int V;
-
-//    public DisjointSet(int vertices)
-//    {
-//        V = vertices;
-//        Parent = new int[vertices];
-//        Size = new int[vertices];
-
-//        for (int i = 0; i < V; i++)
-//        {
-//            Parent[i] = i;
-//            Size[i] = 1;
-//        }
-//    }
-
-//    public void UnionBySize(int v, int u, ref int extraEdges)
-//    {
-//        int parentOfU = FindParent(u);
-//        int parentOfV = FindParent(v);
-
-//        if (parentOfU == parentOfV)
-//        {
-//            extraEdges++;
-//            return;
-//        }
-
-//        if (Size[parentOfU] < Size[parentOfV])
-//        {
-//            Parent[parentOfU] = parentOfV;
-//            Size[parentOfV] += Size[parentOfU];
-//        }
-//        else
-//        {
-//            Parent[parentOfV] = parentOfU;
-//            Size[parentOfU] += Size[parentOfV];
-//        }
-//    }
-//    public int FindParent(int node)
-//    {
-//        if (node == Parent[node])
-//        {
-//            return node;
-//        }
-
-//        return Parent[node] = FindParent(Parent[node]);
-//    }
-//}
-//public class Solution
+﻿//public class Solution
 //{
 //    public int MakeConnected(int n, int[][] connections)
 //    {
-//        DisjointSet dj = new DisjointSet(n);
-
-//        int extraEdges = 0;
-
-//        // Perform union and find
-//        for (int i = 0; i < connections.Length; i++)
+//        // We must have more edges in hand to connect n-1 components
+//        if (n - 1 > connections.Length)
 //        {
-//            dj.UnionBySize(connections[i][0], connections[i][1], ref extraEdges);
+//            return -1;
 //        }
 
-//        // Get number of components
-//        int parents = 0;
+//        // Create parent and size array
+//        int[] parent = new int[n];
+//        int[] size = new int[n];
 
-//        for (int i = 0; i < dj.V; i++)
+//        Array.Fill(size, 1);
+
+//        for (int i = 0; i < n; i++)
 //        {
-//            if (dj.Parent[i] == i)
-//            {
-//                parents++;
-//            }
+//            // every node is parent of himself
+//            parent[i] = i;
 //        }
 
-//        return (extraEdges >= parents - 1) ? parents - 1 : -1;
+//        int components = n;
+
+//        // Apply Union for all the edges
+//        foreach (int[] edge in connections)
+//        {
+//            UnionBySize(edge[0], edge[1], size, parent, ref components);
+//        }
+
+//        // We need exactly n-1 times extraction to connect all the computer
+//        return components - 1;
+//    }
+
+//    private int FindParent(int[] parent, int i)
+//    {
+//        if (i == parent[i])
+//        {
+//            return i;
+//        }
+
+//        return parent[i] = FindParent(parent, parent[i]);
+//    }
+
+//    private void UnionBySize(int u, int v, int[] size, int[] parent, ref int components)
+//    {
+//        int parentOfU = FindParent(parent, u);
+//        int parentOfV = FindParent(parent, v);
+
+//        if (parentOfU == parentOfV)
+//        {
+//            return;
+//        }
+
+//        if (size[parentOfU] > size[parentOfV])
+//        {
+//            parent[parentOfV] = parentOfU;
+//            size[parentOfU] += size[parentOfV];
+//        }
+//        else
+//        {
+//            parent[parentOfU] = parentOfV;
+//            size[parentOfV] += size[parentOfU];
+//        }
+
+//        // We will shrink the component size as connections becomes more prevelant
+//        components--;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
 //        int[][] connections = new int[][] {
-//            new int[] {0,1 },
-//            new int[]{ 0,2},
-//            new int[]{ 1, 2 }
-//        };
+//                    new int[] {0,1 },
+//                    new int[]{ 0,2},
+//                    new int[]{ 0, 3 },
+//                    new int[]{ 1, 2 },
+//                    new int[]{ 1, 3 }
+//                };
 
 //        Solution s = new Solution();
 
-//        Console.WriteLine(s.MakeConnected(4, connections));
+//        Console.WriteLine(s.MakeConnected(6, connections));
+
 //    }
 //}
 
-
-//// Time : O(m+n) and aplha(n), inverse ackerman function grows very slow.
-//// Union Operations : O(m * alpha(n)), as we are calling union operation on m edges
-//// Counting Operation O(n)
-
-//// Space : O(n)
+//// Time : O(E * alpha(n)), for E edges we perform the union find

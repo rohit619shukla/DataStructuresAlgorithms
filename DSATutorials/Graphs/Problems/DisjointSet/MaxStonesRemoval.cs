@@ -1,95 +1,84 @@
 
 
-//public class DisjointSet
-//{
-//    public int[] Parent;
-//    public int[] Size;
-//    public int V;
-
-//    public DisjointSet(int vertices)
-//    {
-//        V = vertices;
-//        Parent = new int[vertices];
-//        Size = new int[vertices];
-
-//        for (int i = 0; i < vertices; i++)
-//        {
-//            Parent[i] = i;
-//            Size[i] = 1;
-//        }
-//    }
-
-//    public int FindParent(int node)
-//    {
-//        if (node == Parent[node])
-//        {
-//            return node;
-//        }
-
-//        return Parent[node] = FindParent(Parent[node]);
-//    }
-
-//    public void UnionBySize(int u, int v)
-//    {
-//        int parentOfU = FindParent(u);
-//        int parentOfV = FindParent(v);
-
-//        if (parentOfU == parentOfV)
-//        {
-//            return;
-//        }
-
-//        if (Size[parentOfU] < Size[parentOfV])
-//        {
-//            Parent[parentOfU] = parentOfV;
-//            Size[parentOfV] += Size[parentOfU];
-//        }
-//        else
-//        {
-//            Parent[parentOfV] = parentOfU;
-//            Size[parentOfU] += Size[parentOfV];
-//        }
-//    }
-//}
 //public class Solution
 //{
 //    public int RemoveStones(int[][] stones)
 //    {
-//        // Get number of rows and columns with cordinate shift
-//        int maxRow = int.MinValue;
-//        int maxCol = int.MinValue;
 
-//        for (int i = 0; i < stones.Length; i++)
+//        // The objective is to use a row and column itself as number of nodes in DSU
+//        // we will not directly consider stones as no:of nodes as number of stones can be 5  but the co-ordinate can have a row or column greatr value.
+//        // Hence we will use maxrow and maxcol from both
+//        int rows = int.MinValue;
+//        int cols = int.MinValue;
+
+//        foreach (var st in stones)
 //        {
-//            maxRow = Math.Max(maxRow, stones[i][0]);
-//            maxCol = Math.Max(maxCol, stones[i][1]);
+//            rows = Math.Max(rows, st[0]);
+//            cols = Math.Max(cols, st[1]);
 //        }
 
-//        // Initialize Disjoint set
-//        DisjointSet dj = new DisjointSet((maxRow + 1) + (maxCol + 1));
+//        int[] size = new int[rows + 1 + cols + 1];
+//        int[] parent = new int[rows + 1 + cols + 1];
 
-//        // Perform union
-//        for (int i = 0; i < stones.Length; i++)
+//        for (int i = 0; i < parent.Length; i++)
 //        {
-//            int u = stones[i][0];
-//            int v = maxRow + stones[i][1] + 1;
-
-//            dj.UnionBySize(u, v);
+//            parent[i] = i;
+//            size[i] = 1;
 //        }
 
-//        // Count parent nodes
+//        // The idea of rows+1 is that since cols are also staring from 0th index but we need nodes, hence whatever is the last node in rows+1 will get added to current col
+//        foreach (var st in stones)
+//        {
+//            int u = st[0];
+//            int v = st[1] + rows + 1;
+
+//            UnionBySize(u, v, size, parent);
+//        }
+
 //        int components = 0;
 
-//        for (int i = 0; i < dj.Parent.Length; i++)
+//        for (int i = 0; i < parent.Length; i++)
 //        {
-//            //We are making sure that on self components and then ones with only size greater then 1 are taking into consideration as each node has size of 1 by default
-//            if (dj.Parent[i] == i && dj.Size[i] > 1)
+//            if (parent[i] == i && size[i] > 1)
 //            {
 //                components++;
 //            }
 //        }
 
+//        // Formula : (x1+x2+x3) - (1+1+1)
 //        return stones.Length - components;
+//    }
+
+//    private int FindParent(int[] parent, int i)
+//    {
+//        if (parent[i] == i)
+//        {
+//            return i;
+//        }
+//        return parent[i] = FindParent(parent, parent[i]);
+//    }
+
+//    private void UnionBySize(int u, int v, int[] size, int[] parent)
+//    {
+//        int parentU = FindParent(parent, u);
+//        int parentV = FindParent(parent, v);
+
+
+//        if (parentU == parentV)
+//        {
+//            return;
+//        }
+
+//        if (parentU > parentV)
+//        {
+//            parent[parentV] = parentU;
+//            size[parentU] += size[parentV];
+//        }
+//        else
+//        {
+//            parent[parentU] = parentV;
+//            size[parentV] += size[parentU];
+//        }
 //    }
 //}
 
@@ -98,12 +87,8 @@
 //    public static void Main()
 //    {
 //        int[][] stones = new int[][]{
-//                                                     new int[] {0,0},
 //                                                     new int[] {0,1},
-//                                                     new int[] {1,0},
-//                                                     new int[] {1,2},
-//                                                     new int[] {2,1},
-//                                                     new int[] {2,2},
+//                                                     new int[] {1,1},
 //                     };
 
 
