@@ -48,7 +48,7 @@
 //            // get the current min priority node from PQ
 //            if (!pq.TryDequeue(out int currentNode, out int distance)) continue;
 //
-//            if(result[currentNode] < distance) continue; this guarantees thst V+E you were confused about in BFS or lese you will again explore the path
+//            if(result[currentNode] < distance) continue;
 
 //            // Explore the neighbors
 //            foreach (int[] neighbour in _adjList[currentNode])

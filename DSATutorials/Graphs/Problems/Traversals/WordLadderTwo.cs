@@ -109,9 +109,9 @@
 //{
 //    public static void Main()
 //    {
-//        IList<string> wordList = new List<string> { "hot", "dog" };
-//        string startWord = "hot";
-//        string targetWord = "dog";
+//        IList<string> wordList = new List<string> { "hot", "dot", "dog", "lot", "log", "cog" };
+//        string startWord = "hit";
+//        string targetWord = "cog";
 
 //        Solution s = new Solution();
 //        var result = s.FindLadders(startWord, targetWord, wordList);
@@ -127,4 +127,5 @@
 //    }
 //}
 
-//// Time : O(M*N) for BFS and O(N) for DFS  , space : O(N) 
+//// Time : O(N * L^2 * 26) for BFS and O(P * ^2) for DFS  , space : O(N) 
+//// where  P in DFS is for reversing the list and forming new list

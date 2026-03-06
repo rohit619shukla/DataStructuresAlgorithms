@@ -18,7 +18,7 @@
 
 //        int ed = edges.GetLength(0);
 
-//        // The core algorithm idea is to relax the the edges V-1 times, as longest possible path between 2 nodes without revisitng the ndoes contains V-1 edges 
+//        // The core algorithm idea is to relax the the edges V-1 times, as shortest  possible path between 2 nodes without revisitng the ndoes contains V-1 edges 
 //        for (int i = 0; i < v; i++)
 //        {
 //            // Lets pick 1 edge at a time and relax

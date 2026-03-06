@@ -1,109 +1,69 @@
-﻿
+﻿//using System.Xml.Linq;
 
-//public class Solution
+//class Solution
 //{
 //    public int CountCompleteComponents(int n, int[][] edges)
 //    {
-//        // Create a parent and size array
-//        int[] parent = new int[n];
-//        int[] size = new int[n];
+//        // Step 1 : Create a visited array
+//        bool[] visited = new bool[n];
 
-//        // Map to store number of edges count per group post union find
-//        Dictionary<int, int> map = new Dictionary<int, int>();
-
-//        int result = 0;
+//        // Step 2 : Create adj list
+//        List<int>[] adjList = new List<int>[n];
 
 //        for (int i = 0; i < n; i++)
 //        {
-//            parent[i] = i;
-//            size[i] = 1;
+//            adjList[i] = new List<int>();
 //        }
 
-//        for (int i = 0; i < edges.Length; i++)
+//        // Step 3 : Add to list
+//        foreach (var edge in edges)
 //        {
-//            // to fill the parent and size
-//            // The parent array will tell us how many possible regions are there
-//            // The size array tell us for each of these parent node how many vertices per that region
-//            UnionBySize(edges[i][0], edges[i][1], parent, size);
+//            AddEdge(edge[0], edge[1], adjList);
 //        }
 
-//        // Fill the map for how many edges per region
-//        for (int i = 0; i < edges.Length; i++)
-//        {
-//            int[] currentEdge = edges[i];
 
-//            // Post Union above both nodes paretn will be same
-//            int parentInCurrentEdge = FindParent(currentEdge[0], parent);
+//        int count = 0;
 
-//            if (map.ContainsKey(parentInCurrentEdge))
-//            {
-//                map[parentInCurrentEdge]++;
-//            }
-//            else
-//            {
-//                map.Add(parentInCurrentEdge, 1);
-//            }
-//        }
+//        // Step 4 : For complete connected components we need to make sure n*(n-1)/2 == edges
+//        // So now lets gets number of edges in the graph using DFS
 
 //        for (int i = 0; i < n; i++)
 //        {
-//            // Process only id the cluster is there
-//            if (parent[i] == i)
+//            if (visited[i] == false)
 //            {
-//                // Means it has more than 1 vertices per cluster
-//                if (map.ContainsKey(i))
-//                {
-//                    int currentEdges = map[i];
+//                int edgeCount = 0;
+//                int nodeCount = 0;
+//                DFS(i, visited, adjList, ref edgeCount, ref nodeCount);
 
-//                    int vertices = size[i];
-
-//                    if (vertices * (vertices - 1) / 2 == currentEdges)
-//                    {
-//                        result++;
-//                    }
-//                }
-//                else
+//                // Formula is  : Nc2 , which is for among n nodes 2 nodes will have 1 edge for sure
+//                // We divide edgecount /2 as we have undirected graph
+//                if ((nodeCount * (nodeCount - 1)) / 2 == edgeCount / 2)
 //                {
-//                    // An individual node is also a completely connected component
-//                    result++;
+//                    count++;
 //                }
 //            }
-
 //        }
 
-
-//        return result;
+//        return count;
 //    }
 
-//    private int FindParent(int node, int[] parent)
+//    private void AddEdge(int src, int dest, List<int>[] adjList)
 //    {
-//        if (node == parent[node])
-//        {
-//            return node;
-//        }
-
-//        return parent[node] = FindParent(parent[node], parent);
+//        adjList[src].Add(dest);
+//        adjList[dest].Add(src);
 //    }
-
-//    private void UnionBySize(int node1, int node2, int[] parent, int[] size)
+//    private void DFS(int node, bool[] visited, List<int>[] adjList, ref int edgeCount, ref int nodeCount)
 //    {
-//        int parent1 = FindParent(node1, parent);
-//        int parent2 = FindParent(node2, parent);
+//        visited[node] = true;
+//        edgeCount += adjList[node].Count;
+//        nodeCount += 1;
 
-//        if (parent1 == parent2)
+//        foreach (var neighbors in adjList[node])
 //        {
-//            return;
-//        }
-
-//        if (size[parent1] > size[parent2])
-//        {
-//            size[parent1] += size[parent2];
-//            parent[parent2] = parent1;
-//        }
-//        else
-//        {
-//            size[parent2] += size[parent1];
-//            parent[parent1] = parent2;
+//            if (visited[neighbors] == false)
+//            {
+//                DFS(neighbors, visited, adjList, ref edgeCount, ref nodeCount);
+//            }
 //        }
 //    }
 //}
@@ -118,8 +78,8 @@
 //            new int[] { 0,1},
 //            new int[] { 0,2},
 //            new int[] { 1,2},
-//            new int[] { 3,4}
-//            //new int[] { 3,5}
+//            new int[] { 3,4},
+//            new int[] { 3,5}
 //        };
 
 //        Solution s = new Solution();
@@ -128,4 +88,4 @@
 //    }
 //}
 
-//// Time  : O(E * Aplha(v) + v)
+////O(V + E)

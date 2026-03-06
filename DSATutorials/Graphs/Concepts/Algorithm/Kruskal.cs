@@ -36,7 +36,9 @@
 //                // Join the components
 //                UnionBySize(currentEdge[0], currentEdge[1], parent, size);
 
-//                if (++count == v - 1)
+//                count++;
+
+//                if (count == v - 1)
 //                {
 //                    break;
 //                }

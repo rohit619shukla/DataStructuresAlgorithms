@@ -1,9 +1,14 @@
 
-1. In Dijikstra : we tnd to keep on visisting a node till we can find a better option from PQ
+1. In Dijikstra : If a -ve edge is there we may loose the O(ELogV) Time and might turn into exponenential. As it will see a -ve edge node and start processing again which is not effecient
 
+2. Bellman : Does not matter if a -ve edge is there or how many of those are there, i will only work for v-1 times.
 
-2. In Prims : the moment you pop a node we dont care further and mark it visited as we are trying to be absolute;y connected to its neighbors
+3. In Prims : the moment you pop a node we dont care further and mark it visited as we are trying to be absolutey connected to its neighbors
 
-3. Topo sort : Helps in telling that given a directed graph and 2 edges u and v, where u -> v means u will always come beofre v
+4. In Kruskal's : We sort the edges and then consider only v-1 edges in graph with help of union find algorithm to make sure no cycle is found
 
-4. Whenever the question has keyword Shortest, there is Dijikstra hidden somewhere
+5. Topo sort : Helps in telling that given a directed graph and 2 edges u and v, where u -> v means u will always come beofre v
+
+6. Whenever the question has keyword Shortest, there is Dijikstra hidden somewhere
+
+7. Complete connected components : DFS with n*(n-1)/2 == edges/2
