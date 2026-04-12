@@ -7,7 +7,8 @@
 
 4. In Kruskal's : We sort the edges and then consider only v-1 edges in graph with help of union find algorithm to make sure no cycle is found
 
-5. Topo sort : Helps in telling that given a directed graph and 2 edges u and v, where u -> v means u will always come beofre v
+5. Topo sort : Helps in telling that given a directed graph and 2 edges u and v, where u -> v means u will always come beofre v.
+Note : Usually in BFS for topo, if we dont have any node with indegree 0 then we may have a cycle or the count of nodes for graph is not equals to what BFS tells us
 
 6. Whenever the question has keyword Shortest, there is Dijikstra hidden somewhere
 

@@ -63,7 +63,8 @@
 //        int numCourses = 2;
 
 //        int[][] prerequisites = {
-//            new int[] {1,0 }
+//            new int[] {1,0 },
+//            new int[] {0,1 }
 //        };
 
 //        Solution s = new Solution();

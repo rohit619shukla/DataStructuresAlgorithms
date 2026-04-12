@@ -1,5 +1,4 @@
-﻿//using Microsoft.Azure.Cosmos;
-//using Microsoft.Azure.Cosmos.Serialization.HybridRow;
+﻿
 
 //class Solution
 //{
@@ -39,7 +38,8 @@
 //        Array.Fill(parent, -1);
 
 //        PriorityQueue<int[], int> pq = new PriorityQueue<int[], int>();
-
+       
+           // Source, parent and priority
 //        pq.Enqueue(new int[] { 0, 0 }, 0);
 
 //        while (pq.Count > 0)

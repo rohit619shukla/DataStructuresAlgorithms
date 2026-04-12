@@ -42,7 +42,7 @@
 //                // Since we are using a PQ, we may have n entires for same cell, but the moment we will pop we will always get the smallest on top
 //                if (sr == rows - 1 && sc == cols - 1)
 //                {
-//                    return cost;
+//                    return result[sr, sc];    
 //                }
 
 //                for (int i = 0; i < 4; i++)

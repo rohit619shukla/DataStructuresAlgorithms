@@ -127,5 +127,5 @@
 //    }
 //}
 
-//// Time : O(N * L^2 * 26) for BFS and O(P * ^2) for DFS  , space : O(N) 
+//// Time : O(N * L^2 * 26) for BFS and O(P * L^2) for DFS  , space : O(N) 
 //// where  P in DFS is for reversing the list and forming new list

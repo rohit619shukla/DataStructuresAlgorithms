@@ -1,127 +1,100 @@
-﻿//class Graph
+﻿//class Solution
 //{
-//    private static int timer;
-//    private int v;
-//    private List<int>[] adj;
+//    private int timer;
 
-//    public Graph(int vertices)
+//    public List<int> ArticulationPoints(int V, List<int>[] adj)
 //    {
-//        v = vertices;
-//        adj = new List<int>[v];
+//        List<int> result = new List<int>();
 
-//        for (int i = 0; i < v; i++)
-//        {
-//            adj[i] = new List<int>();
-//        }
+//        // Step 1: Create visited, disc and low arrays
+//        int[] disc = new int[V];
+//        int[] low = new int[V];
+//        bool[] visited = new bool[V];
+
+//        DFS(0, -1, adj, result, disc, low, visited);
+
+//        return result;
 //    }
 
-//    public void AddEdge(int source, int dest)
+//    private void DFS(int currentNode, int parentNode, List<int>[] adjList, List<int> result, int[] disc, int[] low, bool[] visited)
 //    {
-//        adj[source].Add(dest);
-//        adj[dest].Add(source);
-//    }
-
-//    public void AP()
-//    {
-//        int[] low = new int[v];
-//        int[] disc = new int[v];
-//        int[] explored = new int[v];
-
-//        for (int i = 0; i < v; i++)
-//        {
-//            if (explored[i] == 0)
-//            {
-//                DFS(i, -1, low, disc, explored);
-//            }
-//        }
-//    }
-
-//    private void DFS(int currentNode, int parentNode, int[] low, int[] disc, int[] explored)
-//    {
-//        // create childrens to keep track
 //        int children = 0;
 
-//        // mark the node as visited
-//        explored[currentNode] = 1;
+//        // Mark the currentNode as visited
+//        visited[currentNode] = true;
 
-//        // update the timer as DFS proceeds
-//        low[currentNode] = disc[currentNode] = timer++;
+//        disc[currentNode] = low[currentNode] = ++timer;
 
-//        // Explore the adjcent nodes
-//        foreach (int neighNode in adj[currentNode])
+
+//        foreach (var neighNode in adjList[currentNode])
 //        {
-//            if (parentNode == currentNode)
+//            if (neighNode == parentNode)
 //            {
 //                continue;
 //            }
 
-//            if (explored[neighNode] == 0)
-//            {
-//                // increase children count
-//                children++;
-//                DFS(neighNode, currentNode, low, disc, explored);
 
-//                // update low of the currentNode
+//            if (!visited[neighNode])
+//            {
+//                children++;
+//                // Go deeper
+//                DFS(neighNode, currentNode,  adjList, result, disc, low, visited);
+
+//                //While returning check for low
 //                low[currentNode] = Math.Min(low[currentNode], low[neighNode]);
 
-
-//                // The node should be parent and children is greater than 1
 //                if (parentNode == -1 && children > 1)
 //                {
-//                    Console.WriteLine($"{currentNode}" + " ");
+//                    result.Add(currentNode);
 //                }
 
-//                if (parentNode != -1 && low[neighNode] >= disc[currentNode])
+//                if (parentNode != -1 && disc[currentNode] <= low[neighNode])
 //                {
-//                    Console.WriteLine($"{currentNode}" + " ");
+//                    result.Add(currentNode);
 //                }
+
+
 //            }
 //            else
 //            {
 //                low[currentNode] = Math.Min(low[currentNode], disc[neighNode]);
 //            }
 //        }
+
 //    }
 //}
 
-//class Program
+//public class Program
 //{
 //    public static void Main()
 //    {
-//        Console.WriteLine("Articulation points in first graph ");
-//        Graph g1 = new Graph(5);
-//        g1.AddEdge(1, 0);
-//        g1.AddEdge(0, 2);
-//        g1.AddEdge(2, 1);
-//        g1.AddEdge(0, 3);
-//        g1.AddEdge(3, 4);
-//        g1.AP();
-//        Console.WriteLine();
+//        int n = 5;
 
-//        Console.WriteLine("Articulation points in Second graph");
-//        Graph g2 = new Graph(4);
-//        g2.AddEdge(0, 1);
-//        g2.AddEdge(1, 2);
-//        g2.AddEdge(2, 3);
-//        g2.AP();
-//        Console.WriteLine();
+//        List<int>[] adj = new List<int>[n];
 
-//        Console.WriteLine("Articulation points in Third graph ");
-//        Graph g3 = new Graph(7);
-//        g3.AddEdge(0, 1);
-//        g3.AddEdge(1, 2);
-//        g3.AddEdge(2, 0);
-//        g3.AddEdge(1, 3);
-//        g3.AddEdge(1, 4);
-//        g3.AddEdge(1, 6);
-//        g3.AddEdge(3, 5);
-//        g3.AddEdge(4, 5);
-//        g3.AP();
+//        for (int i = 0; i < n; i++)
+//        {
+//            adj[i] = new List<int>();
+//        }
+
+//        adj[0].Add(1);
+//        adj[1].Add(0);
+//        adj[1].Add(4);
+//        adj[4].Add(1);
+//        adj[3].Add(4);
+//        adj[4].Add(3);
+//        adj[3].Add(2);
+//        adj[2].Add(3);
+//        adj[4].Add(2);
+//        adj[2].Add(4);
+
+//        Solution s = new Solution();
+
+//        var result = s.ArticulationPoints(n, adj);
+
+//        foreach (var node in result)
+//        {
+//            Console.Write($"{node}" + " ");
+//        }
 //    }
 //}
-
-////Time Complexity: O(V + E), For DFS it takes O(V+E) time.
-////Auxiliary Space: O(V + E), For visited array, adjacency list array
-
-//// Low : earliest possible time to reach a Node
-//// Disc : discovery tim eof the node

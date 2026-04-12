@@ -75,15 +75,24 @@
 //{
 //    public static void Main()
 //    {
-//        int numCourses = 2;
+//        int numCourses = 4;
 
 //        int[][] prerequisites = {
-//            new int[] {1,0 }
+//            new int[] {1,0 },
+//            new int[] {2,0 },
+//            new int[] {3,1 },
+//            new int[] {3,2},
 //        };
 
 //        Solution s = new Solution();
 
-//        Console.WriteLine(s.FindOrder(numCourses, prerequisites));
+//        var result = s.FindOrder(numCourses, prerequisites);
+
+//        foreach (var node in result)
+//        {
+//            Console.Write($"{node}" + " ");
+//        }
+
 //    }
 //}
 ////Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.

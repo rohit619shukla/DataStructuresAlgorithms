@@ -2,14 +2,11 @@
 //{
 //    public string FindOrder(string[] words)
 //    {
-//        string result = "";
+//        string result = string.Empty;
 
-//        // Since something has to appear something and we maintain a chain we will apply topo sort
-//        // Since we have not been given the number of vertices,we will deduce it
-//        // The set will store all distinct char in word as vertices
+//        // STEP 1: For a Topo sort to work properly we need to know how many nodes are there in graph
+//        // Hence we create a Hashset for this to store all distinct nodes
 //        HashSet<char> set = new HashSet<char>();
-
-//        // Time : O(N*L) , for each word in list of N words we iterate over L length
 //        foreach (string word in words)
 //        {
 //            foreach (char ch in word)
@@ -18,7 +15,7 @@
 //            }
 //        }
 
-//        // Create a adj list
+//        // We need to store 26 as we may have less distinct words but the index of the word may be greater than index of adjList , if we go with simple set
 //        List<int>[] adjList = new List<int>[26];
 
 //        for (int i = 0; i < 26; i++)
@@ -26,43 +23,45 @@
 //            adjList[i] = new List<int>();
 //        }
 
-//        bool mismatchFound = false;
+//        bool misMatchFound = false;
 //        int[] indegree = new int[26];
 
-//        // Create edges
-//        for (int i = 0; i < words.Length - 1; i++)   // O(N)
+//        // STEP 2: Now we need to create a Adj list so that we could later apply topo sort on DAG
+//        for (int i = 0; i < words.Length - 1; i++)
 //        {
 //            string word1 = words[i];
 //            string word2 = words[i + 1];
 
-//            // We will iterate over minimum length of two words
+//            // We need to know what is the minimum length word among both to proceed properly
 //            int minLength = Math.Min(word1.Length, word2.Length);
-//            for (int j = 0; j < minLength; j++)   // O(L)
+
+//            // Now lets iterate over minimum length word only
+//            for (int k = 0; k < minLength; k++)
 //            {
-//                if (word1[j] != word2[j])
+//                if (word1[k] != word2[k])
 //                {
-//                    AddEdge(word1[j] - 'a', word2[j] - 'a', adjList);
-//                    indegree[word2[j] - 'a']++;
-//                    mismatchFound = true;
+//                    AddEdges(word1[k] - 'a', word2[k] - 'a', adjList);
+//                    indegree[word2[k] - 'a']++;
+//                    misMatchFound = true;
 //                    break;
 //                }
 //            }
 
-//            // Rules :
-//            // 1. So long as we got a difference we dont care much
-//            // 2. Only if a difference is not found and word1 > word2 then we have invalid case and need to return
-//            // 3. This is becoz if we dont have mismatch and word1> word2 then we will not have a sequecne with all the char in the word
-//            if (!mismatchFound && word1.Length > word2.Length)
+//            // It might be possible that no mismatch is found and word1.length > word2.length
+//            if (misMatchFound == false && word1.Length > word2.Length)
 //            {
 //                return "";
 //            }
-//            mismatchFound = false;
+
+//            // Lets reset for next iteration
+//            misMatchFound = false;
 //        }
 
-//        // store all nodes with indegree 0 in queue
-//        Queue<int> q = new Queue<int>();
 
-//        foreach (char ch in set)
+//        // STEP 3 : Apply Topo sort
+//        // Get all nodes with 0 indegree
+//        Queue<int> q = new Queue<int>();
+//        foreach (var ch in set)
 //        {
 //            if (indegree[ch - 'a'] == 0)
 //            {
@@ -72,14 +71,13 @@
 
 //        int count = 0;
 
-//        // start BFS
 //        while (q.Count > 0)
 //        {
 //            int node = q.Dequeue();
-//            count++;
 
+//            count++;
 //            result += (char)(node + 'a');
-//            foreach (var neighbor in adjList[node])
+//            foreach (int neighbor in adjList[node])
 //            {
 //                indegree[neighbor]--;
 //                if (indegree[neighbor] == 0)
@@ -88,13 +86,13 @@
 //                }
 //            }
 //        }
-
-//        return count == set.Count ? result : "";
+//        return   count == set.Count ? result : "";
+//        ;
 //    }
 
-//    private void AddEdge(int src, int dest, List<int>[] adjList)
+//    private void AddEdges(int u, int v, List<int>[] adjList)
 //    {
-//        adjList[src].Add(dest);
+//        adjList[u].Add(v);
 //    }
 //}
 
@@ -110,4 +108,4 @@
 //    }
 //}
 
-//// Time : O(N*L) , space: O(1) : as we will only store unique chars in queue
+//// Time : O(N*L) , space: O(k) =26 : as we will only store unique chars in queue

@@ -1,118 +1,102 @@
-﻿
-//public class Graph
+﻿//public class Solution
 //{
-//    public int v;
-//    public List<int>[] adj;
+//    private int timer;
 
-//    public Graph(int vertices)
-//    {
-//        v = vertices;
-//        adj = new List<int>[v];
-
-//        for (int i = 0; i < v; i++)
-//        {
-//            adj[i] = new List<int>();
-//        }
-//    }
-
-//    public void AddEdge(int source, int dest)
-//    {
-//        adj[source].Add(dest);
-//        adj[dest].Add(source);
-//    }
-//}
-//public class Solution
-//{
-//    public static int Timer = 0;
 //    public IList<IList<int>> CriticalConnections(int n, IList<IList<int>> connections)
 //    {
 //        IList<IList<int>> result = new List<IList<int>>();
 
-//        Graph g = new Graph(n);
-
-//        // Create adjacency list graph
-//        for (int i = 0; i < connections.Count; i++)
+//        // step 1: need to create AdjList
+//        List<int>[] adjList = new List<int>[n];
+//        for (int i = 0; i < n; i++)
 //        {
-//            g.AddEdge(connections[i][0], connections[i][1]);
+//            adjList[i] = new List<int>();
 //        }
 
+//        for (int i = 0; i < connections.Count; i++)
+//        {
+//            AddEdges(connections[i][0], connections[i][1], adjList);
+//        }
+
+//        // Step 2: Create visited, discovery and low array
+//        bool[] visited = new bool[n];
 //        int[] disc = new int[n];
 //        int[] low = new int[n];
-//        int[] explored = new int[n];
 
-//        // Start DFS from any node
-//        DFS(0, -1, explored, disc, low, g.adj, result);
+
+//        // Step 3 : start DFS
+//        DFS(0, -1, adjList, disc, low, visited, result);
 
 //        return result;
 //    }
 
-//    private void DFS(int currentNode, int parentNode, int[] explored, int[] disc, int[] low, List<int>[] adj, IList<IList<int>> result)
+//    private void AddEdges(int src, int dest, List<int>[] adjList)
 //    {
-//        // mark the node as visited
-//        explored[currentNode] = 1;
+//        adjList[src].Add(dest);
+//        adjList[dest].Add(src);
+//    }
 
-//        // Update low and disc for the node
-//        disc[currentNode] = low[currentNode] = ++Timer;
+//    private void DFS(int currentNode, int parentNode, List<int>[] adjList, int[] disc, int[] low, bool[] visited, IList<IList<int>> result)
+//    {
+//        // Need to mark the current node as visited
+//        visited[currentNode] = true;
 
-//        // explore adjacent node
-//        foreach (var neighNode in adj[currentNode])
+//        // increase the timer
+//        disc[currentNode] = low[currentNode] = ++timer;
+
+//        foreach (var neighNode in adjList[currentNode])
 //        {
-//            // if the neigh node is parent of the current node
+//            // if the neightNode is the parent for currentNode, no need to do anything
 //            if (neighNode == parentNode)
 //            {
 //                continue;
 //            }
 
-//            if (explored[neighNode] == 0)
+//            if (!visited[neighNode])
 //            {
-//                // Mode next node
-//                DFS(neighNode, currentNode, explored, disc, low, adj, result);
+//                // Move deeper
+//                DFS(neighNode, currentNode, adjList, disc, low, visited, result);
 
-//                // backtracking
+//                // While retruning we need to update the low. As there might be a child node in the path below who might have found aother better way to reach a node via backedge
 //                low[currentNode] = Math.Min(low[currentNode], low[neighNode]);
 
-//                // bridge detection
-//                if (low[neighNode] > disc[currentNode])
+//                // check for bridge
+//                if (disc[currentNode] < low[neighNode])
 //                {
 //                    result.Add(new List<int> { currentNode, neighNode });
 //                }
 //            }
 //            else
 //            {
-//                low[currentNode] = Math.Min(low[currentNode], low[neighNode]);
+//                // We found a backedge and another way so see if this is better
+//                low[currentNode] = Math.Min(low[currentNode], disc[neighNode]);
 //            }
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int n = 2;
 //        IList<IList<int>> connections = new List<IList<int>>();
 //        connections.Add(new List<int> { 0, 1 });
-//        //connections.Add(new List<int> { 1, 2 });
-//        //connections.Add(new List<int> { 2, 0 });
-//        //connections.Add(new List<int> { 0, 3 });
-//        //connections.Add(new List<int> { 3, 4 });
+//        connections.Add(new List<int> { 1, 2 });
+//        connections.Add(new List<int> { 2, 0 });
+//        connections.Add(new List<int> { 1, 3 });
 
 //        Solution s = new Solution();
 
-//        var result = s.CriticalConnections(n, connections);
+//        var result = s.CriticalConnections(4, connections);
 
-//        foreach (var item in result)
+//        foreach (var con in result)
 //        {
-//            foreach (var con in item)
+//            foreach (var nodes in con)
 //            {
-//                Console.Write($"{con}" + " ");
+//                Console.Write($"{nodes}" + " ");
 //            }
-//            Console.WriteLine();
 //        }
 //    }
 //}
 
-////Time Complexity: O(V + E), 
-
-////The above approach uses simple DFS along with Tarjan’s Algorithm. 
-////So time complexity is the same as DFS which is O(V+E) for adjacency list representation of the graph.
-////Auxiliary Space: O(V) is used for visited, disc and low arrays.
+//// Time : O(V+E), space : O(V+E)

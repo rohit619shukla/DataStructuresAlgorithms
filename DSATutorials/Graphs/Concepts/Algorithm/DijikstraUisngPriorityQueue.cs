@@ -47,8 +47,8 @@
 //        {
 //            // get the current min priority node from PQ
 //            if (!pq.TryDequeue(out int currentNode, out int distance)) continue;
-//
-//            if(result[currentNode] < distance) continue;
+
+//            if (result[currentNode] < distance) continue;
 
 //            // Explore the neighbors
 //            foreach (int[] neighbour in _adjList[currentNode])
@@ -91,4 +91,5 @@
 //    }
 //}
 
-//// Time :VLogV+ELogV, space :O(V+E) , for PQ its just E
+//// Time :VLogV+ELogV = > O(V+E(LogV)), space :O(V+E) , for PQ its just E
+//// This gives a feeling like BFS V+E

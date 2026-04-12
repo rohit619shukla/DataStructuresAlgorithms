@@ -39,6 +39,7 @@
 
 //        for (int i = 0; i < parent.Length; i++)
 //        {
+//            // We are only considering those components which are having more than 1 node because only those can be removed, if there is only 1 node then it cannot be removed
 //            if (parent[i] == i && size[i] > 1)
 //            {
 //                components++;
@@ -98,4 +99,4 @@
 //    }
 //}
 
-//// Time : O(n(alpha(n)) + O(n) and space : O(n)
+//// Time : O(n * alpha(M) + M) and space : O(n)

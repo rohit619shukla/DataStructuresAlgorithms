@@ -1,125 +1,130 @@
-﻿//public class Solution
+﻿
+
+//public class Solution
 //{
 //    public IList<IList<string>> AccountsMerge(IList<IList<string>> accounts)
 //    {
-
-//        IList<IList<string>> result = new List<IList<string>>();
+//        var result = new List<IList<string>>();
 
 //        int n = accounts.Count;
-
 //        int[] parent = new int[n];
 //        int[] size = new int[n];
 
-//        for (int i = 0; i < n; i++)
+//        // O(N)
+//        for (int i = 0; i < accounts.Count; i++)
 //        {
 //            parent[i] = i;
 //            size[i] = 1;
 //        }
 
-//        // Step1 : Create a map containig which email belon go to which node , if same email appear again then simply union them
-//        Dictionary<string, int> emailMap = new Dictionary<string, int>();
+//        // Step 1: We need to have a node level structure to represent each name so that we can apply DSU
+//        // Lets create a Map to store who belong which index
 
-//        for (int i = 0; i < n; i++)
+//        Dictionary<string, int> map = new Dictionary<string, int>();
+
+//        // O(N)
+//        for (int i = 0; i < accounts.Count; i++)
 //        {
+//            // O(K)
 //            for (int j = 1; j < accounts[i].Count; j++)
 //            {
-//                if (!emailMap.ContainsKey(accounts[i][j]))
+//                if (!map.ContainsKey(accounts[i][j]))
 //                {
-//                    // Add the email to amp with its nodes where it belong
-//                    emailMap.Add(accounts[i][j], i);
+//                    map[accounts[i][j]] = i;
 //                }
 //                else
 //                {
-//                    // If the same email is found again in different node, then perform union
-//                    UnionBySize(emailMap[accounts[i][j]], i, parent, size);
+//                    // Perform union which will help us retrieve and merge effeciently in upcoming steps
+//                    // Inverse akerman
+//                    UnionBySize(i, map[accounts[i][j]], parent, size);
 //                }
 //            }
 //        }
 
-//        // Step 2 : Create a map containing which email finally belongs to which node afetr initial union in step1
-//        Dictionary<int, List<string>> unSortedList = new Dictionary<int, List<string>>();
-
-//        foreach (var pair in emailMap)
+//        // Step 2 : Now lets iterate over the map and start adding the names to right index in list in sorted order
+//        Dictionary<int, List<string>> unsortedList = new Dictionary<int, List<string>>();
+//        // O(N)
+//        foreach (var item in map)
 //        {
-//            // We need to get the ultimate parent of the node the current email is
-//            int root = FindParent(parent, emailMap[pair.Key]);
+//            string key = item.Key;
+//            int value = item.Value;
 
-//            if (!unSortedList.ContainsKey(root))
+//            // Get ulimate parent of each node to add correctly
+//            // Inverse ackerman
+//            int ulitmateParent = FindParent(value, parent);
+
+//            if (!unsortedList.ContainsKey(ulitmateParent))
 //            {
-//                unSortedList.Add(root, new List<string> { pair.Key });
+//                unsortedList.Add(ulitmateParent, new List<string> { key});
 //            }
 //            else
 //            {
-//                unSortedList[root].Add(pair.Key);
+//                unsortedList[ulitmateParent].Add(key);
 //            }
+
 //        }
 
-
-//        // Step3 : Now for the nodes having email in sorted order add them to proper result with name of the account ebing the first  string
-//        foreach (var act in unSortedList)
+//        // Step 3 : Now sort all the arrays individually and append to final result
+//        // O(N)
+//        foreach (var nameList in unsortedList)
 //        {
-//            int key = act.Key;
-//            List<string> temp = new List<string>();
-//            temp.Add(accounts[key][0]);
+//            int key = nameList.Key;
+//            List<string> names = nameList.Value;
 
-//            List<string> emails = act.Value;
-//            emails.Sort(StringComparer.Ordinal);
+//            // O(NLogN)
+//            names.Sort(String.CompareOrdinal);
+//            names.Insert(0, accounts[key][0]);
 
-//            foreach (var mail in emails)
-//            {
-//                temp.Add(mail);
-//            }
-//            result.Add(temp);
+//            result.Add(names);
 //        }
-
 //        return result;
 //    }
-//    private int FindParent(int[] parent, int i)
+
+//    private int FindParent(int i, int[] parent)
 //    {
-//        if (parent[i] == i)
+//        if (i == parent[i])
 //        {
 //            return i;
 //        }
-//        return parent[i] = FindParent(parent, parent[i]);
+
+//        return parent[i] = FindParent(parent[i], parent);
 //    }
 
 //    private void UnionBySize(int u, int v, int[] parent, int[] size)
 //    {
-//        int parentU = FindParent(parent, u);
-//        int parentV = FindParent(parent, v);
+//        int p_U = FindParent(u, parent);
+//        int p_V = FindParent(v, parent);
 
-//        if (parentU == parentV)
+//        if (p_U == p_V)
 //        {
 //            return;
 //        }
 
-//        if (size[parentU] > size[parentV])
+//        if (size[p_U] > size[p_V])
 //        {
-//            parent[parentV] = parentU;
-//            size[parentU] += size[parentV];
+//            size[p_U] += size[p_V];
+//            parent[p_V] = p_U;
 //        }
 //        else
 //        {
-//            parent[parentU] = parentV;
-//            size[parentV] += size[parentU];
+//            size[p_V] += size[p_U];
+//            parent[p_U] = p_V;
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        IList<IList<string>> accounts = new List<IList<string>>
-//{
-//    new List<string> { "David", "David0@m.co", "David4@m.co", "David3@m.co" },
-//    new List<string> { "David", "David5@m.co", "David5@m.co", "David0@m.co" },
-//    new List<string> { "David", "David1@m.co", "David4@m.co", "David0@m.co" },
-//    new List<string> { "David", "David0@m.co", "David1@m.co", "David3@m.co" },
-//    new List<string> { "David", "David4@m.co", "David1@m.co", "David3@m.co" }
-//};
-
-
 //        Solution s = new Solution();
+
+//        var accounts = new List<IList<string>>();
+
+//        accounts.Add(new List<string> { "John", "johnsmith@mail.com", "john_newyork@mail.com" });
+//        accounts.Add(new List<string> { "John", "johnsmith@mail.com", "john00@mail.com" });
+//        accounts.Add(new List<string> { "Mary", "mary@mail.com" });
+//        accounts.Add(new List<string> { "John", "johnnybravo@mail.com" });
 
 //        var result = s.AccountsMerge(accounts);
 
@@ -133,6 +138,7 @@
 //            Console.WriteLine();
 //        }
 //    }
+
 //}
 
-//// Time : O(N*(ElogE + E))
+//// Time : O(N * KLogK))

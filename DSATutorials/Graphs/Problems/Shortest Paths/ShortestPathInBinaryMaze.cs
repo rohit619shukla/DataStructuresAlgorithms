@@ -11,9 +11,6 @@
 //        int cols = grid[0].Length;
 
 
-//        // Create a visisted array. Dijiktsra with 2D matrix needs to keep track of visisted
-//        bool[,] visited = new bool[rows, cols];
-
 //        // create a distance matrix
 //        int[,] distance = new int[rows, cols];
 
@@ -28,19 +25,18 @@
 //        // mark the start node a visisted and set the intial distance
 //        distance[0, 0] = 0;
 
-//        visited[0, 0] = true;
 
 //        // Since we have been asked shortest path, Dijikstra comes to mind.
 //        // But there is a twist, here the path length will be +1 incremented, hence no need to a PQ
 //        // We will create a pair to store the co-ordinates and the distance 
-//        Queue<((int, int), int)> q = new Queue<((int, int), int)>();
+//        Queue<(int, int)> q = new Queue<(int, int)>();
 
-//        q.Enqueue(((0, 0), 0));
+//        q.Enqueue((0, 0));
 
-//        // start Dijik in 8 directions
+//        // start  in 8 directions
 //        while (q.Count > 0)
 //        {
-//            ((int src, int dest), int cost) = q.Dequeue();
+//            (int src, int dest) = q.Dequeue();
 
 //            // Now explore in all 8 directions
 
@@ -52,13 +48,12 @@
 //                    int newDst = dest + deltaCols;
 
 //                    // check for validity
-//                    if (newSrc >= 0 && newSrc < rows && newDst >= 0 && newDst < cols && visited[newSrc, newDst] == false && grid[newSrc][newDst] == 0)
+//                    if (newSrc >= 0 && newSrc < rows && newDst >= 0 && newDst < cols  && grid[newSrc][newDst] == 0)
 //                    {
-//                        if (distance[newSrc, newDst] > 1 + cost)
+//                        if (distance[newSrc, newDst] > 1 + distance[src,dest])
 //                        {
-//                            distance[newSrc, newDst] = 1 + cost;
-//                            visited[newSrc, newDst] = true;
-//                            q.Enqueue(((newSrc, newDst), distance[newSrc, newDst]));
+//                            distance[newSrc, newDst] = 1 + distance[src, dest];
+//                            q.Enqueue((newSrc, newDst));
 //                        }
 //                    }
 
