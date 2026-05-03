@@ -1,41 +1,106 @@
-DP Patterns :
+Dynamic Programming Notes for Interview Preparation
+=====================================================
 
-1. Partition DP :
-   - The moment you see keyword like partition its partition dp.
-   - Here we have index which is usually start and the lb  and then a for loop which provides us with a range of partitions between index and i.
+--- DP PATTERNS (Learn to Identify Quickly) ---
 
+1. Partition DP:
+   - Keyword trigger: "partition", "split array", "max sum after partitioning".
+   - Structure: index (start) + a for loop providing range of partitions between index and i.
+   - We try all possible partition points and pick the optimal one.
+   - Problems: Partition Array for Max Sum, Palindrome Partitioning II.
 
-2. MCM :
-   - Here out objectives is to break problems at different places by applying k cuts.
-   - Applying cuts is the key which ranges between i and j.
+2. MCM (Matrix Chain Multiplication):
+   - Objective: break problem at different places by applying K cuts between i and j.
+   - Structure: two pointers (i, j) + a loop for cut position k between i and j.
+   - At each cut, solve left and right independently, combine results.
+   - Problems: MCM, Burst Balloons, Min Cost to Cut Stick, Egg Drop, Evaluate Expression to True.
 
+3. LIS (Longest Increasing Subsequence):
+   - Golden Rule: Every element is a LIS of length 1 by itself.
+   - Structure: single index + variable tracking the previous index (or previous element).
+   - Two choices: take or not take current element based on comparison with previous.
+   - Optimization: O(nlogn) using patience sorting (binary search on tails array).
+   - Problems: LIS, Longest Divisible Subset, Longest String Chain, Number of LIS.
 
+4. Strings (LCS-based):
+   - Core pattern: two indices (i, j) for two strings.
+   - Match: dp[i-1][j-1] + 1 (diagonal).
+   - No match: max(dp[i-1][j], dp[i][j-1]) — skip from either string.
+   - Almost all string DP problems reduce to LCS or its variations.
+   - Problems: LCS, Longest Palindromic Subsequence, Edit Distance, Shortest Common
+     Supersequence, Wildcard Matching, Distinct Subsequences.
 
-3. LIS :
-   - Every element is a LIS in itself. (Golden Rule) 
-   - Here we have a single index and a variable which keeps track of the previous index.
-   - We have 2 choices either to take or not to take the current index based on certain conditions.
+5. Subsets (Knapsack Family):
+   - Pattern: take or not take approach.
+   - Most times we have a TARGET to achieve. If not given explicitly, dig into the problem
+     statement — it will definitely be there (e.g., total_sum/2 for partition problems).
+   - Bounded Knapsack: each item used once.
+   - Unbounded Knapsack: items can be reused (stay at same index on take).
+   - Problems: Subset Sum, Partition Equal Subset, Coin Change 1 & 2, Target Sum,
+     Rod Cutting, Combination Sum IV, Painting Walls.
 
+6. 2D Grid:
+   - Deal with matrix-based path problems.
+   - Mostly down and right directions (sometimes all 4 for min-cost problems).
+   - Start from (0,0) or (n-1, m-1) and work towards opposite corner.
+   - For 2-player problems (Cherry Pick): move both simultaneously using 3D DP.
+   - Problems: Unique Paths, Min Path Sum, Triangle, Cherry Pick, Dungeon, Frog Jump.
 
-4. Strings :
-   - This is mostly around LCS based questions with quiet similar approach of i-1, j-1
+7. 1D Array:
+   - Simplest DP pattern: 1 jump or 2 jumps (Fibonacci-like recurrence).
+   - dp[i] depends on dp[i-1] and/or dp[i-2] (sometimes dp[i-k]).
+   - Often can be space-optimized to O(1) using two variables.
+   - Problems: Climbing Stairs, Frog Jump, House Robber, Min Cost Climbing Stairs, Decode Ways.
 
+--- VERY IMPORTANT INTERVIEW TIPS ---
 
-5. Subsets :
-	- This follows the take or not take approach.
-	- Most of the times we have a target achieve. In case we dont have a target explicitly given then we need to dig in the statement to find it.It will definitely be there.
+8. Pop/Burst/Remove Pattern:
+   - When you see "pop", "burst", "remove" → think of KEEPING the element till the LAST
+     moment to get maximum benefit out of it.
+   - Reverse the thinking: instead of "which to remove first", think "which to remove last".
+   - Examples: Burst Balloons, Remove Boxes.
 
+9. How to Approach Any DP Problem (Interview Framework):
+   Step 1: Write the recursive solution first (express choices clearly).
+   Step 2: Identify overlapping subproblems (draw recursion tree if needed).
+   Step 3: Memoize (top-down) — add a dp table to cache results.
+   Step 4: Convert to tabulation (bottom-up) — fill table iteratively.
+   Step 5: Space optimize if possible (rolling array or variables).
 
-6. 2D :
-	- We deal with matrix based problems.
-	- Mostly down and right directions
+10. Identifying DP vs Greedy vs Backtracking:
+    - "Count all ways" / "Min/Max cost" / "Is it possible" → DP.
+    - "Print all solutions" → Backtracking (DP can't enumerate).
+    - "Locally optimal = globally optimal" → Greedy.
 
+11. State Definition Tips:
+    - Ask: "What information do I need to make the next decision?"
+    - Common states: index, remaining capacity, previous element, boolean flags.
+    - If states are too many → look for ways to reduce dimensions.
 
-7. 1D :
-	- 1 jump or 2 jump 
+12. Space Optimization Patterns:
+    - If dp[i] only depends on dp[i-1] row → use two 1D arrays (prev, curr).
+    - If dp[i] depends on dp[i-1] and dp[i-2] → use two variables.
+    - String problems: often reducible from O(n*m) to O(m) space.
 
+--- QUICK PATTERN RECOGNITION TABLE ---
 
+13. Keyword → Pattern Mapping:
+    | Keyword/Clue                  | Pattern          |
+    |-------------------------------|------------------|
+    | "partition", "split"          | Partition DP     |
+    | "cuts", "multiply matrices"   | MCM              |
+    | "longest increasing"          | LIS              |
+    | "two strings", "subsequence"  | LCS / Strings    |
+    | "target", "knapsack", "coins" | Subsets          |
+    | "grid", "path", "obstacles"   | 2D DP            |
+    | "stairs", "jump", "steps"     | 1D DP            |
+    | "burst", "remove", "pop"      | MCM (last-pick)  |
 
-	Very Important Tips :
-	1. Whenever you see a problem where pop, burst, remove is involved in that you will need to think of keeping the element till last moment to get maximum benefit out of it.
-	  ex : Burst Balloons, Remove boxes etc.
+--- COMPLEXITY REFERENCE ---
+
+14. 1D DP: O(n) time, O(n) or O(1) space.
+    2D DP (grid): O(n*m) time, O(n*m) or O(m) space.
+    LCS/Strings: O(n*m) time, O(n*m) or O(m) space.
+    LIS: O(n^2) naive, O(nlogn) optimized.
+    MCM/Partition: O(n^3) time, O(n^2) space.
+    Subset/Knapsack: O(n*target) time and space.

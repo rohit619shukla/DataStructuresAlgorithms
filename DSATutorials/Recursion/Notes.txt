@@ -1,17 +1,86 @@
-Recursion:
+Recursion & Backtracking Notes for Interview Preparation
+==========================================================
 
-1) There are 2 kinds of patterns we have seen so far :
-   a) Permutations
-   b) Subsets
+--- TWO CORE PATTERNS ---
 
+1) There are 2 fundamental recursion patterns:
+   a) Permutations — order matters, all elements must be used.
+   b) Subsets — order doesn't matter, choose to include or exclude each element.
 
-2) For permutation we usually have a for loop
+--- PATTERN IDENTIFICATION ---
 
-3) For subsets we usually have 2 choices at each step (include or exclude)
+2) Permutation Pattern:
+   - Usually has a FOR LOOP iterating over available choices at each level.
+   - Uses a visited/used array or swap technique to track which elements are placed.
+   - Total possibilities: n! (factorial).
+   - Problems: Permutations, Kth Permutation Sequence, Letter Combinations.
 
-4) For permutation based problem if duplicates are given in array , use set to exclude duplicates at same level.
+3) Subset Pattern:
+   - Usually has 2 CHOICES at each step: include current element OR exclude it.
+   - Moves index forward regardless of choice (no for loop over remaining).
+   - Total possibilities: 2^n (power set).
+   - Problems: Subsets, Combination Sum, Palindrome Partition.
 
-5) For subsets based problem if duplicates are given in array, first sort the array and then use a while loop to move out
+--- HANDLING DUPLICATES (Very Important for Interviews) ---
 
-6) In combination sum problem we will also go till target == 0. Unlike susbet problem where we also go till index == 0. As this makes sure that anytome we get a target we count as success,
-rather in Subset problem we will travserse till entire list till index ==0 in a hope
+4) Permutation + Duplicates:
+   - Use a HashSet at each recursion level to skip duplicates at the same position.
+   - This ensures we don't place the same value at the same index twice.
+   - Example: Permutations II.
+
+5) Subset + Duplicates:
+   - First SORT the array.
+   - Then use a while loop to skip over consecutive duplicate elements when you choose NOT to include.
+   - This avoids generating duplicate subsets.
+   - Example: Subsets II, Combination Sum II.
+
+--- COMBINATION SUM vs SUBSET TERMINATION ---
+
+6) Combination Sum: recurse until target == 0 (success) or target < 0 (failure).
+   - Any time target hits 0, we found a valid combination — add to result immediately.
+   - We don't need to exhaust the array.
+
+   Subset: recurse until index reaches end of array (index == n).
+   - We traverse the entire array, making include/exclude decisions for each element.
+   - Only at the end do we add the current subset to result.
+
+--- BACKTRACKING TEMPLATE ---
+
+7) General Template:
+   void backtrack(state, choices, result):
+       if (base_case):  → add to result / return
+       for each choice in choices:
+           make_choice()        → modify state
+           backtrack(...)       → recurse
+           undo_choice()        → restore state (BACKTRACK)
+
+   Key: Always undo your choice after recursion to explore other branches.
+
+--- INTERVIEW TIPS & TRICKS ---
+
+8) When to use Backtracking vs DP:
+   - If question asks "print ALL" / "find ALL" → Backtracking (can't optimize with DP).
+   - If question asks "count" / "min/max" → Likely DP.
+   - If question asks "is it possible" → Could be either.
+
+9) Pruning is critical for performance:
+   - Skip invalid states early (e.g., target < 0, invalid placement).
+   - Sort input when possible to enable early termination.
+   - Example: In Combination Sum II, if current element > remaining target, break.
+
+10) Constraint-based Backtracking (Sudoku, N-Queens, M-Coloring):
+    - Place element → Check constraints → If valid, recurse → If dead end, undo.
+    - These problems have strict rules that limit choices at each step.
+    - Time complexity is usually exponential but pruning makes it practical.
+
+11) String-based Backtracking:
+    - Palindrome Partition: try all possible cuts, validate palindrome, recurse on remainder.
+    - Word Search: DFS on grid with visited tracking, backtrack on failure.
+    - Generate Parenthesis: track open/close counts as constraints.
+
+--- PROBLEMS BY PATTERN ---
+
+12) Permutation-based: Permutations, Permutations II, Kth Permutation, Letter Combinations.
+    Subset-based: Subsets, Subsets II, Combination Sum 1/2/3, Palindrome Partition.
+    Constraint-based: Sudoku Solver, Rat in a Maze, M-Coloring, Word Search.
+    Math-based: Power(x,n), Count Good Numbers.
