@@ -93,4 +93,8 @@
 //}
 
 
-//// Time : O(V^2 + ELogV) , space :  O(V+E)
+//// Time : O(V^2 + V^2LogV2) , space :  O(V+E)
+//// V^2 due to fact we create a dense graph where every node v has v-1 neighbors hence v*(v-1)/2 . 
+//// We divide by 2 to avoid double counting
+//// he prims take ElogE complexity, but since this is a dens grpah it becoms E =V^2.
+//// O(V^2 + V^2LogV2)

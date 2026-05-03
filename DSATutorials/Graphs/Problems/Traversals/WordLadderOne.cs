@@ -33,10 +33,10 @@
 //            // Iterate over the word length for all set of chars between a - z
 //            for (int i = 0; i < currentWord.Length; i++)
 //            {
+//                char[] currentWordArray = currentWord.ToCharArray();
 //                // Pick one letter and repacing it with each char in seqeunce and check
 //                for (char ch = 'a'; ch <= 'z'; ch++)
 //                {
-//                    char[] currentWordArray = currentWord.ToCharArray();
 //                    currentWordArray[i] = ch;
 //                    string newWord = new string(currentWordArray);
 

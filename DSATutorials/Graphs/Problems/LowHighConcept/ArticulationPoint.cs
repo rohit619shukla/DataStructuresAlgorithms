@@ -38,7 +38,7 @@
 //            {
 //                children++;
 //                // Go deeper
-//                DFS(neighNode, currentNode,  adjList, result, disc, low, visited);
+//                DFS(neighNode, currentNode, adjList, result, disc, low, visited);
 
 //                //While returning check for low
 //                low[currentNode] = Math.Min(low[currentNode], low[neighNode]);

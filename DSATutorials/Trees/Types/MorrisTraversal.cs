@@ -1,57 +1,70 @@
 ﻿
+
+//public class TreeNode
+//{
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
+
 //class Solution
 //{
-//    public void Solve(TNode root)
+//    public void Solve(TreeNode root)
 //    {
+//        TreeNode currNode = root;
 
-//        TNode curr = root;
-//        TNode temp = null;
-
-//        while (curr != null)
+//        while (currNode != null)
 //        {
-//            if (curr.left == null)
+//            if (currNode.left != null)
 //            {
-//                Console.Write($"{curr.data}" + " ");
-//                curr = curr.right;
-//            }
-//            else
-//            {
-//                temp = curr.left;
+//                TreeNode temp = currNode.left;
 
-//                while (temp.right != null && temp.right != curr)
+//                while (temp.right != null && temp.right != currNode)
 //                {
 //                    temp = temp.right;
 //                }
-                    
+
 //                if (temp.right == null)
 //                {
-//                    temp.right = curr;
-//                    curr = curr.left;
+//                    temp.right = currNode;
+//                    currNode = currNode.left;
 //                }
 //                else
 //                {
-//                    Console.Write($"{curr.data}" + " ");
+//                    Console.Write($"{currNode.val}" + " ");
 //                    temp.right = null;
-//                    curr = curr.right;
+//                    currNode = currNode.right;
 //                }
+//            }
+//            else
+//            {
+//                Console.Write($"{currNode.val}" + " ");
+//                currNode = currNode.right;
 //            }
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
 //        Solution h = new Solution();
 
-//        TNode root = new TNode(4);
-//        root.left = new TNode(2);
-//        root.right = new TNode(5);
-//        root.left.left = new TNode(1);
-//        root.left.right = new TNode(3);
+//        TreeNode root = new TreeNode(4);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(5);
+//        root.left.left = new TreeNode(1);
+//        root.left.right = new TreeNode(3);
 
 //        h.Solve(root);
+
 //    }
 //}
 
-// Timeo : O(2N) =: O(n+n) , as each node is processed ony twice, space : O(1)
+////Time: O(2N) =: O(n + n) , as each node is processed ony twice, space : O(1)

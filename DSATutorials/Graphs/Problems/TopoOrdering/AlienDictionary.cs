@@ -2,6 +2,7 @@
 //{
 //    public string FindOrder(string[] words)
 //    {
+//        int w = 4;
 //        string result = string.Empty;
 
 //        // STEP 1: For a Topo sort to work properly we need to know how many nodes are there in graph
@@ -16,15 +17,15 @@
 //        }
 
 //        // We need to store 26 as we may have less distinct words but the index of the word may be greater than index of adjList , if we go with simple set
-//        List<int>[] adjList = new List<int>[26];
+//        List<int>[] adjList = new List<int>[w];
 
-//        for (int i = 0; i < 26; i++)
+//        for (int i = 0; i < w; i++)
 //        {
 //            adjList[i] = new List<int>();
 //        }
 
 //        bool misMatchFound = false;
-//        int[] indegree = new int[26];
+//        int[] indegree = new int[w];
 
 //        // STEP 2: Now we need to create a Adj list so that we could later apply topo sort on DAG
 //        for (int i = 0; i < words.Length - 1; i++)
@@ -86,8 +87,8 @@
 //                }
 //            }
 //        }
-//        return   count == set.Count ? result : "";
-//        ;
+//        return count == set.Count ? result : "";
+        
 //    }
 
 //    private void AddEdges(int u, int v, List<int>[] adjList)

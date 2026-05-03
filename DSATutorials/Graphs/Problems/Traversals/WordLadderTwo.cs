@@ -84,8 +84,6 @@
 //        {
 //            char[] currentWordArray = startWord.ToCharArray();
 
-//            char old = currentWordArray[i];
-
 //            for (char ch = 'a'; ch <= 'z'; ch++)
 //            {
 //                // replace the first char

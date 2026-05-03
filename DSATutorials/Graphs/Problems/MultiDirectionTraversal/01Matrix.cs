@@ -86,5 +86,5 @@
 //}
 
 //// Time : 4 * (N*M)
-/// The reason we are starting from 0 in queue instead of 1 is that , with many 1 in matrix we might be blokced to fin nearest 0 distance
-/// While with 0 it is a ripple effect that from 0 to anything else in connected order we get min distance.
+/// The reason we are starting from 0 in queue instead of 1 is that , we arleady know the distance of 0 to 0 is 0.
+/// But if we start with putting 1, then we dont know distance of nearest 0 yet as it is the starting point and wont have right answer

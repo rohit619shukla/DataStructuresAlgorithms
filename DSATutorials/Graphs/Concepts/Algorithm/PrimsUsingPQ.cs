@@ -48,7 +48,7 @@
 
 //            int currentNode = node[0];
 
-//            if (visited[currentNode] != 0)
+//            if (visited[currentNode] == 0)
 //            {
 //                continue;
 //            }

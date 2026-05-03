@@ -33,16 +33,14 @@
 
 //        int count = 0;
 
-//        int k = 0;
-
 //        while (q.Count > 0)
 //        {
 //            int node = q.Dequeue();
 
+//            result[count] = node;
+
 //            count++;
 
-//            result[k] = node;
-//            k++;
 
 //            foreach (var neighbors in adjList[node])
 //            {

@@ -29,14 +29,14 @@
 //        // Since we have been asked shortest path, Dijikstra comes to mind.
 //        // But there is a twist, here the path length will be +1 incremented, hence no need to a PQ
 //        // We will create a pair to store the co-ordinates and the distance 
-//        Queue<(int, int)> q = new Queue<(int, int)>();
+//        Queue<(int, int, int)> q = new Queue<(int, int, int)>();
 
-//        q.Enqueue((0, 0));
+//        q.Enqueue((0, 0, 0));
 
 //        // start  in 8 directions
 //        while (q.Count > 0)
 //        {
-//            (int src, int dest) = q.Dequeue();
+//            (int src, int dest, int dist) = q.Dequeue();
 
 //            // Now explore in all 8 directions
 
@@ -48,12 +48,12 @@
 //                    int newDst = dest + deltaCols;
 
 //                    // check for validity
-//                    if (newSrc >= 0 && newSrc < rows && newDst >= 0 && newDst < cols  && grid[newSrc][newDst] == 0)
+//                    if (newSrc >= 0 && newSrc < rows && newDst >= 0 && newDst < cols && grid[newSrc][newDst] == 0)
 //                    {
-//                        if (distance[newSrc, newDst] > 1 + distance[src,dest])
+//                        if (dist + 1 < distance[newSrc, newDst])
 //                        {
-//                            distance[newSrc, newDst] = 1 + distance[src, dest];
-//                            q.Enqueue((newSrc, newDst));
+//                            distance[newSrc, newDst] = 1 + dist;
+//                            q.Enqueue((newSrc, newDst, 1 + dist));
 //                        }
 //                    }
 

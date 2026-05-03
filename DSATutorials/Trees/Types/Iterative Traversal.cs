@@ -13,20 +13,23 @@
 
 //        while (true)
 //        {
-//            while (head != null)
+//            if (head != null)
 //            {
 //                st.Push(head);
 //                head = head.left;
 //            }
-
-//            if (st.Count == 0)
+//            else
 //            {
-//                return;
+//                if (st.Count == 0)
+//                {
+//                    return;
+//                }
+
+//                head = st.Pop();
+//                Console.Write($"{head.data}" + " ");
+//                head = head.right;
 //            }
 
-//            head = st.Pop();
-//            Console.Write($"{head.data}" + " ");
-//            head = head.right;
 //        }
 //    }
 
@@ -42,20 +45,22 @@
 
 //        while (true)
 //        {
-//            while (head != null)
+//            if (head != null)
 //            {
 //                st.Push(head);
 //                Console.Write($"{head.data}" + " ");
 //                head = head.left;
 //            }
-
-//            if (st.Count == 0)
+//            else
 //            {
-//                return;
-//            }
+//                if (st.Count == 0)
+//                {
+//                    return;
+//                }
 
-//            head = st.Pop();
-//            head = head.right;
+//                head = st.Pop();
+//                head = head.right;
+//            }
 //        }
 //    }
 
@@ -107,17 +112,22 @@
 
 //        while (q.Count != 0)
 //        {
-//            TNode node = q.Dequeue();
-//            Console.Write($"{node.data}" + " ");
+//            int size = q.Count();
 
-//            if (node.left != null)
+//            for (int i = 0; i < size; i++)
 //            {
-//                q.Enqueue(node.left);
-//            }
+//                TNode node = q.Dequeue();
 
-//            if (node.right != null)
-//            {
-//                q.Enqueue(node.right);
+//                Console.Write($"{node.data}" + " ");
+//                if (node.left != null)
+//                {
+//                    q.Enqueue(node.left);
+//                }
+
+//                if (node.right != null)
+//                {
+//                    q.Enqueue(node.right);
+//                }
 //            }
 //        }
 //    }
