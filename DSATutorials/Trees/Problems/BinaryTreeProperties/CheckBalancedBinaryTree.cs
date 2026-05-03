@@ -1,24 +1,48 @@
-﻿//using System;
+﻿
 
-//class Helper
+//public class TreeNode
 //{
-//    // Time : O(N), space : O(N)
-//    public int HeightOfTree(TNode root)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
+
+//public class Solution
+//{
+//    public bool IsBalanced(TreeNode root)
+//    {
+//        if (root == null) return false;
+
+//        var result = FindHeight(root);
+
+//        if (result == -1)
+//        {
+//            return false;
+//        }
+
+//        return true;
+//    }
+
+//    private int FindHeight(TreeNode root)
 //    {
 //        if (root == null)
 //        {
 //            return 0;
 //        }
 
-//        int leftHeight = HeightOfTree(root.left);
+//        int leftHeight = FindHeight(root.left);
 
 //        if (leftHeight == -1)
 //        {
 //            return -1;
 //        }
 
-//        int rightHeight = HeightOfTree(root.right);
-
+//        int rightHeight = FindHeight(root.right);
 
 //        if (rightHeight == -1)
 //        {
@@ -29,33 +53,29 @@
 //        {
 //            return -1;
 //        }
-
-//        return 1 + Math.Max(leftHeight, rightHeight);
+//        else
+//        {
+//            return 1 + Math.Max(leftHeight, rightHeight);
+//        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        TreeNode root = new TreeNode(3);
+//        root.left = new TreeNode(9);
+//        root.right = new TreeNode(20);
+//        root.right.left = new TreeNode(15);
+//        root.right.right = new TreeNode(7);
 
-//        TNode root = new TNode(10);
-//        root.left = new TNode(5);
-//        root.right = new TNode(30);
-//        root.right.left = new TNode(15);
-//        root.right.right = new TNode(20);
+//        Solution s = new Solution();
 
-//        var result = h.HeightOfTree(root);
-
-//        if (result == -1)
-//        {
-//            Console.WriteLine($"Not balanced");
-//        }
-//        else
-//        {
-//            Console.WriteLine($"Balanced: {result}");
-//        }
+//        Console.WriteLine(s.IsBalanced(root));
 //    }
 //}
 
-//// Complexity : O(N)
+
+
+//// Time : O(N) , space : O(N)
