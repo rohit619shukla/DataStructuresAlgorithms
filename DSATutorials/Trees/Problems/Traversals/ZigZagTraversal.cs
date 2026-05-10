@@ -1,55 +1,70 @@
 ﻿
-//class Solution
+//public class TreeNode
 //{
-//    public IList<IList<int>> Solve(TNode root)
-//    {
-//        Queue<TNode> q = new Queue<TNode>();
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
 
-//        IList<IList<int>> resultList = new List<IList<int>>();
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
+//public class Solution
+//{
+//    public IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+//    {
+//        IList<IList<int>> result = new List<IList<int>>();
+
+//        if (root == null) return result;
+
+//        Queue<TreeNode> q = new Queue<TreeNode>();
 
 //        q.Enqueue(root);
 
-//        bool flag = true;
+//        bool flag = false;
 
 //        while (q.Count > 0)
 //        {
-//            List<int> currentList = new List<int>();
+//            int size = q.Count();
 
-//            int queueCount = q.Count;
+//            List<int> temp = new List<int>();
 
-//            for (int i = 0; i < queueCount; i++)
+//            for (int i = 0; i < size; i++)
 //            {
-//                TNode temp = q.Dequeue();
+//                TreeNode head = q.Dequeue();
 
 //                if (flag)
 //                {
-//                    // Add to end of the list
-//                    currentList.Add(temp.data);
+//                    // Right to Left
+//                    temp.Insert(0, head.val);
 //                }
 //                else
 //                {
-//                    // Add to start of list
-//                    currentList.Insert(0, temp.data);
+//                    // Left to Right
+//                    temp.Add(head.val);
 //                }
 
-//                if (temp.left != null)
+//                if (head.left != null)
 //                {
-//                    q.Enqueue(temp.left);
+//                    q.Enqueue(head.left);
 //                }
 
-//                if (temp.right != null)
+//                if (head.right != null)
 //                {
-//                    q.Enqueue(temp.right);
+//                    q.Enqueue(head.right);
 //                }
 //            }
 
-//            resultList.Add(currentList);
+//            result.Add(temp);
+
 //            flag = !flag;
 //        }
 
-//        return resultList;
+//        return result;
 //    }
 //}
+
 
 //class Program
 //{
@@ -57,15 +72,15 @@
 //    {
 //        Solution s = new Solution();
 
-//        TNode root = new TNode(1);
-//        root.left = new TNode(2);
-//        root.right = new TNode(3);
-//        root.left.left = new TNode(4);
-//        root.left.right = new TNode(5);
-//        root.right.right = new TNode(6);
+//        TreeNode root = new TreeNode(3);
+//        root.left = new TreeNode(9);
+//        root.right = new TreeNode(20);
+//        root.right.left = new TreeNode(15);
+//        root.right.right = new TreeNode(7);
 
 
-//        var result = s.Solve(root);
+
+//        var result = s.ZigzagLevelOrder(root);
 
 //        foreach (var items in result)
 //        {
@@ -77,5 +92,6 @@
 //    }
 //}
 
-////Space Complexity: O(N)
-////Time Complexity: O(N) As outer while loops executes for N times and inner loops also goes over each node in tree only once.
+
+//////Space Complexity: O(N)
+//////Time Complexity: O(N) As outer while loops executes for N times and inner loops also goes over each node in tree only once.

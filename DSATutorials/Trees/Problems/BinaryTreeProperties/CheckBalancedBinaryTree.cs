@@ -79,3 +79,4 @@
 
 
 //// Time : O(N) , space : O(N)
+/// The idea here is that you will try to compute height while traversing, rather than firts find heoght and then traverse. Which will take O(N^2) time

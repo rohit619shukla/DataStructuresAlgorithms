@@ -1,75 +1,61 @@
 ﻿
-
-//class Helper
+//public class TreeNode
 //{
-//    //public int Height(TNode root)
-//    //{
-//    //    if (root == null)
-//    //    {
-//    //        return 0;
-//    //    }
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
 
-//    //    int leftHeight = Height(root.left);
-//    //    int rightHeight = Height(root.right);
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
 
-//    //    return 1 + Math.Max(leftHeight, rightHeight);
-//    //}
+//public class Solution
+//{
+//    public int DiameterOfBinaryTree(TreeNode root)
+//    {
+//        int maxi = 0;
 
-//    // Time : O(N^2), space : O(N)
-//    //public int Diameter(TNode root)
-//    //{
-//    //    if (root == null)
-//    //    {
-//    //        return 0;
-//    //    }
+//        Solve(root, ref maxi);
 
-//    //    int leftHeight = Height(root.left);
-//    //    int rightHeight = Height(root.right);
+//        return maxi;
+//    }
 
-//    //    int leftDiamater = Diameter(root.left);
-//    //    int rightDiamater = Diameter(root.right);
-
-//    //    return Math.Max(1+leftHeight + rightHeight, Math.Max(leftDiamater, rightDiamater));
-//    //}
-
-
-
-//    // Time: O(N) , space : O(N)
-//    public int Diameter(TNode root, ref int max)
+//    private int Solve(TreeNode root, ref int maxi)
 //    {
 //        if (root == null)
 //        {
 //            return 0;
 //        }
 
-//        //The idea is that at every junction we will calcualte the Lh and Rh and store the maximum of Lh + Rh in var maxi
-//        int leftHeight = Diameter(root.left, ref max);
+//        int leftHeight = Solve(root.left, ref maxi);
+//        int rightHeight = Solve(root.right, ref maxi);
 
-//        int rightHeight = Diameter(root.right, ref max);
-
-//        max = Math.Max(max, leftHeight + rightHeight);
+//        maxi = Math.Max(maxi, leftHeight + rightHeight);
 
 //        return 1 + Math.Max(leftHeight, rightHeight);
+
 //    }
 //}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        root.left.left = new TreeNode(4);
+//        root.left.right = new TreeNode(5);
 
-//        TNode root = new TNode(1);
-//        root.left = new TNode(2);
-//        root.left.left = new TNode(4);
-//        root.left.right = new TNode(5);
-//        root.right = new TNode(3);
+//        Solution s = new Solution();
 
-
-//        int max = int.MinValue;
-
-//        h.Diameter(root, ref max);
-
-//        Console.WriteLine(max);
+//        Console.WriteLine($"{s.DiameterOfBinaryTree(root)}");
 //    }
+
 //}
+
+//// Time : O(N) , space :O(N)
+/// Idea is at every node we will calcutae the Lh and Rh and then keep a max to know which node has biggest Lh+Rh

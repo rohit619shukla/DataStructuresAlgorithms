@@ -1,40 +1,65 @@
-﻿//using System;
-
-//class Helper
+﻿
+//public class TreeNode
 //{
-//    // Time : O(N) , sapce : O(N) in worst case of skewed
-//    public bool AreTreeIdentical(TNode root1, TNode root2)
-//    {
-//        if (root1 == null || root2 == null)
-//        {
-//            return (root1 == root2);  // Check if both of them are null or either of them is null
-//        }
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
 
-//        return (root1.data == root2.data) &&
-//            AreTreeIdentical(root1.left, root2.left)
-//            && AreTreeIdentical(root1.right, root2.right);
+//    public TreeNode(int data)
+//    {
+//        val = data;
 //    }
 //}
+//public class Solution
+//{
+//    public bool IsSameTree(TreeNode p, TreeNode q)
+//    {
+//        // Both nodes are null, we are fine
+//        if (p == null && q == null)
+//        {
+//            return true;
+//        }
+
+//        // Either is null , not acceptable
+//        if (p == null || q == null)
+//        {
+//            return false;
+//        }
+
+//        // Maybe values are not same
+//        if (p.val != q.val)
+//        {
+//            return false;
+//        }
+
+//        // Go to same direction in both trees while traversing
+//        return IsSameTree(p.left, q.left) &&
+//            IsSameTree(p.right, q.right);
+//    }
+
+//}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        Solution h = new Solution();
 
-//        TNode root1 = new TNode(1);
-//        root1.left = new TNode(2);
-//        root1.right = new TNode(3);
-//        root1.left.left = new TNode(4);
-//        root1.left.right = new TNode(5);
+//        TreeNode root1 = new TreeNode(1);
+//        root1.left = new TreeNode(2);
+//        root1.right = new TreeNode(3);
+//        root1.left.left = new TreeNode(4);
+//        root1.left.right = new TreeNode(5);
 
-//        TNode root2 = new TNode(1);
-//        root2.left = new TNode(2);
-//        root2.right = new TNode(3);
-//        root2.left.left = new TNode(4);
-//        root2.left.right = new TNode(6);
+//        TreeNode root2 = new TreeNode(1);
+//        root2.left = new TreeNode(2);
+//        root2.right = new TreeNode(3);
+//        root2.left.left = new TreeNode(4);
+//        root2.left.right = new TreeNode(6);
 
-//        Console.WriteLine($"{h.AreTreeIdentical(root1, root2)}");
+//        Console.WriteLine($"{h.IsSameTree(root1, root2)}");
 //    }
 //}
 
+//// Time : O(N) , sapce : O(N) in worst case of skewed

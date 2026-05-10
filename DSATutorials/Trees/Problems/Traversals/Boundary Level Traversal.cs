@@ -1,98 +1,117 @@
-﻿
-//using System;
-
-//class Helper
+﻿//public class TreeNode
 //{
-//    public void BoundaryTraversal(TNode root)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        if (root == null)
-//        {
-//            return;
-//        }
+//        val = data;
+//    }
+//}
 
-//        Console.Write($"{root.data}" + " ");
 
+//class Solution
+//{
+//    public void BoundaryTraversal(TreeNode root)
+//    {
+//        if (root == null) return;
+
+//        // Print the root always to start with
+//        Console.Write($"{root.val}" + " ");
+
+//        // We will visit left side first
 //        PrintLeftSide(root.left);
 
-//        PrintLeaf(root.left);
-//        PrintLeaf(root.right);
+//        // Proceed to go for leaf nodes for left side
+//        PrintLeafOnly(root.left);
+
+//        // then for leaf nodes for right side
+//        PrintLeafOnly(root.right);
 
 //        PrintRightSide(root.right);
 //    }
 
-//    /// <summary>
-//    /// Print left side of tree first
-//    /// </summary>
-//    /// <param name="root"></param>
-//    public void PrintLeftSide(TNode root)
+//    private void PrintLeftSide(TreeNode root)
 //    {
-//        if (root != null)
+//        if (root == null) return;
+
+//        // Out target is left is we will only prioritze left first
+//        if (root.left != null)
 //        {
-//            if (root.left != null)
-//            {
-//                Console.Write($"{root.data}" + " ");
-//                PrintLeftSide(root.left);
-//            }
-//            else if (root.right != null)
-//            {
-//                Console.Write($"{root.data}" + " ");
-//                PrintLeftSide(root.right);
-//            }
+//            Console.Write($"{root.val}" + " ");
+//            PrintLeftSide(root.left);
+//        }
+//        else if (root.right != null)
+//        {
+//            // It could be possible that left dont exist for root, then we will try to see if we can get any left node via right of root
+//            Console.Write($"{root.val}" + " ");
+//            PrintLeftSide(root.right);
 //        }
 //    }
 
-//    /// <summary>
-//    /// Print leaf for leaf part
-//    /// </summary>
-//    public void PrintLeaf(TNode root)
+//    private void PrintLeafOnly(TreeNode root)
 //    {
-//        if (root != null)
+//        if (root == null) return;
+
+//        PrintLeafOnly(root.left);
+//        PrintLeafOnly(root.right);
+
+//        if (root.left == null && root.right == null)
 //        {
-//            PrintLeaf(root.left);
-//            PrintLeaf(root.right);
-
-//            if ((root.left == null) && (root.right == null))
-//            {
-//                Console.Write($"{root.data}" + " ");
-//            }
-
+//            Console.Write($"{root.val}" + " ");
 //        }
-
 //    }
 
-//    public void PrintRightSide(TNode root)
+//    private void PrintRightSide(TreeNode root)
 //    {
-//        if (root != null)
+//        if (root == null) return;
+
+//        if (root.right != null)
 //        {
-//            if (root.right != null)
-//            {
-//                Console.Write($"{root.data}" + " ");
-//                PrintRightSide(root.right);
-//            }
-//            else if (root.left != null)
-//            {
-//                Console.Write($"{root.data}" + " ");
-//                PrintRightSide(root.left);
-//            }
+//            PrintRightSide(root.right);
+//        }
+//        else if (root.left != null)
+//        {
+//            PrintRightSide(root.left);
+//        }
+
+//        if (root.left != null && root.right != null)
+//        {
+//            Console.Write($"{root.val}" + " ");
 //        }
 //    }
 //}
+
 //class Program
 //{
-//    public static void Main()
+//    public static void Main(string[] args)
 //    {
-//        TNode root = new TNode(20);
-//        root.left = new TNode(8);
-//        root.left.left = new TNode(4);
-//        root.left.right = new TNode(12);
-//        root.left.right.left = new TNode(10);
-//        root.left.right.right = new TNode(14);
-//        root.right = new TNode(22);
-//        root.right.right = new TNode(25);
+//        // Building the tree from your image:
+//        //          1
+//        //        /   \
+//        //       2     3
+//        //      / \   / \
+//        //     4   5 6   7
+//        //        / \
+//        //       8   9
 
-//        Helper h = new Helper();
+//        TreeNode root = new TreeNode(1);
+
+//        // Left subtree
+//        root.left = new TreeNode(2);
+//        root.left.left = new TreeNode(4);
+//        root.left.right = new TreeNode(5);
+//        root.left.right.left = new TreeNode(8);
+//        root.left.right.right = new TreeNode(9);
+
+//        // Right subtree
+//        root.right = new TreeNode(3);
+//        root.right.left = new TreeNode(6);
+//        root.right.right = new TreeNode(7);
+
+//        Solution h = new Solution();
+//        Console.WriteLine("Boundary Traversal Output:");
 //        h.BoundaryTraversal(root);
 //    }
 //}
-
-//// Complexity : O(N), space : O(N)
