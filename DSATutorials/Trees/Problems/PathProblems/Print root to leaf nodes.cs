@@ -1,72 +1,90 @@
-﻿
+﻿//using System.Text;
 
-//using System.Text;
-
-//class Solution
+//public class TreeNode
 //{
-//    public IList<string> PrintRootToLeaf(TNode root)
-//    {
-//        List<string> resultList = new List<string>();
-//        TNode head = root;
-//        List<string> currentList = new List<string>();
-//        currentList.Add(head.data.ToString());
-//        Solve(head, resultList, currentList);
+//    public int val;
+//    public TreeNode left;
+//    public TreeNode right;
 
-//        return resultList;
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
+
+
+//public class Solution
+//{
+//    public IList<string> BinaryTreePaths(TreeNode root)
+//    {
+//        List<string> result = new List<string>();
+//        List<int> temp = new List<int>();
+
+//        temp.Add(root.val);
+
+//        DFS(root, result, temp);
+
+//        return result;
 //    }
 
-//    private void Solve(TNode head, List<string> resultList, List<string> currentList)
+//    private void DFS(TreeNode root, List<string> result, List<int> temp)
 //    {
-//        if (head.left == null && head.right == null)
+//        // base case : we have found a leaf node
+//        if (root.left == null && root.right == null)
 //        {
-//            string str = "";
+//            StringBuilder str = new StringBuilder();
 
-//            for (int i = 0; i < currentList.Count - 1; i++)
+//            for (int i = 0; i < temp.Count - 1; i++)
 //            {
-//                str += currentList[i] + "->";
+//                str.Append(temp[i]).Append("->");
 //            }
 
-//            str += currentList[currentList.Count - 1];
-//            resultList.Add(str);
+//            str.Append(temp[temp.Count - 1]);
+//            result.Add(str.ToString());
+
 //            return;
 //        }
 
-//        if (head.left != null)
+
+//        // Simple left and right travsersal
+//        if (root.left != null)
 //        {
-//            currentList.Add(head.left.data.ToString());
-//            Solve(head.left, resultList, currentList);
-//            currentList.RemoveAt(currentList.Count - 1);
+//            temp.Add(root.left.val);
+//            DFS(root.left, result, temp);
+//            temp.RemoveAt(temp.Count - 1);
 //        }
 
-//        if (head.right != null)
+//        if (root.right != null)
 //        {
-//            currentList.Add(head.right.data.ToString());
-//            Solve(head.right, resultList, currentList);
-//            currentList.RemoveAt(currentList.Count - 1);
+//            temp.Add(root.right.val);
+//            DFS(root.right, result, temp);
+//            temp.RemoveAt(temp.Count - 1);
 //        }
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        TNode root = new TNode(6);
-//        root.left = new TNode(3);
-//        root.left.left = new TNode(2);
-//        root.left.right = new TNode(5);
-//        root.left.right.left = new TNode(7);
-//        root.left.right.right = new TNode(4);
-//        root.right = new TNode(9);
-//        root.right.right = new TNode(4);
-//        Solution h = new Solution();
+//        Solution s = new Solution();
 
-//        IList<string> str = h.PrintRootToLeaf(root);
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        root.left.right = new TreeNode(5);
 
-//        foreach (var item in str)
+//        var result = s.BinaryTreePaths(root);
+
+//        foreach (var item in result)
 //        {
-//            Console.WriteLine(item);
+//            Console.Write($"{item}" + " ");
 //        }
 //    }
 //}
 
-//// Complexity : O(N), spcae : O(N)
+//// Time : O(N·H) — DFS visits all N nodes, and at each leaf we build the path string in O(H).
+////   Balanced tree: H = log N → O(N·log N)
+////   Skewed tree:   H = N → O(N²)
+//// Auxiliary Space : O(H) — temp list storing current path
+//// Space Complexity : O(H) — recursive stack space
