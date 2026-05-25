@@ -1,72 +1,82 @@
 ﻿
-//class Solution
+//public class TreeNode
 //{
-//    public int Solve(TNode root)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        Queue<(TNode, int)> q = new Queue<(TNode, int)>();
+//        val = data;
+//    }
+//}
+
+//public class Solution
+//{
+//    public int WidthOfBinaryTree(TreeNode root)
+//    {
+//        // we will be storing node and its index
+//        Queue<(TreeNode, int)> q = new Queue<(TreeNode, int)>();
 
 //        q.Enqueue((root, 0));
 
-//        int maxPath = int.MinValue;
+//        int min = -1;
+//        int max = -1;
 
-//        // start levelorder traversal
+//        int result = int.MinValue;
 //        while (q.Count > 0)
 //        {
-//            int levelCount = q.Count;
+//            int size = q.Count;
 
-//            int leftMostDist = -1;
-//            int rightMostDist = -1;
-
-//            for (int i = 0; i < levelCount; i++)
+//            for (int i = 0; i < size; i++)
 //            {
-//                (TNode currentNode, int dist) = q.Dequeue();
+//                (TreeNode node, int index) = q.Dequeue();
 
 //                if (i == 0)
 //                {
-//                    leftMostDist = dist;
+//                    min = index;
 //                }
 
-//                if (i == levelCount - 1)
+//                if (i + 1 == size)
 //                {
-//                    rightMostDist = dist;
+//                    max = index;
 //                }
 
-//                if (currentNode.left != null)
+//                if (node.left != null)
 //                {
-//                    q.Enqueue((currentNode.left, 2 * dist + 1));
+//                    q.Enqueue((node.left, 2 * index + 1));
 //                }
 
-//                if (currentNode.right != null)
+//                if (node.right != null)
 //                {
-//                    q.Enqueue((currentNode.right, 2 * dist + 2));
+//                    q.Enqueue((node.right, 2 * index + 2));
 //                }
+
 //            }
 
-//            // (We add 1 here because diff between 2 numbers [8..12] = 12-8+1 = 5 => 8,9,10,11,12)
-//            maxPath = Math.Max(maxPath, rightMostDist - leftMostDist + 1);
+//            result = Math.Max(result, (max - min) + 1);
 //        }
 
-//        return maxPath;
-
+//        return result;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Solution h = new Solution();
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(3);
+//        root.right = new TreeNode(2);
+//        root.left.left = new TreeNode(5);
+//        root.left.right = new TreeNode(3);
+//        root.right.right = new TreeNode(9);
 
-//        TNode root = new TNode(1);
+//        Solution s = new Solution();
 
-//        root.left = new TNode(3);
-//        root.right = new TNode(2);
-//        root.left.left = new TNode(5);
-//        root.left.left.left = new TNode(6);
-//        root.right.right = new TNode(9);
-//        root.right.right.left = new TNode(7);
+//        Console.WriteLine(s.WidthOfBinaryTree(root));
 
-//        Console.WriteLine(h.Solve(root));
 //    }
 //}
 
-//// Time : O(N) , space : O(N)
+//// Time : O(n) , space : O(n)

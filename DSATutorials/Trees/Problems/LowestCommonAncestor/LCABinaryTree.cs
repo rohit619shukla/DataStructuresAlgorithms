@@ -1,64 +1,83 @@
 ﻿
+//using System.ComponentModel.DataAnnotations;
 
-
-//class Helper
+//public class TreeNode
 //{
-//    // Time : O(N) , space : O(N)
-//    public TNode Solve(TNode root, TNode p, TNode q)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        // If the root is null, return from here
+//        val = data;
+//    }
+//}
+
+//public class Solution
+//{
+//    public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+//    {
+//        // 3. Now if we get a null we return
 //        if (root == null)
 //        {
 //            return null;
 //        }
 
-//        // If from the list of searching nodes, we found any node return it, no need to go further
-//        if (root.data == p.data || root.data == q.data)
+
+//        // 4.But if i get any one of the searching node i return them immediately , no need to go further
+//        if (root.val == p.val || root.val == q.val)
 //        {
 //            return root;
 //        }
 
-//        // Iterate left and right side
-//        TNode leftSide = Solve(root.left, p, q);
-//        TNode rightSide = Solve(root.right, p, q);
+//        // 1. We will go left side first
+//        TreeNode left = LowestCommonAncestor(root.left, p, q);
 
-//        if (leftSide == null)
+//        // 2. Then right
+//        TreeNode right = LowestCommonAncestor(root.right, p, q);
+
+
+//        // 5. We didnt found what we were searching, now we are returning from either direction, assuming any one may have data
+//        if (left == null)
 //        {
-//            return rightSide;
+//            return right;
 //        }
-//        else if (rightSide == null)
+//        else if (right == null)
 //        {
-//            return leftSide;
+//            return left;
 //        }
 //        else
 //        {
+//            // 6. Right and left both returned something at same time, so this node is our answer
 //            return root;
 //        }
+
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
+//        TreeNode root = new TreeNode(3);
+//        root.left = new TreeNode(5);
+//        root.right = new TreeNode(1);
+//        root.left.left = new TreeNode(6);
+//        root.left.right = new TreeNode(2);
+//        root.left.right.left = new TreeNode(7);
+//        root.left.right.right = new TreeNode(4);
+//        root.right.left = new TreeNode(0);
+//        root.right.right = new TreeNode(8);
 
-//        Helper h = new Helper();
+//        TreeNode p = root.left;
+//        TreeNode q = root.right;
 
-//        TNode root = new TNode(3);
-//        root.left = new TNode(5);
-//        root.right = new TNode(1);
-//        root.left.left = new TNode(6);
-//        root.left.right = new TNode(2);
-//        root.left.right.left = new TNode(7);
-//        root.left.right.right = new TNode(4);
-//        root.right.left = new TNode(0);
-//        root.right.right = new TNode(8);
+//        Solution s = new Solution();
 
-//        TNode p = new TNode(5);
-//        TNode q = new TNode(4);
+//        var result = s.LowestCommonAncestor(root, p, q);
 
-//        var result = h.Solve(root, p, q);
+//        Console.Write($"{result.val}");
 
-//        Console.WriteLine(result.data);
 //    }
 //}
 

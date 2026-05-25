@@ -1,40 +1,64 @@
 ﻿
-
-//class Helper
+//public class TreeNode
 //{
-//    // Time : O(n), space : O(h) best case and  O(n) worst case
-//    public int Solve(TNode root, int val)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+
+//}
+
+//public class Solution
+//{
+//    public int SumNumbers(TreeNode root)
+//    {
+//        return Solve(root, 0);
+//    }
+
+//    private int Solve(TreeNode root, int curr)
 //    {
 //        if (root == null)
 //        {
 //            return 0;
 //        }
+//        curr = curr * 10 + root.val;
 
-//        val = val * 10 + root.data;
-
+//        // if the node is leaf we return whatever we have got in curr
 //        if (root.left == null && root.right == null)
 //        {
-//            // What ever sum we have gathered till now just return
-//            return val;
+//            return curr;
 //        }
 
-//        return Solve(root.left, val) + Solve(root.right, val);
+//        // else Go to left and right paths
+//        int left = Solve(root.left, curr);
+
+//        int right = Solve(root.right, curr);
+
+//        //while returning from give node retunr the sum of left and right
+//        return left + right;
 //    }
 //}
+
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        Solution s = new Solution();
 
-//        TNode root = new TNode(1);
-//        root.left = new TNode(2);
-//        root.right = new TNode(3);
-//        root.right.left = new TNode(4);
-//        root.right.right = new TNode(5);
+//        TreeNode root = new TreeNode(4);
+//        root.left = new TreeNode(9);
+//        root.right = new TreeNode(0);
+//        root.left.left = new TreeNode(5);
+//        root.left.right = new TreeNode(1);
 
-
-//        Console.WriteLine(h.Solve(root, 0));
+//        Console.Write($"{s.SumNumbers(root)}");
 //    }
 //}
+
+
+//// Time : O(n), space : O(h) best case and  O(n) worst case

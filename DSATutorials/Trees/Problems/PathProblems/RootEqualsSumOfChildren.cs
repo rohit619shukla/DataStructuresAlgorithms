@@ -1,17 +1,28 @@
 ﻿
-
-
-//class Helper
+//public class TreeNode
 //{
-//    // Time : O(N) , space : O(N)
-//    public bool Solve(TNode root)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        if (root == null || (root.left == null && root.right == null))
-//            return true;
+//        val = data;
+//    }
+//}
 
-//        bool isSum = (root.data == root.left.data + root.right.data);
-
-//        return isSum && Solve(root.left) && Solve(root.right);
+//public class Solution
+//{
+//    public bool CheckTree(TreeNode root)
+//    {
+//        if (root.left != null && root.right != null)
+//        {
+//            return root.left.val + root.right.val == root.val ? true : false;
+//        }
+//        else 
+//        {
+//            return false;
+//        }
 //    }
 //}
 
@@ -19,14 +30,14 @@
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        TreeNode root = new TreeNode(5);
+//        root.left = new TreeNode(3);
+//        root.right = new TreeNode(1);
 
-//        TNode root = new TNode(10);
-//        root.left = new TNode(4);
-//        root.right = new TNode(6);
-//        root.left.left = new TNode(2);
-//        root.left.right = new TNode(2);
+//        Solution s = new Solution();
 
-//        Console.WriteLine($"{h.Solve(root)}");
+//        Console.WriteLine(s.CheckTree(root));
 //    }
 //}
+
+//// Time : O(1), sapce (1)

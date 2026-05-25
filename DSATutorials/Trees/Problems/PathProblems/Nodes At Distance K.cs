@@ -1,126 +1,145 @@
-﻿//// Leetcode 863. (Medium)
-//class Solution
+﻿//// LeetCode 863: All Nodes Distance K in Binary Tree
+//// https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
+////
+//// Approach: BFS with Parent Pointers
+//// - A tree only has downward links (left/right children). To traverse upward, we first
+////   build a parent map using BFS so each node knows its parent.
+//// - Then starting from the target node, we do a level-by-level BFS expanding in all 3
+////   directions (left child, right child, parent). After K levels, all nodes in the queue
+////   are exactly at distance K.
+////
+//// Time: O(N) - two BFS passes over all nodes
+//// Space: O(N) - parent map + visited set + queue
+
+//public class TreeNode
 //{
-//    public IList<int> DistanceK(TNode root, TNode target, int k)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        Dictionary<TNode, TNode> map = new Dictionary<TNode, TNode>();
+//        val = data;
+//    }
+//}
 
-//        // Map containing parent child relation
-//        ParentChildMap(root, map);
+//public class Solution
+//{
+//    public IList<int> DistanceK(TreeNode root, TreeNode target, int k)
+//    {
+//        IList<int> result = new List<int>();
 
-//        // result
-//        List<int> resultList = new List<int>();
+//        // Step 1: Build parent map using BFS
+//        // Key insight: In a tree we can only go down (left/right), but distance K nodes
+//        // can also be in the upward direction. A parent map enables upward traversal.
+//        Dictionary<TreeNode, TreeNode> map = new Dictionary<TreeNode, TreeNode>();
+//        Queue<TreeNode> q = new Queue<TreeNode>();
 
-//        // visited list
-//        HashSet<TNode> visited = new HashSet<TNode>();
+//        q.Enqueue(root);
+//        map[root] = null;
 
-//        visited.Add(target);
-
-//        // start BFS
-//        Queue<TNode> q = new Queue<TNode>();
-
-//        // Enter target Node at start node
-//        q.Enqueue(target);
-
-//        int count = 0;
-//        while (q.Count != 0)
+//        while (q.Count > 0)
 //        {
-//            int currentLevelCount = q.Count;
+//            TreeNode node = q.Dequeue();
 
+//            if (node.left != null)
+//            {
+//                map[node.left] = node;
+//                q.Enqueue(node.left);
+//            }
+
+//            if (node.right != null)
+//            {
+//                map[node.right] = node;
+//                q.Enqueue(node.right);
+//            }
+//        }
+
+//        // Step 2: BFS from target node, expanding in all 3 directions (left, right, parent)
+//        // We use a visited set to prevent revisiting nodes (e.g., going back down after going up)
+//        Queue<TreeNode> temp = new Queue<TreeNode>();
+//        HashSet<int> set = new HashSet<int>();
+
+//        temp.Enqueue(target);
+//        set.Add(target.val);
+
+//        int count = 0; // tracks current distance from target
+
+//        while (temp.Count > 0)
+//        {
+//            int size = temp.Count;
+
+//            // Once we've expanded K levels, all nodes currently in queue are at distance K
 //            if (count == k)
 //            {
 //                break;
 //            }
 
-//            for (int i = 0; i < currentLevelCount; i++)
+//            for (int i = 0; i < size; i++)
 //            {
-//                // We will iterate in all 3 directions : left, right and upwards
+//                TreeNode node = temp.Dequeue();
 
-//                TNode temp = q.Dequeue();
-
-//                // Get left Node and insert in queue if not visited
-//                if (temp.left != null && !visited.Contains(temp.left))
+//                // Expand left child
+//                if (node.left != null && !set.Contains(node.left.val))
 //                {
-//                    visited.Add(temp.left);
-//                    q.Enqueue(temp.left);
+//                    set.Add(node.left.val);
+//                    temp.Enqueue(node.left);
 //                }
 
-//                // Get right Node and insert in queue if not visited
-//                if (temp.right != null && !visited.Contains(temp.right))
+//                // Expand right child
+//                if (node.right != null && !set.Contains(node.right.val))
 //                {
-//                    visited.Add(temp.right);
-//                    q.Enqueue(temp.right);
+//                    set.Add(node.right.val);
+//                    temp.Enqueue(node.right);
 //                }
 
-//                // Get upward Node and insert in queue if not visited
-//                if (map[temp] != null && !visited.Contains(map[temp]))
+//                // Expand parent (upward traversal using parent map)
+//                if (map[node] != null && !set.Contains(map[node].val))
 //                {
-//                    visited.Add(map[temp]);
-//                    q.Enqueue(map[temp]);
+//                    set.Add(map[node].val);
+//                    temp.Enqueue(map[node]);
 //                }
 //            }
 
 //            count++;
 //        }
 
-
-//        while (q.Count != 0)
+//        // Step 3: Collect results - all remaining nodes in queue are at distance K
+//        while (temp.Count > 0)
 //        {
-//            TNode temp = q.Dequeue();
-//            resultList.Add(temp.data);
+//            result.Add(temp.Dequeue().val);
 //        }
-//        return resultList;
-//    }
-
-//    private void ParentChildMap(TNode root, Dictionary<TNode, TNode> map)
-//    {
-//        Queue<TNode> q = new Queue<TNode>();
-
-//        q.Enqueue(root);
-
-//        map[root] = null;
-//        while (q.Count != 0)
-//        {
-//            TNode temp = q.Dequeue();
-
-//            if (temp.left != null)
-//            {
-//                map[temp.left] = temp;
-//                q.Enqueue(temp.left);
-//            }
-
-//            if (temp.right != null)
-//            {
-//                map[temp.right] = temp;
-//                q.Enqueue(temp.right);
-//            }
-//        }
+//        return result;
 //    }
 //}
+
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Solution s = new Solution();
+//        //         3
+//        //        / \
+//        //       5   1
+//        //      / \ / \
+//        //     6  2 0  8
+//        //       / \
+//        //      7   4
+//        TreeNode root = new TreeNode(3);
+//        root.left = new TreeNode(5);
+//        root.right = new TreeNode(1);
+//        root.left.left = new TreeNode(6);
+//        root.left.right = new TreeNode(2);
+//        root.right.left = new TreeNode(0);
+//        root.right.right = new TreeNode(8);
+//        root.left.right.left = new TreeNode(7);
+//        root.left.right.right = new TreeNode(4);
 
-//        TNode root = new TNode(3);
-//        root.left = new TNode(5);
-//        root.right = new TNode(1);
-//        root.left.left = new TNode(6);
-//        root.left.right = new TNode(2);
-//        root.left.right.left = new TNode(7);
-//        root.left.right.right = new TNode(4);
-//        root.right.left = new TNode(0);
-//        root.right.right = new TNode(8);
+//        TreeNode target = root.left; // node with value 5
+//        int k = 2;
 
-//        var result = s.DistanceK(root, root.left, 2);
+//        Solution sol = new Solution();
+//        IList<int> result = sol.DistanceK(root, target, k);
 
-//        foreach (var item in result)
-//        {
-//            Console.Write($"{item}" + " ");
-//        }
+//        Console.WriteLine(string.Join(", ", result)); // Expected: 7, 4, 1
 //    }
 //}
-
-
-//// Time : O(N), space : O(N)
