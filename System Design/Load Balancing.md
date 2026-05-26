@@ -158,12 +158,211 @@ A single load balancer is itself a single point of failure. Solution:
 
 ## Global Server Load Balancing (GSLB)
 
-Distributes traffic across multiple data centers/regions:
+Global Server Load Balancing (GSLB) distributes traffic across **multiple geographically dispersed data centers or regions**. Unlike traditional load balancers that operate within a single data center, GSLB works at a global level to route users to the best-performing and closest data center.
 
-- Uses **DNS-based routing** (GeoDNS)
-- Routes users to nearest data center
-- Handles disaster recovery (failover to another region)
-- Examples: AWS Route 53, Cloudflare, Akamai
+### How GSLB Works
+
+GSLB primarily operates through **DNS-based routing**. When a user makes a request, the GSLB-enabled DNS server resolves the domain to the IP address of the optimal data center based on various factors.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          GSLB Request Flow                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+  User (India)                                   User (USA)
+      │                                              │
+      ▼                                              ▼
+ ┌──────────┐                                   ┌──────────┐
+ │  Browser  │                                   │  Browser  │
+ └────┬─────┘                                   └────┬─────┘
+      │ 1. DNS Query:                                │ 1. DNS Query:
+      │    app.example.com                           │    app.example.com
+      ▼                                              ▼
+ ┌──────────────────────────────────────────────────────────┐
+ │                   GSLB / GeoDNS Server                   │
+ │                                                          │
+ │  ┌─────────────────────────────────────────────────┐     │
+ │  │ Decision Engine:                                │     │
+ │  │  • Client geo-location (via IP)                 │     │
+ │  │  • Data center health status                    │     │
+ │  │  • Current server load per region               │     │
+ │  │  • Network latency estimates                    │     │
+ │  └─────────────────────────────────────────────────┘     │
+ └──────────┬───────────────────────────────┬───────────────┘
+            │                               │
+            │ 2. Returns IP:                │ 2. Returns IP:
+            │    Mumbai DC (103.x.x.x)      │    Virginia DC (54.x.x.x)
+            ▼                               ▼
+ ┌────────────────────┐          ┌────────────────────┐
+ │  Mumbai Data Center │          │ Virginia Data Center│
+ │    (Asia Region)    │          │    (US-East Region)  │
+ │                     │          │                     │
+ │  ┌──────────────┐  │          │  ┌──────────────┐  │
+ │  │ Local LB (L7)│  │          │  │ Local LB (L7)│  │
+ │  └──┬───┬───┬───┘  │          │  └──┬───┬───┬───┘  │
+ │     ▼   ▼   ▼      │          │     ▼   ▼   ▼      │
+ │   [S1] [S2] [S3]   │          │   [S4] [S5] [S6]   │
+ └────────────────────┘          └────────────────────┘
+```
+
+### GSLB Routing Strategies
+
+| Strategy | How It Works | Best For |
+|----------|-------------|----------|
+| **Geographic (GeoDNS)** | Routes based on client's geographic location (IP-based) | Reducing latency, data sovereignty compliance |
+| **Latency-based** | Routes to the data center with lowest measured latency | Performance-critical applications |
+| **Weighted** | Distributes traffic by assigned weights (e.g., 70/30 split) | Gradual region migrations, canary deployments |
+| **Failover (Active-Passive)** | All traffic to primary; secondary only on failure | Disaster recovery |
+| **Round Robin (Multi-Value)** | Returns multiple IPs; client picks one | Simple global distribution |
+| **Geoproximity** | Routes based on geographic distance with bias adjustments | Fine-tuning traffic between nearby regions |
+
+### GSLB Health Monitoring
+
+GSLB continuously monitors the health of each data center to make intelligent routing decisions:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                    GSLB Health Check System                     │
+└────────────────────────────────────────────────────────────────┘
+
+         ┌──────────────────────┐
+         │    GSLB Controller   │
+         │                      │
+         │  Health Check Agent  │
+         └──┬──────┬──────┬────┘
+            │      │      │
+   ┌────────┘      │      └────────┐
+   │ Probe         │ Probe         │ Probe
+   │ every 30s     │ every 30s     │ every 30s
+   ▼               ▼               ▼
+┌──────┐      ┌──────┐       ┌──────┐
+│DC - A │      │DC - B │       │DC - C │
+│ ✅ UP │      │ ✅ UP │       │ ❌ DOWN│
+│       │      │       │       │       │
+│Load:  │      │Load:  │       │Load:  │
+│  40%  │      │  65%  │       │  N/A  │
+└──────┘      └──────┘       └──────┘
+                                 │
+                    ┌────────────┘
+                    ▼
+        Traffic rerouted to DC-A
+        and DC-B automatically
+```
+
+**Types of health checks performed:**
+- **HTTP/HTTPS checks** — Verify application endpoints return 200 OK
+- **TCP checks** — Ensure ports are open and accepting connections
+- **DNS checks** — Validate that local DNS resolvers are functioning
+- **Custom scripts** — Run application-specific validation logic
+- **Multi-layer checks** — Check not just the LB, but the actual application behind it
+
+### Disaster Recovery with GSLB
+
+GSLB is a cornerstone of disaster recovery (DR) strategies:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│               GSLB Disaster Recovery Failover                    │
+└──────────────────────────────────────────────────────────────────┘
+
+     Normal Operation:                  During Disaster:
+     ─────────────────                  ────────────────
+
+     100% traffic                       0% traffic
+         │                                  │
+         ▼                                  ▼
+  ┌──────────────┐                   ┌──────────────┐
+  │  Primary DC  │                   │  Primary DC  │
+  │  (US-East)   │ ── Replication ─→ │  (US-East)   │
+  │   ✅ Active  │                   │   ❌ DOWN    │
+  └──────────────┘                   └──────────────┘
+                                            │
+         │                          GSLB detects failure
+         ▼                          (within 30-60 seconds)
+  ┌──────────────┐                          │
+  │ Secondary DC │                          ▼
+  │  (EU-West)   │                   ┌──────────────┐
+  │  🟡 Standby  │                   │ Secondary DC │
+  │   0% traffic │                   │  (EU-West)   │
+  └──────────────┘                   │  ✅ Active   │
+                                     │ 100% traffic │
+                                     └──────────────┘
+```
+
+**Failover steps:**
+1. GSLB detects primary DC is unhealthy (failed health checks)
+2. DNS TTL expires (typically 30–60 seconds with low TTL settings)
+3. New DNS queries resolve to secondary DC's IP
+4. Traffic shifts to secondary DC automatically
+5. When primary recovers, traffic can be gradually shifted back (failback)
+
+### GSLB vs Traditional Load Balancer
+
+| Feature | Traditional LB | GSLB |
+|---------|---------------|------|
+| **Scope** | Single data center | Multiple data centers / regions |
+| **Mechanism** | Direct traffic routing (IP/port) | DNS-based routing |
+| **Latency reduction** | Within DC only | Routes to geographically nearest DC |
+| **Disaster recovery** | Handles server failures | Handles entire data center failures |
+| **Protocol** | L4 (TCP/UDP) or L7 (HTTP) | DNS layer |
+| **Failover speed** | Milliseconds | Seconds (depends on DNS TTL) |
+| **Examples** | NGINX, HAProxy, AWS ALB | AWS Route 53, Cloudflare, Akamai GTM |
+
+### Anycast-Based GSLB
+
+Modern GSLB solutions (like Cloudflare) use **Anycast** — a networking technique where the same IP address is announced from multiple locations worldwide:
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│                  Anycast-Based GSLB                           │
+└───────────────────────────────────────────────────────────────┘
+
+    Same IP: 198.51.100.1 advertised from all edge locations
+
+  User (Tokyo)        User (London)       User (São Paulo)
+       │                    │                    │
+       │ BGP routes to      │ BGP routes to      │ BGP routes to
+       │ nearest node       │ nearest node       │ nearest node
+       ▼                    ▼                    ▼
+  ┌─────────┐         ┌─────────┐         ┌─────────┐
+  │ Tokyo   │         │ London  │         │São Paulo│
+  │  Edge   │         │  Edge   │         │  Edge   │
+  │  Node   │         │  Node   │         │  Node   │
+  └────┬────┘         └────┬────┘         └────┬────┘
+       │                    │                    │
+       └────────────┬───────┴────────────────────┘
+                    ▼
+            ┌──────────────┐
+            │ Origin Server│
+            │ (if not cached│
+            │  at the edge) │
+            └──────────────┘
+```
+
+**Anycast advantages over DNS-based GSLB:**
+- **No TTL dependency** — Routing changes are instant via BGP updates
+- **DDoS resilience** — Attack traffic is absorbed across all edge nodes
+- **Simpler client logic** — Single IP, no client-side DNS caching issues
+
+### Real-World GSLB Tools & Services
+
+| Service | Provider | Key Features |
+|---------|----------|-------------|
+| **Route 53** | AWS | GeoDNS, latency-based, failover, health checks, weighted routing |
+| **Cloud DNS** | GCP | Anycast DNS, geo-location policies, DNSSEC |
+| **Traffic Manager** | Azure | Priority, weighted, performance, geographic routing |
+| **Cloudflare** | Cloudflare | Anycast, DDoS protection, global edge network |
+| **Akamai GTM** | Akamai | Advanced traffic management, liveness checks |
+| **NS1** | IBM/NS1 | Filter chain routing, real-time telemetry |
+
+### GSLB — Key Interview Points
+
+1. **GSLB operates at the DNS layer** — It doesn't route packets; it resolves domain names to the best data center's IP
+2. **DNS TTL is critical** — Low TTL (30–60s) enables faster failover but increases DNS query load
+3. **Combine with local LB** — GSLB picks the data center; a local L4/L7 LB distributes within it
+4. **Data replication matters** — GSLB is useless if the secondary DC doesn't have up-to-date data
+5. **Anycast vs GeoDNS** — Anycast is faster for failover; GeoDNS gives more control over routing policies
+6. **Split-brain problem** — When both DCs think they are primary; mitigate with consensus protocols or external arbiters
 
 ---
 
