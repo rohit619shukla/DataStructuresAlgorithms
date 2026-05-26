@@ -160,6 +160,28 @@ A single load balancer is itself a single point of failure. Solution:
 
 Global Server Load Balancing (GSLB) distributes traffic across **multiple geographically dispersed data centers or regions**. Unlike traditional load balancers that operate within a single data center, GSLB works at a global level to route users to the best-performing and closest data center.
 
+### GSLB — The Intelligence Layer on Top of DNS
+
+GSLB does **not route traffic itself** — it operates at the **DNS layer**. It resolves the domain to the best data center's IP address, and the actual traffic then flows directly from the user to that DC. Once traffic reaches the DC, a **local LB (L4/L7)** distributes it across individual servers.
+
+```
+User → DNS query → GSLB picks best DC → returns DC's IP
+User → connects directly to that DC → Local LB → Server
+```
+
+Think of GSLB as a **smart DNS directory** — it tells you *where* to go, but doesn't carry you there. That's why failover speed depends on **DNS TTL** (how long clients cache the old IP).
+
+Regular DNS just returns a static IP — it has no awareness of server health, load, or user location. GSLB adds intelligence by considering geography, health, load, and latency.
+
+| | Plain DNS | DNS + GSLB |
+|--|-----------|------------|
+| Returns IP | ✅ Static, fixed | ✅ Dynamic, best-fit |
+| Knows user location | ❌ | ✅ |
+| Knows DC health | ❌ | ✅ |
+| Failover on DC crash | ❌ | ✅ Automatic |
+
+> **DNS is the mechanism, GSLB is the brain.**
+
 ### How GSLB Works
 
 GSLB primarily operates through **DNS-based routing**. When a user makes a request, the GSLB-enabled DNS server resolves the domain to the IP address of the optimal data center based on various factors.
