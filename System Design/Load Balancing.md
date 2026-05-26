@@ -182,6 +182,33 @@ Regular DNS just returns a static IP — it has no awareness of server health, l
 
 > **DNS is the mechanism, GSLB is the brain.**
 
+### Where Does GSLB Fit in the DNS Resolution Chain?
+
+DNS resolvers work exactly the same way whether GSLB is involved or not — they don't even know GSLB exists. The key difference is **what happens at the authoritative DNS server**.
+
+**Without GSLB** — standard DNS resolution returns a fixed IP:
+
+```
+Browser → Local DNS Resolver → Root DNS → TLD DNS → Authoritative DNS → returns fixed IP
+                                                          │
+                                                    (always same IP,
+                                                     no intelligence)
+```
+
+**With GSLB** — GSLB **replaces or sits behind the authoritative DNS server**. The resolution chain stays the same, but the final step becomes intelligent:
+
+```
+Browser → Local DNS Resolver → Root DNS → TLD DNS → Authoritative DNS (GSLB-powered)
+                                                          │
+                                                    Checks health, geo, load
+                                                          │
+                                                    Returns best DC's IP
+```
+
+The DNS resolver is completely unaware of GSLB — it just receives an IP as usual. The magic happens **inside the authoritative DNS**, which is now powered by GSLB logic (e.g., AWS Route 53, Cloudflare).
+
+> **The DNS resolver is unchanged; the source of truth got an upgrade.** DNS resolvers still work alone — they just happen to get *smarter answers* when the authoritative server has GSLB behind it.
+
 ### How GSLB Works
 
 GSLB primarily operates through **DNS-based routing**. When a user makes a request, the GSLB-enabled DNS server resolves the domain to the IP address of the optimal data center based on various factors.
