@@ -32,60 +32,72 @@ This is a crucial architectural question. The Load Balancer and API Gateway serv
 │                        Full Request Architecture                            │
 └──────────────────────────────────────────────────────────────────────────────┘
 
-                          ┌───────────────┐
-                          │   DNS / GSLB  │
-                          │  (Route 53,   │
-                          │  Cloudflare)  │
-                          └──────┬────────┘
-                                 │ Resolves to best region's IP
-                                 ▼
-                     ┌───────────────────────┐
-                     │   Global Load Balancer │  ◄── Layer 4 (TCP/UDP)
-                     │   (AWS NLB / GLB)      │      Distributes across
-                     └───────────┬───────────┘      API Gateway instances
-                                 │
-              ┌──────────────────┼──────────────────┐
-              ▼                  ▼                   ▼
-     ┌─────────────┐   ┌─────────────┐     ┌─────────────┐
-     │ API Gateway  │   │ API Gateway  │     │ API Gateway  │
-     │ Instance 1   │   │ Instance 2   │     │ Instance 3   │
-     │              │   │              │     │              │
-     │ • Auth       │   │ • Auth       │     │ • Auth       │
-     │ • Rate Limit │   │ • Rate Limit │     │ • Rate Limit │
-     │ • Routing    │   │ • Routing    │     │ • Routing    │
-     │ • Transform  │   │ • Transform  │     │ • Transform  │
-     └──────┬──────┘   └──────┬──────┘     └──────┬──────┘
-            │                  │                    │
-            └──────────────────┼────────────────────┘
-                               │
-                               ▼
-                  ┌─────────────────────────┐
-                  │  Internal Load Balancer  │  ◄── Layer 7 (HTTP)
-                  │  (per-service routing)   │      Routes to specific
-                  └─────────┬───────────────┘      microservices
-                            │
-           ┌────────────────┼────────────────┐
-           ▼                ▼                ▼
-   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-   │  User Service │ │ Order Service│ │Payment Service│
-   │   [S1] [S2]   │ │  [S1] [S2]  │ │  [S1] [S2]   │
-   └──────────────┘ └──────────────┘ └──────────────┘
+                  ┌──────────┐
+                  │  Client  │
+                  └────┬─────┘
+                       │ 1. DNS Query: app.example.com
+                       ▼
+                ┌─────────────┐
+                │ DNS Resolver │
+                └──────┬──────┘
+                       │ 2. Reaches Authoritative DNS
+                       ▼
+              ┌──────────────────┐
+              │  GSLB (GeoDNS)   │  Checks geo, health, load
+              │  (Route 53,      │  Returns best DC's IP
+              │   Cloudflare)    │
+              └────────┬─────────┘
+                       │ 3. Returns IP of nearest Data Center
+                       ▼
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                    DATA CENTER (e.g., US-East)                  │
+  │                                                                 │
+  │   ┌─────────────────────────────────────────────────────────┐   │
+  │   │                    API Gateway                           │   │
+  │   │                                                         │   │
+  │   │  4. Receives request                                    │   │
+  │   │  5. Auth, rate limiting, request validation              │   │
+  │   │  6. Determines which service to route to                │   │
+  │   │  7. Forwards to the correct service's Load Balancer     │   │
+  │   └──────┬──────────────────┬──────────────────┬────────────┘   │
+  │          │                  │                   │                │
+  │          │ /users/*         │ /orders/*         │ /payments/*   │
+  │          ▼                  ▼                   ▼                │
+  │   ┌────────────┐    ┌────────────┐      ┌────────────┐         │
+  │   │  User LB   │    │  Order LB  │      │ Payment LB │         │
+  │   │  (L7/ALB)  │    │  (L7/ALB)  │      │  (L7/ALB)  │         │
+  │   └──┬─────┬───┘    └──┬─────┬───┘      └──┬─────┬───┘         │
+  │      ▼     ▼            ▼     ▼              ▼     ▼            │
+  │   [US-1] [US-2]     [OS-1] [OS-2]       [PS-1] [PS-2]         │
+  │   User Service      Order Service       Payment Service        │
+  │   instances          instances           instances              │
+  │                                                                 │
+  └─────────────────────────────────────────────────────────────────┘
 ```
+
+**The flow step by step:**
+1. **Client** makes a request to `app.example.com`
+2. **DNS Resolver** forwards the query up the DNS chain
+3. **GSLB** (at the authoritative DNS level) picks the best DC and returns its IP
+4. Request arrives at the **Data Center**, hitting the **API Gateway** first
+5. **API Gateway** handles auth, rate limiting, validation
+6. **API Gateway decides** which microservice this request is for (based on path, headers, etc.)
+7. **API Gateway forwards** the request to that service's dedicated **Load Balancer**
+8. **Service LB** distributes across healthy instances of that microservice
 
 ### Layer-by-Layer Breakdown
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  Layer          │  Component           │  Responsibility         │
+│  Layer          │  Component            │  Responsibility        │
 ├──────────────────────────────────────────────────────────────────┤
-│  DNS Layer      │  GSLB / GeoDNS       │  Pick best region/DC    │
-│  L4 (Network)   │  External LB (NLB)   │  Distribute across      │
-│                 │                      │  API Gateway instances  │
-│  L7 (App Edge)  │  API Gateway         │  Auth, rate limit,      │
-│                 │                      │  routing, transform     │
-│  L7 (Internal)  │  Internal LB (ALB)   │  Route to microservice  │
-│                 │                      │  instances              │
-│  Service        │  Microservice        │  Business logic         │
+│  DNS Layer      │  DNS Resolver         │  Resolve domain name   │
+│  DNS Layer      │  GSLB / GeoDNS        │  Pick best region/DC   │
+│  App Edge       │  API Gateway          │  Auth, rate limit,     │
+│                 │                       │  decide which service  │
+│  Per-Service    │  Service LB (ALB)     │  Distribute across     │
+│                 │                       │  service instances     │
+│  Service        │  Microservice         │  Business logic        │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
