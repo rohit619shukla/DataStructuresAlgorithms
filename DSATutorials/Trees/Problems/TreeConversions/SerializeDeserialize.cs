@@ -1,39 +1,52 @@
 ﻿
-
 //using System.Text;
 
-//// Time : O(n), space : O(n)
-//class Helper
+//public class TreeNode
 //{
-//    // Serialize is a process of converting Tree Nodes to string
-//    public string Serialize(TNode root)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
+
+//public class Codec
+//{
+
+//    // Encodes a tree to a single string.
+//    public string serialize(TreeNode root)
 //    {
 //        StringBuilder st = new StringBuilder();
 
-//        Queue<TNode> q = new Queue<TNode>();
+//        // 1. We will performa a level order traversal to store the nodes in stringbuilder
+//        Queue<TreeNode> q = new Queue<TreeNode>();
 
 //        q.Enqueue(root);
-
-//        st.Append(root.data.ToString() + ",");
+//        st.Append(root.val).Append(",");
 
 //        while (q.Count > 0)
 //        {
-//            TNode temp = q.Dequeue();
+//            TreeNode head = q.Dequeue();
 
-//            if (temp.left != null)
+//            if (head.left != null)
 //            {
-//                q.Enqueue(temp.left);
-//                st.Append(temp.left.data.ToString() + ",");
+//                // We will add the node to builder while we are exploring
+//                q.Enqueue(head.left);
+//                st.Append(head.left.val).Append(",");
 //            }
 //            else
 //            {
+//                // We cannot add to queue, but directly to builder
 //                st.Append("#,");
 //            }
 
-//            if (temp.right != null)
+//            if (head.right != null)
 //            {
-//                q.Enqueue(temp.right);
-//                st.Append(temp.right.data.ToString() + ",");
+//                q.Enqueue(head.right);
+//                st.Append(head.right.val).Append(",");
 //            }
 //            else
 //            {
@@ -44,74 +57,75 @@
 //        st.Length--;
 
 //        return st.ToString();
-
 //    }
 
-//    public TNode DeSerialize(string serialzedString)
+//    //// Decodes your encoded data to tree.
+//    public TreeNode deserialize(string data)
 //    {
-//        string[] strArray = serialzedString.Split(",");
+//        TreeNode root = null;
 
-//        TNode root = new TNode(Convert.ToInt32(strArray[0]));
+//        if (string.IsNullOrEmpty(data))
+//        {
+//            return root;
+//        }
 
-//        Queue<TNode> q = new Queue<TNode>();
+//        string[] arr = data.Split(",");
 
+//        // We will take the very first character of the string and make it as root
+//        root = new TreeNode(Convert.ToInt32(arr[0]));
+
+//        Queue<TreeNode> q = new Queue<TreeNode>();
 //        q.Enqueue(root);
 
-//        // Special BFS. Here we are jumping 2 nodes kind of as there can be atmost 2 nodes in binary tree.
-//        // We use queue to keep track of the fact like which node can be appended to left and right
-//        for (int i = 1; i < strArray.Length; i++)
+//        // We start with 1 as we have already created root out of the first char
+//        // This is a special BFS using for loop rather than while loop
+//        for (int i = 1; i < arr.Length; i++)
 //        {
-//            TNode temp = q.Dequeue();
+//            TreeNode head = q.Dequeue();
 
-//            if (strArray[i] != "#")
+//            if (arr[i] != "#")
 //            {
-//                TNode left = new TNode(Convert.ToInt32(strArray[i]));
-//                temp.left = left;
-//                q.Enqueue(left);
+//                head.left = new TreeNode(Convert.ToInt32(arr[i]));
+//                q.Enqueue(head.left);
 //            }
 
-//            if (strArray[++i] != "#")
+//            if (arr[++i] != "#")
 //            {
-//                TNode right = new TNode(Convert.ToInt32(strArray[i]));
-//                temp.right = right;
-//                q.Enqueue(right);
+//                head.right = new TreeNode(Convert.ToInt32(arr[i]));
+//                q.Enqueue(head.right);
 //            }
 //        }
 
 //        return root;
 
 //    }
-//    public void PreOrder(TNode root)
-//    {
-//        if (root == null)
-//        {
-//            return;
-//        }
 
-//        Console.Write($"{root.data}" + " ");
-//        PreOrder(root.left);
-//        PreOrder(root.right);
-//    }
-
+    
 //}
-
 
 //class Program
 //{
-//    public static void Main()
+//    public static void Main(string[] args)
 //    {
-//        TNode root = new TNode(1);
-//        root.left = new TNode(2);
-//        root.right = new TNode(3);
-//        root.right.left = new TNode(4);
-//        root.right.right = new TNode(5);
+//        //        1
+//        //       / \
+//        //      2   3
+//        //         / \
+//        //        4   5
+//        TreeNode root = new TreeNode(-1);
+//        root.left = new TreeNode(0);
+//        root.right = new TreeNode(1);
+//        //root.right.left = new TreeNode(4);
+//        //root.right.right = new TreeNode(5);
 
-//        Helper h = new Helper();
+//        Codec codec = new Codec();
+//        string serialized = codec.serialize(root);
+//        Console.WriteLine("Serialized: " + serialized);
 
-//        string result = h.Serialize(root);
-
-//        TNode deserializedRoot = h.DeSerialize(result);
-
-//        h.PreOrder(deserializedRoot);
+//        TreeNode deserialized = codec.deserialize(serialized);
+//        string reSerialized = codec.serialize(deserialized);
+//        Console.WriteLine("Re-serialized: " + reSerialized);
 //    }
 //}
+
+//// Time : O(n), space : O(n)
