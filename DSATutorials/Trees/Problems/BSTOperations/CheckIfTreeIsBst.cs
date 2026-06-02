@@ -1,60 +1,68 @@
 ﻿
-//class Solution
+//public class TreeNode
 //{
-//    public bool IsValidBST(TNode root)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        if (root == null)
+//        val = data;
+//    }
+//}
+
+//public class Solution
+//{
+//    // Morris Inorder Traversal approach to validate BST
+//    // Key insight: Inorder traversal of a valid BST is strictly increasing.
+//    // Instead of comparing node with immediate children (wrong — misses ancestor constraints),
+//    // we track the previously visited node and ensure current > prev at every visit point.
+//    public bool IsValidBST(TreeNode root)
+//    {
+//        TreeNode head = root;
+//        TreeNode prev = null; // Tracks the previously visited node in inorder sequence
+
+//        while (head != null)
 //        {
-//            return true;
-//        }
-
-
-//        TNode curr = root;
-//        TNode prev = null;
-
-//        int? tempNumber = null;
-
-//        while (curr != null)
-//        {
-//            if (curr.left == null)
+//            if (head.left != null)
 //            {
-//                Console.Write($"{curr.data}" + " ");
+//                // Find the inorder predecessor of head
+//                TreeNode temp = head.left;
 
-//                if (tempNumber != null && tempNumber >= curr.data)
+//                while (temp.right != null && temp.right != head)
 //                {
-//                    return false;
-//                }
-//                tempNumber = curr.data;
-
-//                curr = curr.right;
-//            }
-//            else
-//            {
-//                prev = curr.left;
-
-//                while (prev.right != null && prev.right != curr)
-//                {
-//                    prev = prev.right;
+//                    temp = temp.right;
 //                }
 
-//                if (prev.right == null)
+//                if (temp.right == null)
 //                {
-//                    prev.right = curr;
-//                    curr = curr.left;
+//                    // Create a thread: link predecessor's right to current node (for backtracking)
+//                    temp.right = head;
+//                    head = head.left;
 //                }
 //                else
 //                {
-//                    prev.right = null;
-//                    Console.Write($"{curr.data}" + " ");
-
-//                    if (tempNumber != null && tempNumber >= curr.data)
+//                    // Thread already exists — we're revisiting. Remove thread to restore tree.
+//                    temp.right = null;
+//                    // Inorder visit: check current > prev (strictly increasing)
+//                    if (prev != null && head.val <= prev.val)
 //                    {
 //                        return false;
 //                    }
-//                    tempNumber = curr.data;
-
-//                    curr = curr.right;
+//                    prev = head;
+//                    head = head.right;
 //                }
+//            }
+//            else
+//            {
+//                // No left child — visit this node directly
+//                // Inorder visit: check current > prev (strictly increasing)
+//                if (prev != null && head.val <= prev.val)
+//                {
+//                    return false;
+//                }
+//                prev = head;
+//                head = head.right;
 //            }
 //        }
 
@@ -67,11 +75,11 @@
 //    {
 //        Solution h = new Solution();
 
-//        TNode root = new TNode(5);
-//        root.left = new TNode(2);
-//        root.right = new TNode(4);
-//        root.right.left = new TNode(3);
-//        root.right.right = new TNode(6);
+//        TreeNode root = new TreeNode(5);
+//        root.left = new TreeNode(1);
+//        root.right = new TreeNode(4);
+//        root.right.left = new TreeNode(3);
+//        root.right.right = new TreeNode(6);
 
 //        Console.WriteLine(h.IsValidBST(root));
 //    }
@@ -80,5 +88,5 @@
 
 //// Time : O(N), space : O(1)
 
-//// At any given point of time if the temp is grater then current we return false;
-//// Whenever we are printing a number in Travseral just check above line, else assing temp with current number
+//// Morris Inorder Traversal: at each visit point, check that current node > previously visited node.
+//// A valid BST's inorder traversal is strictly increasing.

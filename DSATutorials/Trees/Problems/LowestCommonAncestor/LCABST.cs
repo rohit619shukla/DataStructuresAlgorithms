@@ -1,56 +1,64 @@
 ﻿
-//class Helper
+//public class TreeNode
 //{
-//    // Time : O(H), space : O(1)
-//    public TNode Solve(TNode root, TNode p, TNode q)
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
 //    {
-//        TNode result = null;
+//        val = data;
+//    }
+//}
 
-//        while (root != null)
+//public class Solution
+//{
+//    public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+//    {
+//        TreeNode curr = root;
+
+//        while (curr != null)
 //        {
-//            result = root;
-
-//            if (root.data > p.data && root.data > q.data)
+//            if (curr.val > p.val && curr.val > p.val)
 //            {
-//                root = root.left;
+//                // means both the nodes lie to left of subtree
+//                curr = curr.left;
 //            }
-//            else if (root.data < p.data && root.data < q.data)
+//            else if (curr.val < p.val && curr.val < q.val)
 //            {
-//                root = root.right;
+//                curr = curr.right;
 //            }
 //            else
 //            {
-//                break;
+//                // This is our LCA
+//                return root;
 //            }
 //        }
 
-//        return result;
+//        return root;
 //    }
-
 //}
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        // Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+//        TreeNode root = new TreeNode(6);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(8);
+//        root.left.left = new TreeNode(0);
+//        root.left.right = new TreeNode(4);
+//        root.right.left = new TreeNode(7);
+//        root.right.right = new TreeNode(9);
+//        root.left.right.left = new TreeNode(3);
+//        root.left.right.right = new TreeNode(5);
 
-//        TNode root = new TNode(6);
-//        root.left = new TNode(2);
-//        root.right = new TNode(8);
-//        root.left.left = new TNode(0);
-//        root.left.right = new TNode(4);
-//        root.left.right.left = new TNode(3);
-//        root.left.right.right = new TNode(5);
-//        root.right.left = new TNode(7);
-//        root.right.right = new TNode(8);
+//        TreeNode p = root.left;        // node with val 2
+//        TreeNode q = root.right;       // node with val 8
 
-
-//        TNode p = new TNode(2);
-//        TNode q = new TNode(8);
-
-//        var result = h.Solve(root, p, q);
-
-//        Console.WriteLine(result.data);
+//        Solution sol = new Solution();
+//        TreeNode lca = sol.LowestCommonAncestor(root, p, q);
+//        Console.WriteLine(lca.val);    // Expected output: 6
 //    }
 //}

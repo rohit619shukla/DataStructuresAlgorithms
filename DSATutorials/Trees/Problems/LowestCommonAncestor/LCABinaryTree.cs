@@ -70,7 +70,7 @@
 //        root.right.right = new TreeNode(8);
 
 //        TreeNode p = root.left;
-//        TreeNode q = root.right;
+//        TreeNode q = root.left.right.right;
 
 //        Solution s = new Solution();
 
