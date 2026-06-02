@@ -1,61 +1,69 @@
-﻿
-
-//class Helper
+﻿//public class TreeNode
 //{
-//    // using Morris traversal
-//    // Time : O(n), space : O(1)
-//    public int Solve(TNode root, int k)
-//    {
-//        if (root == null)
-//        {
-//            return 0;
-//        }
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
 
-//        TNode current = root;
-//        TNode prev = null;
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
+
+//public class Solution
+//{
+//    public int KthSmallest(TreeNode root, int k)
+//    {
+//        // We will perform Morris Traversal, as traverses the tree in O(1) space and with inorder sequence which is good for BST
+
+//        TreeNode head = root;
 
 //        int count = 0;
-
-//        while (current != null)
+//        while (head != null)
 //        {
-//            if (current.left == null)
+//            // check if the left side exist or not
+//            if (head.left != null)
 //            {
-//                count++;
-//                if (count == k)
+//                // Now put a pointer at left and move to left's right
+//                TreeNode temp = head.left;
+
+//                while (temp.right != null && temp.right != head)
 //                {
-//                    break;
+//                    temp = temp.right;
 //                }
 
-//                current = current.right;
-//            }
-//            else
-//            {
-//                prev = current.left;
-
-//                while (prev.right != null && prev.right != current)
+//                // If the temp is  null means that we are visiting this first time
+//                if (temp.right == null)
 //                {
-//                    prev = prev.right;
-//                }
-
-//                if (prev.right == null)
-//                {
-//                    prev.right = current;
-//                    current = current.left;
+//                    temp.right = head;
+//                    head = head.left;
 //                }
 //                else
 //                {
-//                    prev.right = null;
+//                    temp.right = null;
+//                    // we print the head's value
 //                    count++;
 //                    if (count == k)
 //                    {
 //                        break;
 //                    }
-//                    current = current.right;
+//                    head = head.right;
 //                }
+//            }
+//            else
+//            {
+//                // No left exist
+//                // Print the head and move to right
+//                count++;
+//                if (count == k)
+//                {
+//                    break;
+//                }
+//                head = head.right;
 //            }
 //        }
 
-//        return current.data;
+//        return head.val;
 //    }
 //}
 
@@ -63,16 +71,20 @@
 //{
 //    public static void Main()
 //    {
-//        Helper h = new Helper();
+//        // Input: root = [5,3,6,2,4,null,null,1], k = 3
+//        TreeNode root = new TreeNode(5);
+//        root.left = new TreeNode(3);
+//        root.right = new TreeNode(6);
+//        root.left.left = new TreeNode(2);
+//        root.left.right = new TreeNode(4);
+//        root.left.left.left = new TreeNode(1);
 
-//        TNode root = new TNode(5);
-//        root.left = new TNode(3);
-//        root.right = new TNode(6);
-//        root.left.left = new TNode(2);
-//        root.left.left.left = new TNode(1);
-//        root.left.right = new TNode(4);
+//        int k = 3;
 
-//        Console.WriteLine(h.Solve(root, 3));
+//        Solution sol = new Solution();
+//        int result = sol.KthSmallest(root, k);
+//        Console.WriteLine($"Input: root = [5,3,6,2,4,null,null,1], k = {k}");
+//        Console.WriteLine($"Output: {result}");
 //    }
 //}
 
