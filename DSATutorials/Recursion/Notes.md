@@ -1,42 +1,41 @@
-Recursion & Backtracking Notes for Interview Preparation
-==========================================================
+# Recursion & Backtracking Notes for Interview Preparation
 
---- TWO CORE PATTERNS ---
+## TWO CORE PATTERNS
 
-1) There are 2 fundamental recursion patterns:
-   a) Permutations — order matters, all elements must be used.
-   b) Subsets — order doesn't matter, choose to include or exclude each element.
+1. There are 2 fundamental recursion patterns:
+   - a) Permutations — order matters, all elements must be used.
+   - b) Subsets — order doesn't matter, choose to include or exclude each element.
 
---- PATTERN IDENTIFICATION ---
+## PATTERN IDENTIFICATION
 
-2) Permutation Pattern:
+2. Permutation Pattern:
    - Usually has a FOR LOOP iterating over available choices at each level.
    - Uses a visited/used array or swap technique to track which elements are placed.
    - Total possibilities: n! (factorial).
    - Problems: Permutations, Kth Permutation Sequence, Letter Combinations.
 
-3) Subset Pattern:
+3. Subset Pattern:
    - Usually has 2 CHOICES at each step: include current element OR exclude it.
    - Moves index forward regardless of choice (no for loop over remaining).
    - Total possibilities: 2^n (power set).
    - Problems: Subsets, Combination Sum, Palindrome Partition.
 
---- HANDLING DUPLICATES (Very Important for Interviews) ---
+## HANDLING DUPLICATES (Very Important for Interviews)
 
-4) Permutation + Duplicates:
+4. Permutation + Duplicates:
    - Use a HashSet at each recursion level to skip duplicates at the same position.
    - This ensures we don't place the same value at the same index twice.
    - Example: Permutations II.
 
-5) Subset + Duplicates:
+5. Subset + Duplicates:
    - First SORT the array.
    - Then use a while loop to skip over consecutive duplicate elements when you choose NOT to include.
    - This avoids generating duplicate subsets.
    - Example: Subsets II, Combination Sum II.
 
---- COMBINATION SUM vs SUBSET TERMINATION ---
+## COMBINATION SUM vs SUBSET TERMINATION
 
-6) Combination Sum: recurse until target == 0 (success) or target < 0 (failure).
+6. Combination Sum: recurse until target == 0 (success) or target < 0 (failure).
    - Any time target hits 0, we found a valid combination — add to result immediately.
    - We don't need to exhaust the array.
 
@@ -44,43 +43,46 @@ Recursion & Backtracking Notes for Interview Preparation
    - We traverse the entire array, making include/exclude decisions for each element.
    - Only at the end do we add the current subset to result.
 
---- BACKTRACKING TEMPLATE ---
+## BACKTRACKING TEMPLATE
 
-7) General Template:
-   void backtrack(state, choices, result):
-       if (base_case):  → add to result / return
-       for each choice in choices:
-           make_choice()        → modify state
-           backtrack(...)       → recurse
-           undo_choice()        → restore state (BACKTRACK)
+7. General Template:
 
-   Key: Always undo your choice after recursion to explore other branches.
+```text
+void backtrack(state, choices, result):
+    if (base_case):  → add to result / return
+    for each choice in choices:
+        make_choice()        → modify state
+        backtrack(...)       → recurse
+        undo_choice()        → restore state (BACKTRACK)
+```
 
---- INTERVIEW TIPS & TRICKS ---
+Key: Always undo your choice after recursion to explore other branches.
 
-8) When to use Backtracking vs DP:
+## INTERVIEW TIPS & TRICKS
+
+8. When to use Backtracking vs DP:
    - If question asks "print ALL" / "find ALL" → Backtracking (can't optimize with DP).
    - If question asks "count" / "min/max" → Likely DP.
    - If question asks "is it possible" → Could be either.
 
-9) Pruning is critical for performance:
+9. Pruning is critical for performance:
    - Skip invalid states early (e.g., target < 0, invalid placement).
    - Sort input when possible to enable early termination.
    - Example: In Combination Sum II, if current element > remaining target, break.
 
-10) Constraint-based Backtracking (Sudoku, N-Queens, M-Coloring):
+10. Constraint-based Backtracking (Sudoku, N-Queens, M-Coloring):
     - Place element → Check constraints → If valid, recurse → If dead end, undo.
     - These problems have strict rules that limit choices at each step.
     - Time complexity is usually exponential but pruning makes it practical.
 
-11) String-based Backtracking:
+11. String-based Backtracking:
     - Palindrome Partition: try all possible cuts, validate palindrome, recurse on remainder.
     - Word Search: DFS on grid with visited tracking, backtrack on failure.
     - Generate Parenthesis: track open/close counts as constraints.
 
---- PROBLEMS BY PATTERN ---
+## PROBLEMS BY PATTERN
 
-12) Permutation-based: Permutations, Permutations II, Kth Permutation, Letter Combinations.
+12. Permutation-based: Permutations, Permutations II, Kth Permutation, Letter Combinations.
     Subset-based: Subsets, Subsets II, Combination Sum 1/2/3, Palindrome Partition.
     Constraint-based: Sudoku Solver, Rat in a Maze, M-Coloring, Word Search.
     Math-based: Power(x,n), Count Good Numbers.

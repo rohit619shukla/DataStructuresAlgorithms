@@ -1,7 +1,6 @@
-Dynamic Programming Notes for Interview Preparation
-=====================================================
+# Dynamic Programming Notes for Interview Preparation
 
---- DP PATTERNS (Learn to Identify Quickly) ---
+## DP PATTERNS (Learn to Identify Quickly)
 
 1. Partition DP:
    - Keyword trigger: "partition", "split array", "max sum after partitioning".
@@ -27,17 +26,14 @@ Dynamic Programming Notes for Interview Preparation
    - Match: dp[i-1][j-1] + 1 (diagonal).
    - No match: max(dp[i-1][j], dp[i][j-1]) — skip from either string.
    - Almost all string DP problems reduce to LCS or its variations.
-   - Problems: LCS, Longest Palindromic Subsequence, Edit Distance, Shortest Common
-     Supersequence, Wildcard Matching, Distinct Subsequences.
+   - Problems: LCS, Longest Palindromic Subsequence, Edit Distance, Shortest Common Supersequence, Wildcard Matching, Distinct Subsequences.
 
 5. Subsets (Knapsack Family):
    - Pattern: take or not take approach.
-   - Most times we have a TARGET to achieve. If not given explicitly, dig into the problem
-     statement — it will definitely be there (e.g., total_sum/2 for partition problems).
+   - Most times we have a TARGET to achieve. If not given explicitly, dig into the problem statement — it will definitely be there (e.g., total_sum/2 for partition problems).
    - Bounded Knapsack: each item used once.
    - Unbounded Knapsack: items can be reused (stay at same index on take).
-   - Problems: Subset Sum, Partition Equal Subset, Coin Change 1 & 2, Target Sum,
-     Rod Cutting, Combination Sum IV, Painting Walls.
+   - Problems: Subset Sum, Partition Equal Subset, Coin Change 1 & 2, Target Sum, Rod Cutting, Combination Sum IV, Painting Walls.
 
 6. 2D Grid:
    - Deal with matrix-based path problems.
@@ -52,20 +48,19 @@ Dynamic Programming Notes for Interview Preparation
    - Often can be space-optimized to O(1) using two variables.
    - Problems: Climbing Stairs, Frog Jump, House Robber, Min Cost Climbing Stairs, Decode Ways.
 
---- VERY IMPORTANT INTERVIEW TIPS ---
+## VERY IMPORTANT INTERVIEW TIPS
 
 8. Pop/Burst/Remove Pattern:
-   - When you see "pop", "burst", "remove" → think of KEEPING the element till the LAST
-     moment to get maximum benefit out of it.
+   - When you see "pop", "burst", "remove" → think of KEEPING the element till the LAST moment to get maximum benefit out of it.
    - Reverse the thinking: instead of "which to remove first", think "which to remove last".
    - Examples: Burst Balloons, Remove Boxes.
 
 9. How to Approach Any DP Problem (Interview Framework):
-   Step 1: Write the recursive solution first (express choices clearly).
-   Step 2: Identify overlapping subproblems (draw recursion tree if needed).
-   Step 3: Memoize (top-down) — add a dp table to cache results.
-   Step 4: Convert to tabulation (bottom-up) — fill table iteratively.
-   Step 5: Space optimize if possible (rolling array or variables).
+   - Step 1: Write the recursive solution first (express choices clearly).
+   - Step 2: Identify overlapping subproblems (draw recursion tree if needed).
+   - Step 3: Memoize (top-down) — add a dp table to cache results.
+   - Step 4: Convert to tabulation (bottom-up) — fill table iteratively.
+   - Step 5: Space optimize if possible (rolling array or variables).
 
 10. Identifying DP vs Greedy vs Backtracking:
     - "Count all ways" / "Min/Max cost" / "Is it possible" → DP.
@@ -82,21 +77,22 @@ Dynamic Programming Notes for Interview Preparation
     - If dp[i] depends on dp[i-1] and dp[i-2] → use two variables.
     - String problems: often reducible from O(n*m) to O(m) space.
 
---- QUICK PATTERN RECOGNITION TABLE ---
+## QUICK PATTERN RECOGNITION TABLE
 
 13. Keyword → Pattern Mapping:
-    | Keyword/Clue                  | Pattern          |
-    |-------------------------------|------------------|
-    | "partition", "split"          | Partition DP     |
-    | "cuts", "multiply matrices"   | MCM              |
-    | "longest increasing"          | LIS              |
-    | "two strings", "subsequence"  | LCS / Strings    |
-    | "target", "knapsack", "coins" | Subsets          |
-    | "grid", "path", "obstacles"   | 2D DP            |
-    | "stairs", "jump", "steps"     | 1D DP            |
-    | "burst", "remove", "pop"      | MCM (last-pick)  |
 
---- COMPLEXITY REFERENCE ---
+| Keyword/Clue | Pattern |
+| --- | --- |
+| "partition", "split" | Partition DP |
+| "cuts", "multiply matrices" | MCM |
+| "longest increasing" | LIS |
+| "two strings", "subsequence" | LCS / Strings |
+| "target", "knapsack", "coins" | Subsets |
+| "grid", "path", "obstacles" | 2D DP |
+| "stairs", "jump", "steps" | 1D DP |
+| "burst", "remove", "pop" | MCM (last-pick) |
+
+## COMPLEXITY REFERENCE
 
 14. 1D DP: O(n) time, O(n) or O(1) space.
     2D DP (grid): O(n*m) time, O(n*m) or O(m) space.

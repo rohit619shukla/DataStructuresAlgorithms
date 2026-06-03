@@ -1,7 +1,6 @@
-Graph Notes for Interview Preparation
-======================================
+# Graph Notes for Interview Preparation
 
---- ALGORITHM NOTES ---
+## ALGORITHM NOTES
 
 1. Dijkstra's Algorithm:
    - If a -ve edge is there we may lose the O(ELogV) time and might turn into exponential.
@@ -28,7 +27,7 @@ Graph Notes for Interview Preparation
    - BFS (Kahn's): If no node has indegree 0 → cycle exists. Or if count of processed nodes ≠ total nodes → cycle.
    - DFS: Use visited + path-visited arrays; push to stack on backtrack.
 
---- INTERVIEW PATTERNS & TRICKS ---
+## INTERVIEW PATTERNS & TRICKS
 
 6. Keyword "Shortest" → Dijkstra is likely hidden somewhere.
    - Unweighted graph shortest path → BFS is sufficient.
@@ -63,7 +62,7 @@ Graph Notes for Interview Preparation
     - Step 2: Transpose the graph.
     - Step 3: DFS on transposed graph in stack order → each DFS gives one SCC.
 
---- COMMON INTERVIEW QUESTIONS BY CATEGORY ---
+## COMMON INTERVIEW QUESTIONS BY CATEGORY
 
 13. Traversal-based: Number of Islands, Flood Fill, Surrounded Regions, Max Area of Island.
 14. Topo Sort-based: Course Schedule I & II, Alien Dictionary.
@@ -71,7 +70,7 @@ Graph Notes for Interview Preparation
 16. Union-Find: Redundant Connections, Account Merge, Max Stones Removal.
 17. Advanced: Word Ladder (BFS + level tracking), Bipartite Graph (2-coloring with BFS).
 
---- COMPLEXITY QUICK REFERENCE ---
+## COMPLEXITY QUICK REFERENCE
 
 18. BFS/DFS: O(V + E) time, O(V) space.
     Dijkstra: O(ELogV) time, O(V) space.

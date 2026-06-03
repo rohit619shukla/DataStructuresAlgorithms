@@ -1,7 +1,6 @@
-Tree Data Structure Notes for Interview Preparation
-=====================================================
+# Tree Data Structure Notes for Interview Preparation
 
---- FUNDAMENTALS ---
+## FUNDAMENTALS
 
 1. Binary Tree Basics:
    - Each node has at most two children (left and right).
@@ -23,7 +22,7 @@ Tree Data Structure Notes for Interview Preparation
    - Level Order (BFS using queue) — for level-wise problems.
    - Morris Traversal — O(1) space using threaded binary tree concept.
 
---- KEY PATTERN: HEIGHT OF BINARY TREE (Foundation for Many Problems) ---
+## KEY PATTERN: HEIGHT OF BINARY TREE (Foundation for Many Problems)
 
 4. The height calculation pattern is a foundational building block reused across problems:
    - Core idea: recursively compute max(leftHeight, rightHeight) + 1
@@ -32,10 +31,9 @@ Tree Data Structure Notes for Interview Preparation
    - Minimum Depth → min(leftH, rightH) + 1 (handle single-child nodes carefully!).
    - Maximum Width / Level Order → height helps determine total levels.
    - Bottom View / Top View → height/level used for vertical distance tracking.
-   - Pattern: Compute height BUT also carry extra info (diameter, balance flag, etc.)
-     during the same traversal. This avoids O(n^2) by not recomputing height at each node.
+   - Pattern: Compute height BUT also carry extra info (diameter, balance flag, etc.) during the same traversal. This avoids O(n^2) by not recomputing height at each node.
 
---- INTERVIEW PATTERNS & TECHNIQUES ---
+## INTERVIEW PATTERNS & TECHNIQUES
 
 5. DFS Patterns (Recursion/Stack):
    - Top-Down: pass information FROM root TO leaves (e.g., path sum, root-to-leaf paths).
@@ -48,6 +46,7 @@ Tree Data Structure Notes for Interview Preparation
    - Zigzag: alternate left-to-right and right-to-left at each level.
 
 7. BST Property Exploitation:
+   - Always think of Morris Traversal for BST-based problems — it gives O(1) space by leveraging the BST's inorder predecessor threading, avoiding recursion stack overhead.
    - Validate BST: pass min/max range down the tree.
    - Floor/Ceil: go left if current > target, go right if current < target.
    - Kth Smallest: inorder traversal with counter (stop at k).
@@ -69,26 +68,27 @@ Tree Data Structure Notes for Interview Preparation
     - Use preorder with null markers for full binary tree reconstruction.
     - BST: preorder alone is sufficient (BST property defines structure).
 
---- COMMON INTERVIEW TRICKS ---
+## COMMON INTERVIEW TRICKS
 
 11. When to use what:
-    | Problem Type                    | Approach                        |
-    |---------------------------------|---------------------------------|
-    | Height/Depth/Diameter/Balanced  | Bottom-up DFS (postorder)       |
-    | Path Sum / Root-to-Leaf         | Top-down DFS (preorder)         |
-    | Level-wise problems             | BFS with queue                  |
-    | View problems                   | BFS + HashMap (HD/level)        |
-    | BST search/insert/delete        | Exploit BST property O(h)       |
-    | Construction from traversals    | Preorder + Inorder / Postorder  |
+
+| Problem Type | Approach |
+| --- | --- |
+| Height/Depth/Diameter/Balanced | Bottom-up DFS (postorder) |
+| Path Sum / Root-to-Leaf | Top-down DFS (preorder) |
+| Level-wise problems | BFS with queue |
+| View problems | BFS + HashMap (HD/level) |
+| BST search/insert/delete | Exploit BST property O(h) |
+| Construction from traversals | Preorder + Inorder / Postorder |
 
 12. Edge Cases to Always Consider:
-    - Empty tree (null root).
-    - Single node tree.
-    - Skewed tree (essentially a linked list).
-    - All same values (for BST problems).
-    - Negative values in path sum problems.
+   - Empty tree (null root).
+   - Single node tree.
+   - Skewed tree (essentially a linked list).
+   - All same values (for BST problems).
+   - Negative values in path sum problems.
 
---- COMPLEXITY QUICK REFERENCE ---
+## COMPLEXITY QUICK REFERENCE
 
 13. Most tree operations: O(n) time, O(h) space where h = height.
     - Balanced tree: h = O(log n) → space = O(log n).
@@ -96,7 +96,7 @@ Tree Data Structure Notes for Interview Preparation
     - Morris Traversal: O(n) time, O(1) space.
     - BST operations (balanced): O(log n) time.
 
---- PROBLEMS BY CATEGORY ---
+## PROBLEMS BY CATEGORY
 
 14. Properties: Height, Diameter, Balanced, Symmetric, Identical, Min Depth.
     Views: Top View, Bottom View, Right View, Bottom-Left Value.
