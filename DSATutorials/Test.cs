@@ -33,7 +33,10 @@ public class Solution
                 // only odd level nodes will be swapped
                 if ((level + 1) % 2 != 0)
                 {
-                    SwapNodes(ref node.left, ref node.right);
+                    if (node.left != null && node.right != null)
+                    {
+                        SwapNodes(ref node.left, ref node.right);
+                    }
                 }
 
                 if (node.left != null)
