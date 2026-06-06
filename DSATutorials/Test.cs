@@ -23,19 +23,19 @@ public class Solution
         while (q.Count > 0)
         {
             int size = q.Count;
-            List<TreeNode> levelNodes = level % 2 != 0 ? new List<TreeNode>() : null;
+            List<TreeNode> levelNodes = new List<TreeNode>();
 
             for (int i = 0; i < size; i++)
             {
                 TreeNode node = q.Dequeue();
-                if (levelNodes != null) levelNodes.Add(node);
+                if (level % 2 != 0) levelNodes.Add(node);
 
                 if (node.left != null) q.Enqueue(node.left);
                 if (node.right != null) q.Enqueue(node.right);
             }
 
             // reverse values across the entire odd level
-            if (levelNodes != null)
+            if (levelNodes.Count > 0)
             {
                 int left = 0, right = levelNodes.Count - 1;
                 while (left < right)
