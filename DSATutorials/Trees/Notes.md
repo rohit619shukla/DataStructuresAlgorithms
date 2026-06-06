@@ -109,7 +109,7 @@
 | 4 | Diameter of Tree | BinaryTreeProperties |
 | 5 | Check If Two Trees Are Identical | BinaryTreeProperties |
 | 6 | Check If Symmetric Tree | BinaryTreeProperties |
-| 7 | Convert Tree to Mirror | BinaryTreeProperties |
+| 7 | Invert Binary Tree | BinaryTreeProperties |
 
 ### Phase 2: BFS / Level-Order Traversal
 *Master the queue-based BFS template — used in 40%+ of tree problems.*
