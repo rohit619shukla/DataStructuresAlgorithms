@@ -1,7 +1,18 @@
 ﻿
+//public class TreeNode
+//{
+//    public TreeNode left;
+//    public TreeNode right;
+//    public int val;
+
+//    public TreeNode(int data)
+//    {
+//        val = data;
+//    }
+//}
 //class Helper
 //{
-//    public void Inorder(TNode root)
+//    public void Inorder(TreeNode root)
 //    {
 //        if (root == null)
 //        {
@@ -9,23 +20,23 @@
 //        }
 
 //        Inorder(root.left);
-//        Console.Write($"{root.data}" + " ");
+//        Console.Write($"{root.val}" + " ");
 //        Inorder(root.right);
 //    }
 
-//    public void PreOrder(TNode root)
+//    public void PreOrder(TreeNode root)
 //    {
 //        if (root == null)
 //        {
 //            return;
 //        }
 
-//        Console.Write($"{root.data}" + " ");
+//        Console.Write($"{root.val}" + " ");
 //        PreOrder(root.left);
 //        PreOrder(root.right);
 //    }
 
-//    public void PostOrder(TNode root)
+//    public void PostOrder(TreeNode root)
 //    {
 //        if (root == null)
 //        {
@@ -34,7 +45,7 @@
 
 //        PostOrder(root.left);
 //        PostOrder(root.right);
-//        Console.Write($"{root.data}" + " ");
+//        Console.Write($"{root.val}" + " ");
 //    }
 //}
 //class Program
@@ -43,12 +54,12 @@
 //    {
 //        Helper h = new Helper();
 
-//        TNode root = null;
-//        root = new TNode(1);
-//        root.left = new TNode(2);
-//        root.right = new TNode(3);
-//        root.left.left = new TNode(4);
-//        root.left.right = new TNode(5);
+//        TreeNode root = null;
+//        root = new TreeNode(1);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        root.left.left = new TreeNode(4);
+//        root.left.right = new TreeNode(5);
 
 //        Console.WriteLine("Inorder :");
 //        h.Inorder(root);

@@ -96,13 +96,89 @@
     - Morris Traversal: O(n) time, O(1) space.
     - BST operations (balanced): O(log n) time.
 
-## PROBLEMS BY CATEGORY
+## REVISION ORDER (By Pattern — Each Phase Builds on the Previous)
 
-14. Properties: Height, Diameter, Balanced, Symmetric, Identical, Min Depth.
-    Views: Top View, Bottom View, Right View, Bottom-Left Value.
-    Paths: Sum Root to Leaf, Max Path Sum, Nodes at Distance K, Print Root-to-Leaf.
-    Traversals: Zigzag, Vertical, Boundary, Level Order Print.
-    Conversions: Mirror, Sorted Array to BST, BST to DLL, DLL to BST, Serialize/Deserialize.
-    BST Ops: Validate BST, Floor, Ceil, Kth Smallest, BST Iterator.
-    LCA: LCA in Binary Tree, LCA in BST.
-    Advanced: Max Width (with/without null), Two Sum BST, Infect Binary Tree.
+### Phase 1: Foundations (Recursion on Trees)
+*Learn to think recursively on tree structures first.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 1 | Height of Binary Tree | BinaryTreeProperties |
+| 2 | Minimum Depth of Binary Tree | BinaryTreeProperties |
+| 3 | Check Balanced Binary Tree | BinaryTreeProperties |
+| 4 | Diameter of Tree | BinaryTreeProperties |
+| 5 | Check If Two Trees Are Identical | BinaryTreeProperties |
+| 6 | Check If Symmetric Tree | BinaryTreeProperties |
+| 7 | Convert Tree to Mirror | BinaryTreeProperties |
+
+### Phase 2: BFS / Level-Order Traversal
+*Master the queue-based BFS template — used in 40%+ of tree problems.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 8 | Print Levels in Binary Tree | Traversals |
+| 9 | Average of Levels in Binary Tree | Traversals |
+| 10 | Largest Value in Each Row | Traversals |
+| 11 | ZigZag Traversal | Traversals |
+| 12 | Right View | TreeViews |
+| 13 | Bottom Left Value of Tree | TreeViews |
+| 14 | Top View of Tree | TreeViews |
+| 15 | Bottom View of Tree | TreeViews |
+| 16 | Vertical Traversal | Traversals |
+| 17 | Boundary Level Traversal | Traversals |
+
+### Phase 3: DFS Path Problems
+*Builds on Phase 1 recursion — now track paths & accumulate values.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 18 | Root Equals Sum of Children | PathProblems |
+| 19 | Print Root to Leaf Paths | PathProblems |
+| 20 | Sum Root to Leaf Numbers | PathProblems |
+| 21 | Maximum Sum Path in Binary Tree | PathProblems |
+
+### Phase 4: BST Basics
+*Exploit the left < root < right property.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 22 | Search in BST | BSTOperations |
+| 23 | Insert in BST | BSTOperations |
+| 24 | Floor in BST | BSTOperations |
+| 25 | Ceil in BST | BSTOperations |
+| 26 | Delete Node in BST | BSTOperations |
+| 27 | Check If Tree is BST | BSTOperations |
+| 28 | LCA in BST | LowestCommonAncestor |
+
+### Phase 5: Inorder = Sorted (BST Tricks)
+*Key insight: inorder traversal of BST gives sorted order.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 29 | Kth Smallest Element | BSTOperations |
+| 30 | BST Iterator | BSTOperations |
+| 31 | Two Sum in BST | BSTOperations |
+
+### Phase 6: Tree Construction & Conversion
+*Build trees from scratch — needs solid recursion skills from earlier phases.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 32 | Convert Sorted Array to BST | TreeConversions |
+| 33 | Construct BST from Preorder | TreeConversions |
+| 34 | Construct BT from Pre + Inorder | TreeConversions |
+| 35 | Construct BT from In + Postorder | TreeConversions |
+| 36 | Convert BST to DLL | TreeConversions |
+| 37 | Convert DLL to BST | TreeConversions |
+| 38 | Serialize & Deserialize | TreeConversions |
+
+### Phase 7: Advanced (Graph-on-Tree + Indexing)
+*Hardest problems — combine multiple patterns.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 39 | LCA in Binary Tree | LowestCommonAncestor |
+| 40 | Nodes at Distance K | Advanced |
+| 41 | Infect Binary Tree | Advanced |
+| 42 | Max Width Without Nulls | Advanced |
+| 43 | Max Width With Nulls | Advanced |
