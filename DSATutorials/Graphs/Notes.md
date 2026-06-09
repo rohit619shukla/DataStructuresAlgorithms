@@ -77,3 +77,110 @@
     Bellman-Ford: O(V*E) time, O(V) space.
     Floyd-Warshall: O(V^3) time, O(V^2) space.
     Prim's: O(ELogV), Kruskal's: O(ELogE).
+
+## REVISION ORDER (By Pattern — Each Phase Builds on the Previous)
+
+### Phase 1: Foundations (Graph Representation & Basic Traversals)
+*Learn how graphs are stored and master BFS/DFS — every graph problem uses them.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 1 | Adjacency List Representation | Concepts |
+| 2 | Adjacency Matrix Representation | Concepts |
+| 3 | BFS Traversal | Concepts/Algorithm |
+| 4 | DFS Traversal | Concepts/Algorithm |
+
+### Phase 2: BFS/DFS on Grids & Connected Components
+*Apply traversal templates to grid-based and component problems — most common interview category.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 5 | Flood Fill | Problems/Traversals |
+| 6 | Number of Islands | Problems/Traversals |
+| 7 | Max Area of Island | Problems/Traversals |
+| 8 | Number of Provinces | Problems/Traversals |
+| 9 | Connected Components in Undirected Graph | Problems/Traversals |
+| 10 | Complete Connected Component | Problems/Traversals |
+| 11 | Surrounded Regions | Problems/Traversals |
+| 12 | Clone Graph | Problems |
+
+### Phase 3: Multi-Source BFS
+*Push all sources at once — "fire spreading from multiple points" pattern.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 13 | Rotten Oranges | Problems/MultiDirectionTraversal |
+| 14 | 01 Matrix | Problems/MultiDirectionTraversal |
+| 15 | Number of Enclaves | Problems/MultiDirectionTraversal |
+
+### Phase 4: Cycle Detection & Graph Coloring
+*Detect cycles in directed/undirected graphs and learn 2-coloring (bipartite) technique.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 16 | Undirected Graph Cycle (BFS) | Problems/Traversals |
+| 17 | Undirected Graph Cycle (DFS) | Problems/Traversals |
+| 18 | Directed Graph Cycle (DFS) | Problems/Traversals |
+| 19 | Eventual Safe States | Problems |
+| 20 | Bipartite Graph (BFS) | Problems/Traversals |
+
+### Phase 5: Topological Ordering
+*Directed acyclic graphs — prerequisite/dependency ordering problems.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 21 | Topological Ordering (BFS - Kahn's) | Problems/TopoOrdering |
+| 22 | Topological Ordering (DFS) | Problems/TopoOrdering |
+| 23 | Course Schedule I | Problems/TopoOrdering |
+| 24 | Course Schedule II | Problems/TopoOrdering |
+| 25 | Alien Dictionary | Problems/TopoOrdering |
+
+### Phase 6: Shortest Path Algorithms
+*Keyword "shortest" → Dijkstra is likely hidden. Negative weights → Bellman-Ford.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 26 | Dijkstra Using Adjacency Matrix | Concepts/Algorithm |
+| 27 | Dijkstra Using Priority Queue | Concepts/Algorithm |
+| 28 | Bellman-Ford | Concepts/Algorithm |
+| 29 | Floyd-Warshall | Concepts/Algorithm |
+| 30 | Shortest Path in Undirected Graph | Problems/Shortest Paths |
+| 31 | Shortest Path in Binary Maze | Problems/Shortest Paths |
+| 32 | Path with Minimum Effort | Problems/Shortest Paths |
+| 33 | Network Delay Time | Problems/Shortest Paths |
+| 34 | Cheapest Flight within K Stops | Problems/Shortest Paths |
+| 35 | City with Smallest Number of Neighbours | Problems/Shortest Paths |
+| 36 | Number of Ways to Reach Destination | Problems/Shortest Paths |
+| 37 | Word Ladder I | Problems/Traversals |
+| 38 | Word Ladder II | Problems/Traversals |
+
+### Phase 7: Disjoint Set (Union-Find)
+*Connected components without full traversal — near O(1) with path compression + union by rank.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 39 | Disjoint Set Implementation | Problems/DisjointSet |
+| 40 | Number of Provinces (Union-Find) | Problems/DisjointSet |
+| 41 | Number of Operations to Make Graph Connected | Problems/DisjointSet |
+| 42 | Redundant Connections | Problems/DisjointSet |
+| 43 | Max Stones Removal | Problems/DisjointSet |
+| 44 | Account Merge | Problems/DisjointSet |
+
+### Phase 8: Minimum Spanning Tree
+*Greedy edge/node selection — Prim's and Kruskal's.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 45 | Prim's Using Adjacency Matrix | Concepts/Algorithm |
+| 46 | Prim's Using Priority Queue | Concepts/Algorithm |
+| 47 | Kruskal's Algorithm | Concepts/Algorithm |
+| 48 | Min Cost to Connect All Points | Problems/MST |
+
+### Phase 9: Advanced (Tarjan's / Low-High Concept + SCC)
+*Hardest problems — bridges, articulation points, and strongly connected components.*
+
+| # | Problem | Folder |
+|---|---------|--------|
+| 49 | Bridges (Critical Connections) | Problems/LowHighConcept |
+| 50 | Articulation Points | Problems/LowHighConcept |
+| 51 | Strongly Connected Components (Kosaraju's) | Problems/LowHighConcept |
