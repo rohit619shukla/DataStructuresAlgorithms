@@ -42,7 +42,7 @@
 //            }
 //        }
 
-//        // Whatever remains unvsisted is our answer
+//        // Whatever remains unvisited is our answer
 //        int count = 0;
 
 //        for (int i = 0; i < rows; i++)

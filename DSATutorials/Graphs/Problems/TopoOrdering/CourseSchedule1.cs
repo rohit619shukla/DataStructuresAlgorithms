@@ -16,7 +16,7 @@
 //        for (int i = 0; i < rows; i++)
 //        {
 //            AddEdges(prerequisites[i][0], prerequisites[i][1], adjList);
-//            indegree[prerequisites[i][1]]++;
+//            indegree[prerequisites[i][0]]++;
 //        }
 
 //        Queue<int> q = new Queue<int>();
@@ -46,7 +46,8 @@
 //                }
 //            }
 //        }
-        // Means there was no cycle and we were able to complete each and every course
+
+//        //Means there was no cycle and we were able to complete each and every course
 //        return count == numCourses ? true : false;
 //    }
 

@@ -29,7 +29,7 @@
 
 //        for (int i = 0; i < _vertices; i++)
 //        {
-//            foreach (var neighbor in _adjList[i])
+//            foreach (int neighbor in _adjList[i])
 //            {
 //                indegree[neighbor]++;
 //            }
@@ -53,7 +53,7 @@
 //            Console.WriteLine($"{node}" + " ");
 
 
-//            foreach (var neighbour in _adjList[node])
+//            foreach (int neighbour in _adjList[node])
 //            {
 //                indegree[neighbour]--;
 //                if (indegree[neighbour] == 0)

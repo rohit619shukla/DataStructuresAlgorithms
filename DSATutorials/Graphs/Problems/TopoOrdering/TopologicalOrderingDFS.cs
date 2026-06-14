@@ -39,8 +39,7 @@
 
 //        while (st.Count > 0)
 //        {
-//            Console.Write($"{st.Peek()}" +" ");
-//            st.Pop();
+//            Console.Write($"{st.Pop()}" + " ");
 //        }
 //    }
 
@@ -48,7 +47,7 @@
 //    {
 //        visited[node] = true;
 
-//        foreach (var neighbors in _adjList[node])
+//        foreach (int neighbors in _adjList[node])
 //        {
 //            if (visited[neighbors] == false)
 //            {

@@ -24,8 +24,11 @@
 
 //        int count = 0;
 
-//        // Step 4 : For complete connected components we need to make sure n*(n-1)/2 == edges
-//        // So now lets gets number of edges in the graph using DFS
+//        // Step 4 : A complete connected component means every node is connected to every other node.
+//        // For n nodes, each node connects to (n-1) others = n*(n-1) connections.
+//        // Since each edge is shared by 2 nodes, unique edges = n*(n-1)/2 (this is nC2 - choosing 2 nodes from n).
+//        // Example: 3 nodes need 3*2/2 = 3 edges (0-1, 0-2, 1-2) to be complete.
+//        // We use DFS to find actual nodeCount and edgeCount per component, then verify against this formula.
 
 //        for (int i = 0; i < n; i++)
 //        {
@@ -35,8 +38,7 @@
 //                int nodeCount = 0;
 //                DFS(i, visited, adjList, ref edgeCount, ref nodeCount);
 
-//                // Formula is  : Nc2 , which is for among n nodes 2 nodes will have 1 edge for sure
-//                // We divide edgecount /2 as we have undirected graph
+//                // edgeCount is divided by 2 because in an undirected adjacency list, each edge is stored twice (A->B and B->A)
 //                if ((nodeCount * (nodeCount - 1)) / 2 == edgeCount / 2)
 //                {
 //                    count++;
@@ -79,7 +81,7 @@
 //            new int[] { 0,2},
 //            new int[] { 1,2},
 //            new int[] { 3,4},
-//            new int[] { 3,5}
+//            //new int[] { 3,5}
 //        };
 
 //        Solution s = new Solution();

@@ -21,7 +21,7 @@
 //        // create a distance array to keep track of distance
 //        int[] distance = new int[_vertices];
 
-//        // visisted array
+//        // visited array
 //        int[] visited = new int[_vertices];
 
 //        // Set the distance of all nodes to Max
@@ -42,7 +42,7 @@
 //            // mark this node as visisted
 //            visited[minVertex] = 1;
 
-//            // From minvertex explore all paths and realx them
+//            // From minvertex explore all paths and relax them
 //            for (int j = 0; j < _vertices; j++)
 //            {
 //                if (_adjMatrix[minVertex, j] != 0 && visited[j] == 0)

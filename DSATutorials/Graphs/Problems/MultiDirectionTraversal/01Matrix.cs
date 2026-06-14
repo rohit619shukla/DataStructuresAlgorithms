@@ -85,6 +85,26 @@
 
 //}
 
-//// Time : 4 * (N*M)
-/// The reason we are starting from 0 in queue instead of 1 is that , we arleady know the distance of 0 to 0 is 0.
-/// But if we start with putting 1, then we dont know distance of nearest 0 yet as it is the starting point and wont have right answer
+//// Time : O(N * M) | Space : O(N * M)
+
+//// Why Multi-Source BFS starting from all 0s?
+//// The question asks: find the distance of the nearest 0 from each cell.
+//// A cell can be 0 or 1. Distance of 0 to 0 is always 0 (the cell itself is the nearest 0).
+//// So we already know the answer for all 0-cells — they are our "known" starting layer.
+////
+//// We enqueue all 0s with distance 0, then BFS expands level by level:
+////   - Level 1: any 1 adjacent to a 0 → distance = 1
+////   - Level 2: any 1 adjacent to a distance-1 cell → distance = 2
+////   - ...and so on
+//// Each 1 is first reached by the closest 0's wavefront, so BFS guarantees the minimum distance.
+////
+//// Why NOT start from 1s?
+//// Multi-source BFS requires all sources to start with the same known distance.
+//// 0s all start at distance 0 (their answer is trivially 0) — uniform and known. ✅
+//// 1s have unknown distances (that's what we're solving for!) — if we enqueue all 1s
+//// with distance 0, we'd be saying "every 1 is 0 away from a 0" which is wrong. ❌
+////
+//// Individual BFS from each 1 would work but costs O((N*M)^2):
+////   ~N*M ones × O(N*M) BFS per one.
+//// By flipping the perspective and starting from 0s,
+//// one single BFS pass covers the entire matrix in O(N*M).

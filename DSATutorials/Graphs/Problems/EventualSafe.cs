@@ -1,5 +1,7 @@
 ﻿//using System.Xml.Linq;
 
+//// Time Complexity: O(V + E) - each vertex and edge visited once via DFS
+//// Space Complexity: O(V + E) - adjacency list + visited/pathVisited arrays + recursion stack
 //public class Solution
 //{
 
@@ -18,11 +20,9 @@
 
 //        for (int i = 0; i < vertices; i++)
 //        {
-//            int[] currentRow = graph[i];
-
-//            foreach (var neigh in currentRow)
+//            for (int j = 0; j < graph[i].Length; j++)
 //            {
-//                AddEgde(i, neigh, adjList);
+//                AddEgde(i, graph[i][j], adjList);
 //            }
 //        }
 
