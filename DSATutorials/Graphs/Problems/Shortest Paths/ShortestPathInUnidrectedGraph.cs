@@ -1,101 +1,84 @@
 ﻿//class Solution
 //{
-//    public List<int> ShortestPath(int n, int m, int[][] edges)
+//    public int[] shortestPath(int V, int[,] edges, int src)
 //    {
-//        // parent array for backtracking
-//        int[] parent = new int[n + 1];
-//        for (int i = 1; i <= n; i++) parent[i] = i;
+//        // Since this is a 1 unit distance between 2 vertices, we will uses standard BFS with queue
 
-//        // Adjacency List
-//        List<int[]>[] adjList = new List<int[]>[n + 1];
-//        for (int i = 0; i <= n; i++) adjList[i] = new List<int[]>();
 
-//        foreach (var edge in edges)
+//        // Lets create an adjList
+//        List<int>[] adjList = new List<int>[V];
+//        for (int i = 0; i < V; i++)
 //        {
-//            adjList[edge[0]].Add(new int[] { edge[1], edge[2] });
-//            adjList[edge[1]].Add(new int[] { edge[0], edge[2] });
+//            adjList[i] = new List<int>();
 //        }
 
-//        int[] distance = new int[n + 1];
+
+//        for (int i = 0; i < edges.GetLength(0); i++)
+//        {
+//            AddEdge(edges[i, 0], edges[i, 1], adjList);
+//        }
+
+//        int[] distance = new int[V];
 //        Array.Fill(distance, int.MaxValue);
 
-//        distance[1] = 0;
-//        PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
-//        pq.Enqueue(1, 0);
+//        distance[src] = 0;
 
-        
-//        while (pq.Count > 0) // O(v)
+//        Queue<int> q = new Queue<int>();
+//        q.Enqueue(src);
+
+//        while (q.Count > 0) // O(V)
 //        {
-//            pq.TryDequeue(out int currentNode, out int cost); // O(LogV)
+//            int srcNode = q.Dequeue(); // O(1)
 
-//            if (cost > distance[currentNode]) continue;
-
-//            foreach (int[] neighbor in adjList[currentNode])  // O(E)
+//            foreach (int neighBors in adjList[srcNode]) // O(E) total across all iterations
 //            {
-//                int neighborNode = neighbor[0];
-//                int weight = neighbor[1];
-
-//                // Use long to prevent potential overflow if weights were larger, 
-//                // though int is usually fine for these constraints.
-//                if (distance[currentNode] + weight < distance[neighborNode])
+//                if (distance[srcNode] + 1 < distance[neighBors])
 //                {
-//                    distance[neighborNode] = distance[currentNode] + weight;
-//                    pq.Enqueue(neighborNode, distance[neighborNode]);  // O(LogV)
-//                    parent[neighborNode] = currentNode;
+//                    distance[neighBors] = distance[srcNode] + 1;
+//                    q.Enqueue((neighBors)); // O(1)
 //                }
 //            }
 //        }
 
-//        List<int> result = new List<int>();
+//        return distance;
+//    }
 
-//        // Check if destination is unreachable
-//        if (distance[n] == int.MaxValue)
-//        {
-//            result.Add(-1);
-//            return result;
-//        }
-
-//        // Backtrack path from n to 1
-//        int tempNode = n;
-//        while (parent[tempNode] != tempNode)
-//        {
-//            result.Add(tempNode);
-//            tempNode = parent[tempNode];
-//        }
-//        result.Add(1);
-
-//        // IMPORTANT: GFG expects the weight as the first element
-//        result.Add(distance[n]);
-
-//        // Reverse to get [Weight, 1, ..., n]
-//        result.Reverse();
-
-//        return result;
+//    private void AddEdge(int src, int dest, List<int>[] adjList)
+//    {
+//        adjList[src].Add(dest);
+//        adjList[dest].Add(src);
 //    }
 //}
+
+//// Time Complexity: O(V + E) - BFS visits each vertex once and each edge once
+//// Space Complexity: O(V + E) - Adjacency list O(V+E), Distance array O(V), Queue O(V)
 
 //class Program
 //{
 //    public static void Main()
 //    {
-//        int[][] edges = {
-//            new int[]{1,2,2 },
-//             new int[]{ 2, 5, 5},
-//              new int[]{ 2, 3, 4},
-//               new int[]{ 1, 4, 1},
-//                new int[]{ 4, 3, 3},
-//                 new int[]{3, 5, 1 }
+//        int V = 9;
+//        int[,] edges = {
+//            {0, 1},
+//            {0, 3},
+//            {1, 2},
+//            {1, 3},
+//            {3, 4},
+//            {4, 5},
+//            {2, 6},
+//            {5, 6},
+//            {6, 7},
+//            {6, 8},
+//            {7, 8}
 //        };
+//        int src = 0;
 
 //        Solution s = new Solution();
+//        int[] result = s.shortestPath(V, edges, src);
 
-//        var result = s.ShortestPath(5, 6, edges);
-
-//        foreach (var node in result)
+//        for (int i = 0; i < result.Length; i++)
 //        {
-//            Console.Write($"{node}" + " ");
+//            Console.Write($"{result[i]} ");
 //        }
 //    }
 //}
-
-//// Time : same as Dijikstra

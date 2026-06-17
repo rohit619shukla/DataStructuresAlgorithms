@@ -155,6 +155,46 @@ GraphQL is a **query language for APIs** developed by Facebook. The client speci
    └──────────────┘
 ```
 
+### GraphQL Engine
+
+Before a query ever reaches your resolvers, it passes through the **GraphQL Engine** — the runtime layer that sits between the client and your business logic.
+
+```
+   Client Request (POST /graphql)
+        │
+        ▼
+   ┌─────────────────────────────────────────────┐
+   │            GraphQL Engine                    │
+   │                                              │
+   │  1. Parsing        → Parse query string      │
+   │                      into an AST             │
+   │                                              │
+   │  2. Validation     → Check AST against       │
+   │                      the schema (types,      │
+   │                      fields, arguments)       │
+   │                                              │
+   │  3. Depth Limiting → Reject queries that     │
+   │                      exceed max nesting       │
+   │                      depth (e.g., depth > 5)  │
+   │                                              │
+   │  4. Complexity     → Score each field/edge,   │
+   │     Analysis         reject if total cost     │
+   │                      exceeds threshold        │
+   │                                              │
+   │  5. Rate Limiting  → Throttle per-client      │
+   │                      query volume             │
+   │                                              │
+   │  6. Execution      → Walk the AST, invoke     │
+   │                      resolvers, assemble      │
+   │                      response                 │
+   └─────────────────────────────────────────────┘
+        │
+        ▼
+   JSON Response → { "data": { ... } }
+```
+
+**Why it matters in interviews:** The engine is how GraphQL defends against **deeply nested malicious queries** (the DoS weakness listed below). Without depth/complexity limits, a query like `{ user { friends { friends { friends { ... } } } } }` could explode into millions of DB calls. Libraries like `graphql-depth-limit` and `graphql-query-complexity` plug into this engine layer to enforce these safeguards.
+
 ### GraphQL — The Good and The Bad
 
 ```
@@ -209,24 +249,48 @@ gRPC is a **high-performance, binary RPC framework** built on HTTP/2 and Protoco
    │                     How gRPC Works                            │
    └──────────────────────────────────────────────────────────────┘
 
-   1. Define service in .proto file (contract)
-   ──────────────────────────────────────────────
+   Step 1: Define the contract (.proto file)
+   ──────────────────────────────────────────
    service UserService {
      rpc GetUser (UserRequest) returns (UserResponse);
    }
+   → Both sides agree on method name, input & output shapes upfront.
 
-   2. Generate client & server code (auto-generated)
-   ──────────────────────────────────────────────────
-   protoc → generates stubs in Go, Java, Python, C#, etc.
+   Step 2: Generate code (protoc compiler)
+   ────────────────────────────────────────
+   protoc --go_out=. user.proto
+   → Generates two things from the same .proto:
+     • Client Stub  — a class to call remote methods as if local
+     • Server Skeleton — an interface you implement with real logic
+   → Works for Go, Java, Python, C#, etc. — all from one .proto.
 
-   3. Client calls server like a local function
-   ──────────────────────────────────────────────
+   Step 3: Client calls like a local function
+   ───────────────────────────────────────────
    user = userService.GetUser(UserRequest(id=123))
 
-   ┌──────────┐    HTTP/2 + Protobuf (binary)    ┌──────────┐
-   │  Client   │─────────────────────────────────▶│  Server   │
-   │  (Stub)   │◀─────────────────────────────────│  (Impl)   │
-   └──────────┘     ~10x smaller than JSON        └──────────┘
+   Looks local, but here's what the STUB does under the hood:
+
+   ┌────────────┐                                    ┌────────────┐
+   │ Your Code   │                                    │  Server     │
+   │             │                                    │  (Impl)     │
+   │ calls stub ─┤                                    │             │
+   │             │  1. Serialize to Protobuf binary   │             │
+   │  ┌───────┐  │──────────────────────────────────▶│  ┌───────┐  │
+   │  │ Stub  │  │        (HTTP/2 transport)          │  │ Skel  │  │
+   │  └───────┘  │◀──────────────────────────────────│  └───────┘  │
+   │             │  4. Deserialize response binary    │             │
+   │ gets result │                                    │             │
+   └────────────┘                                    └────────────┘
+
+   What happens in order:
+   1. Stub serializes UserRequest(id=123) → protobuf binary (~10x smaller than JSON)
+   2. Binary sent over HTTP/2 (multiplexed, single persistent connection)
+   3. Server deserializes → runs your logic (e.g., DB lookup) → builds UserResponse
+   4. UserResponse serialized to binary → sent back over same HTTP/2 connection
+   5. Stub deserializes → returns UserResponse object to your code
+
+   The stub hides ALL the complexity — serialization, networking, deserialization.
+   Your code just calls a function; gRPC handles the rest.
 ```
 
 ### gRPC Streaming Modes

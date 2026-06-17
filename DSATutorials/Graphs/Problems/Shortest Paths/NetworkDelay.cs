@@ -54,7 +54,7 @@
 //                return -1;
 //            }
 
-//            minTime = Math.Max(distance[i] , minTime);
+//            minTime = Math.Max(distance[i], minTime);
 //        }
 
 //        return minTime;
@@ -86,4 +86,4 @@
 //}
 
 //// Time : Same as Dijikstra
-/// also this question is tricky in sense that we have been asked min time but internally we need to get max time taken among the node and by the time it reaches that node which took max time it is understood that we have reached all nodes
+//// also this question is tricky in sense that we have been asked min time but internally we need to get max time taken among the node and by the time it reaches that node which took max time it is understood that we have reached all nodes

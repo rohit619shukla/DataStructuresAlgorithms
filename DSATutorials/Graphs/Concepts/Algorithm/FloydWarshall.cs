@@ -5,7 +5,6 @@
 //    {
 //        int v = dist.GetLength(0);
 
-//        int[,] result = new int[v, v];
 
 //        // This is all pairs shortes path where we take an intermediate to see if we can reach a given dest node from source with that edge
 //        for (int k = 0; k < v; k++)
