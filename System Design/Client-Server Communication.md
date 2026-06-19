@@ -139,6 +139,22 @@ GraphQL is a **query language for APIs** developed by Facebook. The client speci
    │                                                                │
    │  1 round trip, only requested fields returned                  │
    └────────────────────────────────────────────────────────────────┘
+
+   ⚠ "user", "posts", "friends" are NOT table names — they are
+   resolver names defined in the schema. Each resolver is a function
+   on the server that can fetch data from anywhere (DB, cache, another
+   API, gRPC service). The client only knows the schema shape, never
+   the underlying data source.
+
+   Schema (server-side):
+   type Query {
+     user(id: ID!): User          ← resolver name, NOT a table
+   }
+
+   Resolver (server-side):
+   Query: {
+     user: (_, { id }) => db.users.findById(id)   ← could be any data source
+   }
 ```
 
 ### Core Concepts
