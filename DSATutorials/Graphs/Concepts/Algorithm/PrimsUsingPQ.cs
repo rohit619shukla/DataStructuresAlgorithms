@@ -38,8 +38,8 @@
 //        Array.Fill(parent, -1);
 
 //        PriorityQueue<int[], int> pq = new PriorityQueue<int[], int>();
-       
-           // Source, parent and priority
+
+//        //Source, parent and priority
 //        pq.Enqueue(new int[] { 0, 0 }, 0);
 
 //        while (pq.Count > 0)
@@ -48,7 +48,7 @@
 
 //            int currentNode = node[0];
 
-//            if (visited[currentNode] == 0)
+//            if (visited[currentNode] == 1)
 //            {
 //                continue;
 //            }
