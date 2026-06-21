@@ -1,100 +1,116 @@
-﻿//public class Solution
-//{
-//    public int MinCostConnectPoints(int[][] points)
-//    {
-//        // Hint : Since we have been asked to connect all points in plane with minimum cost, hence this is MST problem
+﻿public class Solution
+{
+    public int MinCostConnectPoints(int[][] points)
+    {
+        // Hint : Since we have been asked to connect all points in plane with minimum cost, hence this is MST problem
 
-//        // Step 1 : Create Adjacency list to store the edegs and weights
-//        int n = points.Length;
+        // NOTE : Each point [x, y] is ONE node in the graph. We identify a node by its
+        // index in the points array (0..n-1), NOT by the individual x or y number.
+        // So n points => n nodes. The edge weight between node i and node j is the
+        // Manhattan distance between point i and point j.
 
-//        List<int[]>[] adjList = new List<int[]>[n];
+        // Step 1 : Create Adjacency list to store the edges and weights
+        int n = points.Length;   // n = number of points = number of nodes
 
-//        for (int i = 0; i < n; i++)
-//        {
-//            adjList[i] = new List<int[]>();
-//        }
+        List<int[]>[] adjList = new List<int[]>[n];
 
-//        // Step 2 : start filling them 
+        for (int i = 0; i < n; i++)
+        {
+            adjList[i] = new List<int[]>();
+        }
 
-//        for (int i = 0; i < n; i++)
-//        {
-//            for (int j = i + 1; j < n; j++)
-//            {
-//                int x1 = points[i][0];
-//                int y1 = points[i][1];
+        // Step 2 : start filling them 
 
-//                int x2 = points[j][0];
-//                int y2 = points[j][1];
+        for (int i = 0; i < n; i++)         // i = index of first point (a node)
+        {
+            for (int j = i + 1; j < n; j++)  // j = index of second point (another node)
+            {
+                int x1 = points[i][0];
+                int y1 = points[i][1];
 
-//                int weight = Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
+                int x2 = points[j][0];
+                int y2 = points[j][1];
 
-//                // Step 3 : Create undirected graph
-//                AddEdge(i, j, weight, adjList);
-//            }
-//        }
+                // Manhattan distance between point i and point j = edge weight
+                int weight = Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
 
-//        // Step 4 : Apply Prims Algorithm
-//        PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
+                // Step 3 : Create undirected graph (edge i <-> j with this weight)
+                AddEdge(i, j, weight, adjList);
+            }
+        }
 
-//        bool[] visited = new bool[n];
+        // Step 4 : Apply Prims Algorithm
+        PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
 
-//        int result = 0;
+        bool[] visited = new bool[n];
 
-//        pq.Enqueue(0, 0);
+        int result = 0;
 
-//        while (pq.Count > 0)
-//        {
-//            pq.TryDequeue(out int currentNode, out int weight);
+        pq.Enqueue(0, 0);
 
-//            if (visited[currentNode] == true)
-//            {
-//                continue;
-//            }
+        while (pq.Count > 0)
+        {
+            pq.TryDequeue(out int currentNode, out int weight);
 
-//            visited[currentNode] = true;
-//            result += weight;
+            if (visited[currentNode] == true)
+            {
+                continue;
+            }
 
-//            foreach (var neighbors in adjList[currentNode])
-//            {
-//                if (visited[neighbors[0]] == false)
-//                {
-//                    pq.Enqueue(neighbors[0], neighbors[1]);
-//                }
-//            }
-//        }
+            visited[currentNode] = true;
+            result += weight;
 
-//        return result;
-//    }
+            foreach (var neighbors in adjList[currentNode])
+            {
+                if (visited[neighbors[0]] == false)
+                {
+                    pq.Enqueue(neighbors[0], neighbors[1]);
+                }
+            }
+        }
 
-//    private void AddEdge(int src, int dest, int weight, List<int[]>[] adjList)
-//    {
-//        adjList[src].Add(new int[] { dest, weight });
-//        adjList[dest].Add(new int[] { src, weight });
-//    }
-//}
+        return result;
+    }
 
-
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[][] points = {
-//            new int[] { 0,0},
-//            new int[] { 2,2},
-//            new int[] { 3,10},
-//            new int[] { 5,2},
-//            new int[]{ 7,0}
-//        };
-
-//        Solution s = new Solution();
-
-//        Console.WriteLine(s.MinCostConnectPoints(points));
-//    }
-//}
+    private void AddEdge(int src, int dest, int weight, List<int[]>[] adjList)
+    {
+        adjList[src].Add(new int[] { dest, weight });
+        adjList[dest].Add(new int[] { src, weight });
+    }
+}
 
 
-//// Time : O(V^2 + V^2LogV2) , space :  O(V+E)
-//// V^2 due to fact we create a dense graph where every node v has v-1 neighbors hence v*(v-1)/2 . 
-//// We divide by 2 to avoid double counting
-//// he prims take ElogE complexity, but since this is a dens grpah it becoms E =V^2.
-//// O(V^2 + V^2LogV2)
+class Program
+{
+    public static void Main()
+    {
+        int[][] points = {
+            new int[] { 0,0},
+            new int[] { 2,2},
+            new int[] { 3,10},
+            new int[] { 5,2},
+            new int[]{ 7,0}
+        };
+
+        Solution s = new Solution();
+
+        Console.WriteLine(s.MinCostConnectPoints(points));
+    }
+}
+
+
+// Let V = number of points (nodes), E = number of edges.
+// Since every pair of points is connected, the graph is DENSE: E = V*(V-1)/2 = O(V^2).
+//
+// Time  : O(V^2 + E log E) = O(V^2 + V^2 log V^2) = O(V^2 log V)
+//   - O(V^2)        : building the adjacency list (nested loop over all pairs).
+//   - O(E log E)    : Prim's with a priority queue. We may push up to E edges, and the
+//                     PQ holds O(E) = O(V^2) entries, so each op costs log(V^2) = 2 log V.
+//                     => V^2 * log(V^2) = O(V^2 log V).
+//
+// Space : O(V + E) = O(V^2)
+//   - Adjacency list stores all edges (O(E) = O(V^2)) plus the PQ/visited arrays (O(V)).
+//   - For a dense graph this is dominated by O(V^2).
+//
+// Your stated complexity O(V^2 + V^2 log V^2) is CORRECT; it just simplifies to
+// O(V^2 log V) since log V^2 = 2 log V. Space O(V+E) is also correct (= O(V^2) here).
