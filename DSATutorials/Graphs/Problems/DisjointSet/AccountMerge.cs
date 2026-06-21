@@ -55,7 +55,7 @@
 
 //            if (!unsortedList.ContainsKey(ulitmateParent))
 //            {
-//                unsortedList.Add(ulitmateParent, new List<string> { key});
+//                unsortedList.Add(ulitmateParent, new List<string> { key });
 //            }
 //            else
 //            {
@@ -121,10 +121,9 @@
 
 //        var accounts = new List<IList<string>>();
 
-//        accounts.Add(new List<string> { "John", "johnsmith@mail.com", "john_newyork@mail.com" });
-//        accounts.Add(new List<string> { "John", "johnsmith@mail.com", "john00@mail.com" });
-//        accounts.Add(new List<string> { "Mary", "mary@mail.com" });
-//        accounts.Add(new List<string> { "John", "johnnybravo@mail.com" });
+//        accounts.Add(new List<string> { "Ram", "ram1@mail", "ram2@mail" });
+//        accounts.Add(new List<string> { "Ram", "ram2@mail", "ram3@mail" });
+//        accounts.Add(new List<string> { "Sam", "sam1@mail" });
 
 //        var result = s.AccountsMerge(accounts);
 

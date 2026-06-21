@@ -100,4 +100,5 @@
 //    }
 //}
 
-//// Time : O(n * alpha(M) + M) and space : O(n)
+//// Time : O(n * alpha(M) + M) where n = number of stones, M = maxRow + maxCol + 2 (total DSU nodes), alpha = inverse Ackermann (nearly constant)
+//// Space : O(M) for parent and size arrays
