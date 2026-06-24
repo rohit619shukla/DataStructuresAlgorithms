@@ -90,6 +90,72 @@ D - Durability
 
 ---
 
+## ACID Properties (SQL — In Depth)
+
+**ACID** is the set of guarantees a transactional (relational) database makes so that a group of operations behaves like a single, reliable unit of work — even under crashes, concurrency, and failures.
+
+### A — Atomicity ("All or Nothing")
+- A transaction is **indivisible**: either **every** operation commits, or **none** of them do.
+- If any step fails, the database **rolls back** to the state before the transaction started — no partial writes are left behind.
+- **Example:** Transferring ₹1000 = `debit account A` + `credit account B`. If the credit fails, the debit is rolled back so money is never lost or duplicated.
+- **Enabled by:** write-ahead logs (WAL), undo logs, rollback segments.
+
+### C — Consistency ("Valid State to Valid State")
+- A transaction moves the database from **one valid state to another**, always preserving **all defined rules** — constraints, foreign keys, uniqueness, triggers, cascades.
+- If a transaction would violate an invariant (e.g. a negative stock count or a duplicate primary key), it is **rejected**.
+- **Note:** This is *database* consistency (integrity rules), which is different from the *distributed-systems* "C" in CAP (all nodes seeing the same data).
+- **Example:** An order can never reference a `customer_id` that doesn't exist — the foreign key constraint enforces it.
+
+### I — Isolation ("Concurrent = Serial")
+- Concurrently running transactions don't **interfere** with each other; the result is **as if they ran one after another**.
+- Controlled by **isolation levels**, trading correctness for performance:
+  - **Read Uncommitted** → allows *dirty reads*
+  - **Read Committed** → prevents dirty reads
+  - **Repeatable Read** → prevents non-repeatable reads
+  - **Serializable** → strongest; prevents *phantom reads*
+- **Example:** Two people booking the **last seat** at the same time — isolation ensures only one succeeds, not both.
+- **Enabled by:** locking (pessimistic) or MVCC / multi-version concurrency control (optimistic).
+
+### D — Durability ("Once Committed, It Stays")
+- Once a transaction is **committed**, its changes **survive** crashes, power loss, or restarts.
+- Committed data is persisted to **non-volatile storage** before success is acknowledged.
+- **Example:** After your payment confirmation screen, the record won't vanish even if the server crashes a second later.
+- **Enabled by:** write-ahead logging, fsync to disk, replication.
+
+---
+
+## BASE Properties (NoSQL — In Depth)
+
+**BASE** is the relaxed counterpart to ACID. To achieve **massive scale and high availability** in distributed systems, it deliberately **loosens consistency** guarantees. It is a direct consequence of the CAP theorem (choosing Availability over strong Consistency under partitions).
+
+### BA — Basically Available
+- The system **guarantees availability** — every request gets a **response**, even during partial failures or network partitions.
+- The response might be **stale** or based on an **incomplete** view, but the system **never goes fully down**.
+- **Example:** During a node outage, a shopping site still serves the product catalog (possibly slightly out of date) rather than returning an error.
+
+### S — Soft State
+- The state of the system **may change over time even without new input**, because replicas are **asynchronously converging** in the background.
+- The data is **not guaranteed to be immediately consistent** across all nodes — it's "in flux."
+- **Example:** A user's profile update propagates to replicas over a few seconds; different replicas may briefly hold different values.
+
+### E — Eventually Consistent
+- If no new updates are made, **all replicas eventually converge** to the same value — but **not instantly**.
+- The system accepts **temporary inconsistency** in exchange for availability and performance, reconciling conflicts later (e.g. last-write-wins, vector clocks, CRDTs).
+- **Example:** A "like" count or a social feed may show slightly different numbers across regions for a moment, then settle to the correct value.
+
+### ACID vs BASE — Property-by-Property
+
+| ACID (SQL) | BASE (NoSQL) | Trade-off |
+|------------|--------------|-----------|
+| **Atomicity** — all or nothing | **Basically Available** — always responds | Correctness vs uptime |
+| **Consistency** — always valid state | **Soft State** — state may drift | Strict rules vs flexibility |
+| **Isolation** — transactions don't interfere | (relaxed / limited) | Concurrency safety vs throughput |
+| **Durability** — survives crashes | **Eventually Consistent** — converges over time | Immediate truth vs scale |
+
+> **Interview soundbite:** ACID optimizes for **correctness**; BASE optimizes for **availability and scale**. ACID says *"be right, even if you have to wait or fail."* BASE says *"stay up and fast now, become right soon."*
+
+---
+
 ## CAP Theorem (How It Drives the Choice)
 
 > In a distributed system, during a **network partition (P)** you can only fully guarantee **two** of: **Consistency, Availability, Partition tolerance**. Since partitions are unavoidable at scale, the real trade-off is **C vs A**.
@@ -257,4 +323,4 @@ E-commerce: **PostgreSQL** for orders/payments (ACID), **Redis** for cart/sessio
 
 ---
 
-*Last Updated: 2026-06-21*
+*Last Updated: 2026-06-24*
