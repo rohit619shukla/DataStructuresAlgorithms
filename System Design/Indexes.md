@@ -112,6 +112,118 @@ A **B+ Tree** is a balanced tree, kept shallow on purpose:
 
 > **Analogy:** A clustered index is a phone book sorted by last name — the data *is* the order. A non-clustered index is the back-of-book index that points to a page.
 
+### Diagrams — the leaf level is the whole difference
+
+We use this one table for both diagrams:
+
+```
+Users table
++-----+-------+-----------+
+| id  | name  | email     |   id = PRIMARY KEY (so id is the clustered index)
++-----+-------+-----------+   we also add a separate index on email
+| 10  | Alice | a@x.com   |
+| 20  | Bob   | b@x.com   |
+| 25  | Carol | c@x.com   |
+| 30  | Dave  | d@x.com   |
+| 40  | Erin  | e@x.com   |
++-----+-------+-----------+
+```
+
+---
+
+**🟢 CLUSTERED INDEX (on `id`) — the leaf node IS the row**
+
+Query we're running:
+
+```sql
+SELECT * FROM Users WHERE id = 25;
+```
+
+```
+ STEP 1: start at root, is 25 < 30 ? yes -> go LEFT
+                          +---------+
+                          |   30    |   root (just a signpost: "< 30 go left, >= 30 go right")
+                          +----+----+
+                     LEFT /         \ RIGHT
+                        (25<30)
+                         /
+ STEP 2: is 25 < 20 ? no -> go to the ">= 20" child
+                 +----------+
+                 | 10 | 20  |   internal node (signposts only, no real data)
+                 +--+----+--+
+                    |    \
+                   <20   >=20  (25 >= 20)
+                          \
+ STEP 3: land on the leaf. The leaf holds the ACTUAL ROW. Done.
+                     +----------------------+
+                     | id:25 Carol c@x.com  |  <-- LEAF = full row, data is RIGHT HERE
+                     +----------------------+
+                              |
+                              v
+                       return the row.   Total = 1 traversal, NO extra lookup.
+```
+
+**What happened:** the tree is just a set of signposts on `id`. You follow `25 < 30` → left, `25 >= 20` → right child, and the leaf you land on already contains Carol's whole row. **One walk, done.**
+
+---
+
+**🔵 NON-CLUSTERED INDEX (on `email`) — the leaf holds a POINTER, then a 2nd lookup**
+
+Query we're running:
+
+```sql
+SELECT * FROM Users WHERE email = 'c@x.com';
+```
+
+```
+ STEP 1 & 2: walk the EMAIL tree the same way (signposts are emails now)
+                          +-----------+
+                          |  c@x.com  |   root signpost on email
+                          +-----+-----+
+                                | (find 'c@x.com')
+                                v
+ STEP 3: land on the leaf. But the leaf does NOT hold the row --
+         it only holds the email + the id (a POINTER to the row).
+                     +-------------------------+
+                     |  email: c@x.com         |  <-- LEAF = key + pointer
+                     |  points to --> id: 25   |      (NO name, NO other columns)
+                     +-----------+-------------+
+                                 |
+                                 |  we only have id:25, but query said SELECT *  -> need the row
+                                 v
+ STEP 4: EXTRA LOOKUP -- take id:25 and walk the CLUSTERED (id) tree from the top
+                          +---------+
+                          |   30    |   (25 < 30 -> left ...)
+                          +----+----+
+                               ...
+                     +----------------------+
+                     | id:25 Carol c@x.com  |  <-- NOW we finally have the full row
+                     +----------------------+
+                              |
+                              v
+                       return the row.   Total = 2 traversals (this hop = "key lookup").
+```
+
+**What happened:** the email tree gets you to a leaf, but the leaf only says *"this email belongs to id 25."* Since `SELECT *` needs `name` too, you must take that `id:25` and **walk the clustered index a second time** to fetch the full row. **That second walk is the "key lookup" — the reason non-clustered is a bit slower.**
+
+---
+
+### Two ways to avoid the extra lookup (senior signal)
+
+1. **Only select indexed columns:**
+   ```sql
+   SELECT email FROM Users WHERE email = 'c@x.com';
+   ```
+   The email leaf already has `email` → answer returned from the index alone, **no key lookup**.
+
+2. **Covering index** — include the extra column in the index so its leaf carries everything the query needs:
+   ```sql
+   CREATE INDEX idx_email_cover ON Users (email) INCLUDE (name);
+   -- now SELECT name, email WHERE email = ... is answered from the index, no 2nd trip
+   ```
+
+> **Say it out loud:** "Both are B+ trees. In a **clustered** index the leaf *is* the row, so one walk finds it. In a **non-clustered** index the leaf holds a pointer, so `SELECT *` needs a second walk into the clustered index — the 'key lookup' — which is why it's slightly slower. A covering index removes that second walk."
+
 ---
 
 ## 6. Key terms interviewers love
