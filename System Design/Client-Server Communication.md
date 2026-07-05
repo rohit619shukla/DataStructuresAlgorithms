@@ -309,6 +309,44 @@ gRPC is a **high-performance, binary RPC framework** built on HTTP/2 and Protoco
    Your code just calls a function; gRPC handles the rest.
 ```
 
+### The Client Stub & Marshalling
+
+When the client calls a function that actually **lives on another server**, it is not
+calling the remote function directly — internally it is calling the **client stub**.
+
+A **stub** is a local proxy program/service that performs the **marshalling** process:
+
+```
+   ┌──────────────────────────────────────────────────────────────────┐
+   │                  What the Client Stub Does                        │
+   └──────────────────────────────────────────────────────────────────┘
+
+   1. Your code calls a "local-looking" method → really hits the STUB.
+
+   2. The stub takes the data and shapes it using the predefined
+     CONTRACT defined in the .proto file (field names, types, order).
+
+   3. MARSHALLING: it converts that data into protobuf binary —
+     stripping away all the extra content (field names, whitespace,
+     structural metadata that JSON would carry) and keeping only the
+     raw, compact binary values.
+
+   4. It hands this serialized binary to the gRPC RUNTIME, which sends
+     it over HTTP/2 from the stub to the server.
+
+   5. On the far side, the server's SKELETON does the reverse
+     (UN-marshalling): binary → typed object → your server logic.
+
+   Marshalling  = object  → binary (for the wire)
+   Unmarshalling= binary  → object (back into code)
+```
+
+**Key idea:** the `.proto` contract is the single source of truth. Because both the
+stub (client) and skeleton (server) are generated from the *same* `.proto`, they agree
+on exactly how to pack and unpack the bytes — so only minimal binary data travels the
+network, and no field names or extra structure are sent (unlike JSON). This is what
+makes gRPC payloads ~10x smaller than REST/JSON.
+
 ### gRPC Streaming Modes
 
 ```
@@ -560,4 +598,4 @@ Don't use WebSockets for **simple request-response** (REST is simpler), **unidir
 
 ---
 
-*Last Updated: 2026-06-10*
+*Last Updated: 2026-07-05*
