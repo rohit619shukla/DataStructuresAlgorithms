@@ -73,6 +73,30 @@ Cassandra nodes form a **ring**. There is **no master and no slave** — this is
 - **Gossip protocol:** nodes periodically exchange state ("who's alive, who owns what") — no central coordinator.
 - **Coordinator node:** the node a client contacts becomes the *coordinator* for that request and routes it to the replicas. Any node can coordinate.
 
+### Gossip Protocol (How the Masterless Ring Stays Informed)
+
+Since there is **no master**, no single node holds the "truth" about cluster state. **Gossip** is the peer-to-peer protocol that spreads that state so every node knows about every other node.
+
+- **Every ~1 second**, each node picks a few **random** peers and exchanges state.
+- Information spreads **epidemically** (like a rumor) — one node tells a few, they tell a few more → the whole cluster converges in **O(log N)** rounds.
+- No node talks to *all* others, so it **scales cheaply** to huge clusters.
+
+**What gets gossiped:**
+
+| Shared state | Why it matters |
+|--------------|----------------|
+| **Node up/down (liveness)** | Coordinators avoid routing to dead nodes |
+| **Token ownership (ring position)** | Any node knows *which node owns which data* |
+| **Schema version** | Detect/reconcile schema changes cluster-wide |
+| **Load / status** (bootstrapping, leaving) | Balance requests, manage node join/leave |
+
+**Why it's essential:**
+1. **Enables the masterless design** — any node can coordinate a request because gossip gave it a full map of the ring.
+2. **Failure detection** — paired with the *Phi Accrual Failure Detector*, gossip decides if a node is `DOWN`, triggering **hinted handoff** (store the write, replay later).
+3. **No single point of failure** — the cluster-state knowledge itself is decentralized.
+
+> **Interview line:** "Gossip is Cassandra's decentralized **membership and failure-detection protocol** — nodes periodically exchange state with random peers so the whole masterless ring learns who's alive, who owns what, and the current schema, with no central coordinator."
+
 ---
 
 ## Tunable Consistency (The Most Important Concept)
@@ -245,6 +269,9 @@ A: Data is replicated (RF copies). Reads/writes succeed as long as the required 
 **Q: What is the coordinator node?**
 A: Any node a client connects to for a request; it routes the operation to the correct replicas and returns the result. There's no fixed coordinator — the role is per-request.
 
+**Q: What is the gossip protocol used for?**
+A: It's Cassandra's decentralized **membership and failure-detection** protocol. Every ~1s each node exchanges cluster state (liveness, token/ring ownership, schema version, load) with a few random peers, spreading epidemically in O(log N) rounds. This is what lets any node act as coordinator and lets the masterless ring detect failures — all without a central coordinator.
+
 ---
 
 ## Key Takeaways
@@ -260,3 +287,4 @@ A: Any node a client connects to for a request; it routes the operation to the c
 ---
 
 *Last Updated: 2026-07-07*
+
