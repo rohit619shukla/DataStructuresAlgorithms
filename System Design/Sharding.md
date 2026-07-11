@@ -3,7 +3,7 @@
 ## The One-Line Answer (Say This First in an Interview)
 
 > **Sharding** is **horizontal partitioning of data across multiple independent databases (shards)**, where each shard holds a **subset of the rows** and no single machine holds the whole dataset.
-> You shard when **one database can no longer handle the data volume, write throughput, or working-set size** — sharding scales **writes and storage**, which read replicas alone cannot.
+> You shard when **one database can no longer handle the data volume, write throughput, or working-set size** — sharding scales **writes and storage**, and also makes **shard-key-targeted reads faster** (smaller data + indexes per node), which read replicas alone cannot do for writes/storage.
 
 The interviewer wants to hear **why** you shard, **how you pick the shard key**, and the **trade-offs you accept** (cross-shard joins, rebalancing, hotspots).
 
@@ -15,10 +15,13 @@ The interviewer wants to hear **why** you shard, **how you pick the shard key**,
 |---|---|---|
 | **What it does** | Splits data into disjoint subsets | Copies the same data to multiple nodes |
 | **Each node holds** | A *slice* of the data | A *full copy* of the data |
-| **Primarily scales** | Writes + storage | Reads + availability |
+| **Primarily scales** | Writes + storage + **targeted reads** | Read concurrency + availability |
+| **How it helps reads** | Each query scans a **smaller dataset** (smaller indexes, hotter cache) | Adds **more copies** to spread read load |
 | **Analogy** | Different chapters in different books | Photocopies of the same book |
 
-> **Interview soundbite:** Replication is for **read scaling & availability**; sharding is for **write scaling & storage**. Real systems use **both** — shard the data, then replicate each shard.
+> **Interview soundbite:** **Both** scale reads, but differently — **replication** adds full copies to spread read *concurrency*; **sharding** shrinks the *data each query touches* (smaller indexes, more of the working set in memory). Sharding is the **only** one that also scales **writes and storage**. Real systems use both — shard the data, then replicate each shard.
+>
+> ⚠️ **Caveat:** sharding only speeds up reads that **target a single shard** (include the shard key). Reads *without* the shard key become **scatter-gather** across all shards and get **slower** — so read speedup depends on shard-key-aligned queries.
 
 ```
         Replication (copies)                 Sharding (splits)
@@ -215,7 +218,7 @@ Production systems **combine both**: shard for scale, replicate each shard for a
 ```
 
 - Each shard has its **own primary + replicas**.
-- Sharding handles **write/storage scale**; replication handles **read scale + failover**.
+- Sharding handles **write/storage scale** (and faster single-shard reads); replication handles **read concurrency + failover**.
 
 ---
 
@@ -225,7 +228,7 @@ Production systems **combine both**: shard for scale, replicate each shard for a
 Sharding is **horizontal partitioning** — splitting rows across multiple databases so each holds a subset. Use it when a **single DB can't handle the write throughput, data size, or working set**, and after you've already tried vertical scaling, read replicas, and caching. It scales **writes and storage**, which replicas cannot.
 
 ### Q2: Sharding vs replication — what's the difference?
-**Replication copies the full dataset** to multiple nodes (scales **reads** + availability). **Sharding splits the data** into disjoint subsets (scales **writes** + storage). They're complementary — production systems shard, then replicate each shard.
+**Replication copies the full dataset** to multiple nodes — it scales **read concurrency** (more copies to serve requests) and **availability/failover**. **Sharding splits the data** into disjoint subsets — it scales **writes** and **storage**, and *also* speeds up **targeted reads** because each query hits a **smaller dataset with smaller indexes and a hotter cache**. The catch: only reads that **include the shard key** get faster; shard-key-less reads become scatter-gather. They're complementary — production systems shard, then replicate each shard.
 
 ### Q3: How do you choose a shard key?
 Pick a key with **high cardinality, even distribution, alignment with query patterns, and stability**. Avoid monotonic keys (auto-increment IDs, timestamps → hotspots) and low-cardinality keys. Ideally most queries target a **single shard** to avoid scatter-gather.
@@ -253,7 +256,7 @@ Use **consistent hashing** to minimize moved data, **pre-split** shards ahead of
 ## Key Takeaways for Interviews
 
 1. **Sharding = horizontal partitioning** — disjoint row subsets across nodes.
-2. **Shard to scale writes + storage; replicate to scale reads + availability** — use both.
+2. **Sharding scales writes + storage + targeted reads; replication scales read concurrency + availability** — use both.
 3. **Don't shard prematurely** — exhaust vertical scaling, replicas, caching, indexing first.
 4. **The shard key is the #1 decision** — high cardinality, even, query-aligned, stable.
 5. **Range = range queries but hotspots; Hash = even but no range queries.**
