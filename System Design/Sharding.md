@@ -16,10 +16,10 @@ The interviewer wants to hear **why** you shard, **how you pick the shard key**,
 | **What it does** | Splits data into disjoint subsets | Copies the same data to multiple nodes |
 | **Each node holds** | A *slice* of the data | A *full copy* of the data |
 | **Primarily scales** | Writes + storage + **targeted reads** | Read concurrency + availability |
-| **How it helps reads** | Each query scans a **smaller dataset** (smaller indexes, hotter cache) | Adds **more copies** to spread read load |
+| **How it helps reads** | Each query scans a **smaller dataset** (smaller indexes, hotter cache) **and** read load is **spread across shards** (requests for different keys hit different nodes) | Adds **more copies** to spread read load |
 | **Analogy** | Different chapters in different books | Photocopies of the same book |
 
-> **Interview soundbite:** **Both** scale reads, but differently — **replication** adds full copies to spread read *concurrency*; **sharding** shrinks the *data each query touches* (smaller indexes, more of the working set in memory). Sharding is the **only** one that also scales **writes and storage**. Real systems use both — shard the data, then replicate each shard.
+> **Interview soundbite:** **Both** scale reads, but differently — **replication** adds full copies to spread read *concurrency*; **sharding** helps reads two ways: it **shrinks the data each query touches** (smaller indexes, more of the working set in memory) **and distributes read load** across shards (requests for different keys hit different nodes). Sharding is the **only** one that also scales **writes and storage**. Real systems use both — shard the data, then replicate each shard.
 >
 > ⚠️ **Caveat:** sharding only speeds up reads that **target a single shard** (include the shard key). Reads *without* the shard key become **scatter-gather** across all shards and get **slower** — so read speedup depends on shard-key-aligned queries.
 
