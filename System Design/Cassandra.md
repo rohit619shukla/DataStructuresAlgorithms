@@ -1,290 +1,246 @@
 # Apache Cassandra
 
-## The One-Line Answer (Say This First in an Interview)
+## One-Line Answer (Say This First)
 
-> **Cassandra** is a **distributed, wide-column NoSQL database** built for **massive write throughput, linear horizontal scalability, and no single point of failure**.
-> It achieves this by being **masterless (peer-to-peer)** and **AP by default** in CAP terms — it favors **availability and partition tolerance** over strong consistency, though consistency is **tunable per query**.
+> **Cassandra** is a **distributed, wide-column NoSQL database** built for **massive write throughput, linear horizontal scale, and no single point of failure**. It's **masterless (peer-to-peer)** and **AP by default**, but consistency is **tunable per query**.
 
-Reach for Cassandra when you have **write-heavy, always-on workloads at scale** (time-series, event logs, IoT, messaging, feeds) and you can **design your tables around your queries**.
+Use it for **write-heavy, always-on workloads** (time-series, logs, IoT, messaging, feeds) where you **design tables around your queries**.
 
 ---
 
-## Quick Facts (Cheat Sheet)
+## Cheat Sheet
 
 | Dimension | Cassandra |
 |-----------|-----------|
 | **Type** | Wide-column NoSQL |
-| **Architecture** | Masterless, peer-to-peer ring — every node is equal |
-| **CAP** | **AP** (Available + Partition-tolerant), tunable consistency |
-| **Consistency model** | Eventual by default; **tunable per read/write** |
-| **Scaling** | Horizontal — add nodes for linear throughput gain |
-| **Write path** | Extremely fast (append-only, LSM-tree based) |
-| **Query language** | **CQL** (SQL-like, but no joins, limited WHERE) |
-| **Best for** | Write-heavy, time-series, high-availability workloads |
-| **Weak at** | Ad-hoc queries, joins, aggregations, strong consistency |
-| **Origin** | Facebook (inbox search) → Apache; inspired by Amazon Dynamo (distribution) + Google Bigtable (data model) |
+| **Architecture** | Masterless, peer-to-peer ring — every node equal |
+| **CAP** | **AP**, tunable consistency |
+| **Scaling** | Horizontal — add nodes for linear throughput |
+| **Writes** | Extremely fast (append-only, LSM-tree) |
+| **Query language** | **CQL** (SQL-like, no joins, limited WHERE) |
+| **Best for** | Write-heavy, time-series, high availability |
+| **Weak at** | Joins, aggregations, ad-hoc queries, strong consistency |
+| **Origin** | Facebook → Apache; Dynamo (distribution) + Bigtable (data model) |
 
 ---
 
-## Why Cassandra Exists — The Problem It Solves
+## Why It Exists
 
-Traditional relational databases scale **vertically** (bigger machine) and use a **single master** for writes. This creates two problems at internet scale:
+Relational DBs scale **vertically** with a **single master** → single point of failure + write bottleneck. Cassandra's answer: **no master** (every node accepts reads/writes), **data partitioned + replicated** across nodes, **losing a node doesn't stop the cluster**.
 
-1. **A single point of failure** — if the master dies, writes stop.
-2. **A write bottleneck** — one machine can only absorb so many writes.
-
-Cassandra's answer:
-- **No master.** Every node can accept reads *and* writes.
-- **Data is partitioned and replicated** across many commodity nodes.
-- **Losing a node doesn't stop the cluster** — replicas keep serving.
-
-> **Interview line:** "Cassandra trades the convenience of joins and strong consistency for **guaranteed availability and effortless horizontal scale**."
+> **Interview line:** "Cassandra trades joins and strong consistency for **guaranteed availability and effortless horizontal scale**."
 
 ---
 
 ## Architecture — The Ring
 
-Cassandra nodes form a **ring**. There is **no master and no slave** — this is *peer-to-peer*.
+Nodes form a **peer-to-peer ring** — no master, no slave.
 
-```
-                 ┌──────────┐
-            ┌────│  Node A  │────┐
-            │    └──────────┘    │
-      ┌──────────┐          ┌──────────┐
-      │  Node F  │          │  Node B  │
-      └──────────┘          └──────────┘
-            │                    │
-      ┌──────────┐          ┌──────────┐
-      │  Node E  │          │  Node C  │
-      └──────────┘          └──────────┘
-            │    ┌──────────┐    │
-            └────│  Node D  │────┘
-                 └──────────┘
+- **Partitioner (consistent hashing):** hashes the **partition key** to pick which node owns a row. Adding/removing a node reshuffles only a small slice.
+- **Replication Factor (RF):** number of copies per row. RF=3 is standard.
+- **Coordinator node:** whichever node the client contacts; it routes the request to replicas. Any node can coordinate.
+- **Gossip protocol:** every ~1s each node exchanges cluster state (who's alive, who owns what, schema version) with a few random peers. This decentralized membership + failure detection is what lets **any node coordinate** with no central authority.
 
-  • Every node is identical (peer-to-peer)
-  • A row's placement is decided by hashing its PARTITION KEY
-  • Data is REPLICATED to N nodes (Replication Factor)
-  • Nodes gossip to share cluster state
-```
-
-### Key mechanisms
-- **Partitioner (consistent hashing):** hashes the **partition key** to decide which node owns the data. Consistent hashing means adding/removing a node only reshuffles a small slice of data.
-- **Replication Factor (RF):** how many copies of each row exist. RF=3 is standard.
-- **Gossip protocol:** nodes periodically exchange state ("who's alive, who owns what") — no central coordinator.
-- **Coordinator node:** the node a client contacts becomes the *coordinator* for that request and routes it to the replicas. Any node can coordinate.
-
-### Gossip Protocol (How the Masterless Ring Stays Informed)
-
-Since there is **no master**, no single node holds the "truth" about cluster state. **Gossip** is the peer-to-peer protocol that spreads that state so every node knows about every other node.
-
-- **Every ~1 second**, each node picks a few **random** peers and exchanges state.
-- Information spreads **epidemically** (like a rumor) — one node tells a few, they tell a few more → the whole cluster converges in **O(log N)** rounds.
-- No node talks to *all* others, so it **scales cheaply** to huge clusters.
-
-**What gets gossiped:**
-
-| Shared state | Why it matters |
-|--------------|----------------|
-| **Node up/down (liveness)** | Coordinators avoid routing to dead nodes |
-| **Token ownership (ring position)** | Any node knows *which node owns which data* |
-| **Schema version** | Detect/reconcile schema changes cluster-wide |
-| **Load / status** (bootstrapping, leaving) | Balance requests, manage node join/leave |
-
-**Why it's essential:**
-1. **Enables the masterless design** — any node can coordinate a request because gossip gave it a full map of the ring.
-2. **Failure detection** — paired with the *Phi Accrual Failure Detector*, gossip decides if a node is `DOWN`, triggering **hinted handoff** (store the write, replay later).
-3. **No single point of failure** — the cluster-state knowledge itself is decentralized.
-
-> **Interview line:** "Gossip is Cassandra's decentralized **membership and failure-detection protocol** — nodes periodically exchange state with random peers so the whole masterless ring learns who's alive, who owns what, and the current schema, with no central coordinator."
+> **Interview line:** "Gossip is Cassandra's decentralized membership and failure-detection protocol — nodes swap state with random peers so the masterless ring knows who's alive and who owns what."
 
 ---
 
-## Tunable Consistency (The Most Important Concept)
+## Tunable Consistency (Most Important Concept)
 
-Cassandra lets you **trade consistency for latency/availability per query** by choosing a **consistency level (CL)** — the number of replicas that must acknowledge.
+Choose a **consistency level (CL)** per query — how many replicas must ack:
 
-| Consistency Level | Meaning |
-|-------------------|---------|
-| `ONE` | 1 replica must respond (fastest, least consistent) |
-| `QUORUM` | Majority of replicas — `(RF/2) + 1` |
-| `LOCAL_QUORUM` | Quorum within the local datacenter (avoids cross-DC latency) |
-| `ALL` | Every replica must respond (strongest, least available) |
+| CL | Meaning |
+|----|---------|
+| `ONE` | 1 replica (fastest, least consistent) |
+| `QUORUM` | Majority — `(RF/2)+1` |
+| `LOCAL_QUORUM` | Quorum within local datacenter (avoids cross-DC latency) |
+| `ALL` | Every replica (strongest, least available) |
 
-### The Golden Rule — Strong Consistency Formula
+### Golden Rule
 
 > **If `R + W > RF`, you get strong (read-your-write) consistency.**
 
-Where `R` = read CL, `W` = write CL, `RF` = replication factor.
+**Example (RF=3):** Write `QUORUM` (2) + Read `QUORUM` (2) → `2+2=4 > 3` ✅ strong. Write `ONE` + Read `ONE` → `1+1=2 < 3` ❌ eventual (fast, may be stale).
 
-**Example (RF = 3):**
-- Write with `QUORUM` (W=2) + Read with `QUORUM` (R=2) → `2 + 2 = 4 > 3` ✅ strongly consistent.
-- Write `ONE` (1) + Read `ONE` (1) → `1 + 1 = 2 < 3` ❌ eventual consistency (fast, may read stale data).
-
-This is why people say Cassandra is **"AP but tunable toward CP."**
+This is why Cassandra is **"AP but tunable toward CP."**
 
 ---
 
 ## Data Modeling — Query-First (Interview Favorite)
 
-This is the **biggest mindset shift** from SQL and a very common interview probe.
+> **In SQL you model data, then query. In Cassandra you start from the queries, then design tables to serve them.**
 
-> **In relational DBs you model data, then write queries.**
-> **In Cassandra you start from the queries, then design tables to serve them.**
-
-Rules:
-- **One table per query pattern.** Denormalize freely; **duplicate data** across tables instead of joining.
-- **No joins. No `GROUP BY`/aggregations at scale. No ad-hoc `WHERE`.**
-- You can only efficiently filter on the **primary key** (partition key + clustering columns).
+- **One table per query pattern.** Denormalize; **duplicate data** instead of joining.
+- **No joins, no aggregations at scale, no ad-hoc WHERE.**
+- You can only efficiently filter on the **primary key**.
 
 ### Primary Key = Partition Key + Clustering Key
 
 ```
-PRIMARY KEY ((partition_key), clustering_col1, clustering_col2)
-                  │                    │
-                  │                    └─ Sorts rows WITHIN a partition
+PRIMARY KEY ((partition_key), clustering_col)
+                  │                 │
+                  │                 └─ Sorts rows WITHIN a partition
                   └─ Decides WHICH NODE stores the row (via hashing)
 ```
 
-- **Partition key** → determines data distribution (which node). Queries must supply it.
-- **Clustering key** → determines **sort order inside** a partition (enables range scans like "last 10 messages").
+- **Partition key** → data distribution (which node). Queries must supply it.
+- **Clustering key** → sort order inside a partition (enables range scans like "last 10 messages").
 
 ### Example — messages by user
 
 ```sql
 CREATE TABLE messages_by_user (
-    user_id     UUID,
-    msg_time    TIMESTAMP,
-    message     TEXT,
+    user_id  UUID,
+    msg_time TIMESTAMP,
+    message  TEXT,
     PRIMARY KEY ((user_id), msg_time)
 ) WITH CLUSTERING ORDER BY (msg_time DESC);
 
--- Efficient: partition key supplied, results pre-sorted
-SELECT * FROM messages_by_user WHERE user_id = ? LIMIT 20;
+SELECT * FROM messages_by_user WHERE user_id = ? LIMIT 20;  -- fast, pre-sorted
 ```
 
-### Anti-patterns to mention
-- **Hot partitions:** a partition key that funnels most traffic to one node (e.g. partitioning by `country='US'`). Pick a **high-cardinality, evenly-distributed** key.
-- **Unbounded partitions:** a partition that grows forever (e.g. all events under one key). Add a **time bucket** to the partition key (`(sensor_id, day)`).
-- **Querying without the partition key** → forces `ALLOW FILTERING` = full-cluster scan = don't.
+### Anti-patterns
+- **Hot partition:** key funnels traffic to one node (e.g. `country='US'`). Pick a **high-cardinality, evenly-distributed** key.
+- **Unbounded partition:** grows forever. Add a **time bucket** (`(sensor_id, day)`).
+- **No partition key in query** → forces `ALLOW FILTERING` = full-cluster scan = don't.
 
 ---
 
-## The Write Path — Why Writes Are So Fast
+## Write Path — Why Writes Are Fast
 
-Cassandra uses an **LSM-tree (Log-Structured Merge tree)** design — writes are **append-only**, never in-place updates.
+> **Every write is just an APPEND. Cassandra never overwrites in place — it writes a new version and cleans up later (LSM-tree).**
 
 ```
-WRITE ──▶ 1. Commit Log   (append to disk — durability)
-      ──▶ 2. Memtable     (in-memory, sorted)
-              │  (when full / flushed)
+WRITE ──▶ Commit Log (append to disk — durability/crash recovery)
+      ──▶ Memtable   (append in memory, sorted) ──▶ ACK to client
+              │  (when full)
               ▼
-          3. SSTable       (immutable, on-disk file)
+          SSTable     (flushed as a NEW immutable file)
+              │  (background)
+              ▼
+          Compaction  (merge SSTables, drop stale data)
 ```
 
-- **Commit Log:** sequential append → crash recovery.
-- **Memtable:** in-memory write buffer.
-- **SSTable:** immutable sorted files flushed from the memtable. Never modified after write.
-- **Compaction:** a background process merges SSTables, discards overwritten/expired data.
+- **Commit log** = durability only (replayed after a crash, never read normally).
+- **Memtable** = latest writes in memory, serves reads. **Not a copy of disk** — it's the freshest layer not yet flushed.
+- **SSTable** = immutable file flushed from memtable. **Never modified after write.**
 
-Because there are **no random disk seeks and no read-before-write**, writes are extremely cheap → Cassandra's superpower.
+Fast because: **no random seeks, no read-before-write** — just sequential appends.
 
-### Tombstones (common follow-up)
-Deletes don't remove data immediately — they write a **tombstone** marker. The data is purged later during compaction (after `gc_grace_seconds`). **Too many tombstones slow reads** — beware delete-heavy / queue-like workloads.
+### Immutable SSTables
 
----
+| Operation | What happens |
+|-----------|--------------|
+| **Insert** | Append to memtable → flushed as new SSTable |
+| **Update** | Append **new version** (newer timestamp) → new SSTable. Old value untouched |
+| **Delete** | Append a **tombstone** marker → new SSTable. Data purged later by compaction |
 
-## The Read Path (Briefly)
-
-A read may have to merge data from multiple places:
-1. Check **Memtable** (newest data).
-2. Check **Row Cache / Bloom filter** (bloom filter = "is this key possibly in this SSTable?" — avoids useless disk reads).
-3. Read relevant **SSTables** and **merge by timestamp** (latest wins).
-
-Reads are inherently **more expensive than writes** (multiple SSTables + merge). This is the fundamental Cassandra trade-off: **cheap writes, pricier reads.**
+### Tombstones (follow-up)
+Deletes write a tombstone; real removal happens during compaction after `gc_grace_seconds`. **Too many tombstones slow reads** — avoid queue-like/delete-heavy workloads.
 
 ---
 
-## Replication & Multi-Datacenter
+## Compaction
 
-- **Replication strategy:** `NetworkTopologyStrategy` (production) places replicas across **racks and datacenters** for fault isolation.
-- **Multi-DC** is first-class — great for **geo-distributed, low-latency global apps** and **disaster recovery**.
-- **Read repair** and **hinted handoff** heal inconsistencies:
-  - **Hinted handoff:** if a replica is down, the coordinator stores a "hint" and replays the write when it recovers.
-  - **Read repair:** on reads, mismatched replicas are updated to the latest value in the background.
-  - **Anti-entropy repair (`nodetool repair`):** periodic full reconciliation using Merkle trees.
+**Background** process that **merges many SSTables into fewer**, keeping the **newest version per row** and dropping stale versions + expired tombstones → reads stay fast, disk doesn't bloat.
+
+Strategies (name-drop): **Size-Tiered** (write-heavy, default), **Leveled** (read-heavy), **Time-Window** (time-series/TTL).
 
 ---
 
-## When to Use Cassandra ✅ vs Avoid ❌
+## Read Path — Gather and Stitch
 
-| Use Cassandra when... | Avoid Cassandra when... |
-|-----------------------|-------------------------|
-| Write-heavy workloads (logs, events, IoT, metrics) | You need complex joins / ad-hoc queries |
-| Time-series data | You need ACID multi-row transactions |
-| Need always-on availability (no downtime) | Data volume is small (over-engineering) |
-| Massive horizontal scale across datacenters | Strong consistency is mandatory (banking core ledger) |
-| Query patterns are known in advance | Query patterns are unpredictable / analytical |
+A row's data can live in the memtable **and** several SSTables (updates never overwrite). A read **gathers the pieces and stitches them by timestamp** — it does **not** modify disk (that's compaction).
 
-**Real-world users:** Netflix, Discord, Instagram, Apple, Uber.
+### Example — read user #1
+
+```
+Memtable  → user1: city = "Pune"          (today)
+SSTable-2 → user1: age  = 30              (Tue)
+SSTable-1 → user1: name = "Rohit", age=20 (Mon)
+```
+
+1. Check **memtable** → `city="Pune"`.
+2. **Bloom filters** on each SSTable ("has user1?") → skip files that say no (avoids useless disk reads).
+3. Read matching SSTables → `name="Rohit", age=20` and `age=30`.
+4. **Merge by timestamp (newest per column wins):** name=Rohit, age=**30**, city=Pune.
+5. Return `{user1, Rohit, 30, Pune}`.
+
+Reads are **pricier than writes** (a write is one append; a read gathers + merges across files). **Cheap writes, pricier reads.**
+
+> **Interview line:** "A read checks the memtable, uses bloom filters to skip irrelevant SSTables, then stitches the rest by timestamp — latest value per column wins. It never rewrites disk; that's compaction."
 
 ---
 
-## Cassandra vs Other Databases
+## Replication & Multi-DC
+
+- **NetworkTopologyStrategy** (production) spreads replicas across racks/datacenters.
+- **Multi-DC is first-class** — geo-distributed low-latency + disaster recovery.
+- Healing: **Hinted handoff** (store write for a down replica, replay later), **read repair** (fix stale replicas on read), **`nodetool repair`** (periodic full reconciliation).
+
+---
+
+## When to Use ✅ vs Avoid ❌
+
+| Use when... | Avoid when... |
+|-------------|---------------|
+| Write-heavy (logs, events, IoT, metrics) | Complex joins / ad-hoc queries |
+| Time-series data | ACID multi-row transactions |
+| Always-on availability | Small data (over-engineering) |
+| Massive scale across datacenters | Strong consistency mandatory (bank ledger) |
+| Known query patterns | Unpredictable / analytical queries |
+
+**Users:** Netflix, Discord, Instagram, Apple, Uber.
+
+---
+
+## Cassandra vs Others
 
 | | Cassandra | MongoDB | DynamoDB | PostgreSQL |
 |---|-----------|---------|----------|------------|
-| **Model** | Wide-column | Document | Key-value / wide-column | Relational |
-| **Architecture** | Masterless P2P | Primary-secondary | Managed, masterless | Single primary |
-| **Consistency** | Tunable (AP) | Strong-ish (CP-leaning) | Tunable | Strong (CP) |
-| **Best at** | Write-heavy at scale | Flexible documents | Serverless AWS scale | Transactions & joins |
-| **Ops** | Self-managed (heavier) | Moderate | Fully managed | Moderate |
+| **Model** | Wide-column | Document | Key-value/wide-column | Relational |
+| **Architecture** | Masterless P2P | Primary-secondary | Managed masterless | Single primary |
+| **Consistency** | Tunable (AP) | CP-leaning | Tunable | Strong (CP) |
+| **Best at** | Write-heavy at scale | Flexible docs | Serverless AWS | Transactions & joins |
 
-> **DynamoDB vs Cassandra:** very similar distribution model (both Dynamo-inspired). DynamoDB is **fully managed/serverless (AWS)**; Cassandra is **open-source, self-hosted / multi-cloud** (or use managed **ScyllaDB / DataStax Astra**).
+> **DynamoDB vs Cassandra:** same Dynamo-inspired distribution. DynamoDB = fully managed AWS; Cassandra = open-source, self-hosted/multi-cloud.
 
 ---
 
-## Common Interview Questions (Q&A)
+## Interview Q&A
 
-**Q: Is Cassandra CP or AP?**
-A: **AP by default** — it prioritizes availability and partition tolerance. But consistency is **tunable per query**; with `R + W > RF` you can achieve strong consistency at the cost of some availability.
+**Is Cassandra CP or AP?** AP by default; tunable per query — `R+W>RF` gives strong consistency.
 
-**Q: Why are Cassandra writes so fast?**
-A: LSM-tree design — writes are an **append to the commit log + an in-memory memtable write**, with **no read-before-write and no random disk seeks**. SSTables are immutable and flushed sequentially.
+**Why are writes fast?** Every write is an append (commit log + memtable), no read-before-write, no random seeks. SSTables are immutable.
 
-**Q: What's the difference between partition key and clustering key?**
-A: The **partition key** decides *which node* stores the row (via hashing → distribution). The **clustering key** decides the *sort order of rows within* that partition (enables range queries).
+**How does a read work across memtable + SSTables?** Gathers the row's pieces (bloom filters skip irrelevant SSTables), stitches by timestamp (newest per column). Doesn't rewrite disk.
 
-**Q: What is a hot partition and how do you avoid it?**
-A: A partition key that concentrates traffic/data on one node. Avoid by choosing a **high-cardinality, evenly distributed** key and adding **bucketing** (e.g. time buckets) to bound partition size.
+**What is compaction?** Background merge of SSTables → keeps newest version, drops stale data + tombstones. Strategies: Size-Tiered (write), Leveled (read), Time-Window (time-series).
 
-**Q: How does Cassandra handle deletes?**
-A: With **tombstones** — a delete writes a marker; actual removal happens later during **compaction** after `gc_grace_seconds`. Excessive tombstones degrade read performance.
+**Partition key vs clustering key?** Partition key → which node (distribution). Clustering key → sort order within a partition.
 
-**Q: What does "query-first data modeling" mean?**
-A: You design **one table per query pattern** and denormalize/duplicate data, rather than normalizing and joining. Cassandra has no joins, so the schema is shaped by *how you read*, not by entity relationships.
+**Hot partition — how to avoid?** Key that concentrates traffic on one node. Use high-cardinality keys + bucketing (e.g. time buckets).
 
-**Q: How does Cassandra stay available when a node fails?**
-A: Data is replicated (RF copies). Reads/writes succeed as long as the required **consistency level** of replicas responds. **Hinted handoff** and **read repair** heal the down node when it returns.
+**How does Cassandra handle deletes?** Tombstones; purged during compaction after `gc_grace_seconds`.
 
-**Q: What is the coordinator node?**
-A: Any node a client connects to for a request; it routes the operation to the correct replicas and returns the result. There's no fixed coordinator — the role is per-request.
+**Query-first modeling?** One table per query, denormalize/duplicate — schema shaped by how you read, not entity relationships.
 
-**Q: What is the gossip protocol used for?**
-A: It's Cassandra's decentralized **membership and failure-detection** protocol. Every ~1s each node exchanges cluster state (liveness, token/ring ownership, schema version, load) with a few random peers, spreading epidemically in O(log N) rounds. This is what lets any node act as coordinator and lets the masterless ring detect failures — all without a central coordinator.
+**Coordinator node?** Any node a client connects to; routes the request to replicas. Per-request role.
+
+**Gossip protocol?** Decentralized membership + failure detection — nodes swap cluster state (liveness, ownership, schema) with random peers every ~1s.
 
 ---
 
 ## Key Takeaways
 
-- Cassandra = **masterless, wide-column, AP-by-default** database for **write-heavy, highly-available, scalable** workloads.
-- **Tunable consistency:** `R + W > RF` → strong consistency.
-- **Query-first modeling:** one table per query, denormalize, **no joins**.
-- **Primary key = partition key (placement) + clustering key (sort within partition).**
-- **Fast writes** thanks to **LSM-tree** (commit log → memtable → SSTable → compaction).
-- Watch out for **hot partitions, unbounded partitions, and tombstones**.
-- Choose it for **time-series, logging, IoT, messaging, feeds** — not for joins, transactions, or ad-hoc analytics.
+- Masterless, wide-column, **AP-by-default** — for write-heavy, highly-available, scalable workloads.
+- **Tunable consistency:** `R + W > RF` → strong.
+- **Query-first modeling:** one table per query, denormalize, no joins.
+- **Primary key = partition key (placement) + clustering key (sort).**
+- **Fast writes** via LSM-tree — every write is an append (commit log → memtable → immutable SSTable → compaction).
+- **Reads gather & stitch** across memtable + SSTables by timestamp; compaction keeps them fast.
+- Watch out for **hot/unbounded partitions and tombstones**.
 
 ---
 
-*Last Updated: 2026-07-07*
-
+*Last Updated: 2026-07-11*
