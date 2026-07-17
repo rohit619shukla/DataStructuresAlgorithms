@@ -89,21 +89,44 @@ This is **the** question. When the leader gets a write, does it wait for followe
 
 ## Replication Lag & Its Consistency Problems
 
-With async replication, followers are **slightly behind** the leader. This "replication lag" causes classic anomalies:
+With asynchronous replication, the leader confirms a write immediately and copies it to the followers a moment later. During that short delay the followers are **slightly behind** the leader — this delay is called **replication lag**.
 
-### 1. Read-Your-Own-Writes
-User posts a comment (write → leader), then refreshes (read → a lagging follower) and their comment is **gone**.
-- **Fix:** Read the user's *own* data from the **leader** (or a synced replica) for a short window after they write.
+The problem: a user might **write** to the leader but then **read** from a follower that hasn't received that write yet. Because reads and writes can land on different machines that are momentarily out of sync, three classic anomalies appear.
 
-### 2. Monotonic Reads
-User refreshes twice; the first read hits an up-to-date follower, the second hits a more-lagged one → **data appears to go backward in time**.
-- **Fix:** Pin each user to the **same replica** (e.g. hash by user ID) so they never see older data than before.
+### 1. Read-Your-Own-Writes (you can't see your own change)
 
-### 3. Consistent Prefix Reads
-An observer sees an **answer before the question** because different partitions replicated out of order.
-- **Fix:** Ensure causally-related writes go to the same partition / are ordered.
+**What happens, step by step:**
+1. Priya posts a comment. The write goes to the **leader**, which saves it and confirms success.
+2. Her browser immediately reloads the page. That read is routed to **Follower B**.
+3. Follower B has not yet received the new comment from the leader (it is 200 ms behind).
+4. Priya sees the page **without her own comment** and thinks the post failed — so she posts it again, creating a duplicate.
 
-> **Interview soundbite:** Async replication gives **eventual consistency** — replicas converge *eventually*, but readers can temporarily see stale data. Name **read-your-writes** and **monotonic reads** and their fixes to show depth.
+**Fix:** For a short window right after a user writes, serve *that user's own* reads from the **leader** (or from a follower already known to be caught up). Everyone else can still read from any follower.
+
+### 2. Monotonic Reads (time appears to move backward)
+
+**What happens, step by step:**
+1. Priya refreshes her feed. The first read hits **Follower A**, which is up to date and shows **15 comments**.
+2. She refreshes again a second later. This time the read hits **Follower B**, which is more behind and only knows about **12 comments**.
+3. From Priya's point of view, **three comments just disappeared** — the data went backward in time.
+
+**Fix:** Always send the same user to the **same follower** (for example, pick the replica using a hash of the user's ID). If she always reads from one replica, she can never jump to an older, more-lagged one.
+
+> *Monotonic reads is a weaker promise than read-your-writes: it only guarantees you never see data go backward, not that you see the very latest value.*
+
+### 3. Consistent Prefix Reads (you see the answer before the question)
+
+This one appears in **sharded** systems where different pieces of data live on different partitions that replicate at different speeds.
+
+**What happens, step by step:**
+1. On a Q&A page, Mr. Ali writes a question: *"How far are you from the office?"* (stored on Partition 1).
+2. Mrs. Ali replies: *"About ten minutes"* (stored on Partition 2).
+3. An observer reads the conversation. Partition 2 (the answer) has already replicated, but Partition 1 (the question) is still lagging.
+4. The observer sees the **answer "About ten minutes" before the question**, which makes no sense.
+
+**Fix:** Make sure writes that are **causally related** (question and its answer) are written to the **same partition** or are given an ordering, so a reader can never see a later event before the earlier one it depends on.
+
+> **Interview soundbite:** Asynchronous replication gives **eventual consistency** — every replica catches up *eventually*, but until then readers can see stale data. Being able to name **read-your-writes**, **monotonic reads**, and **consistent-prefix** anomalies with their fixes shows real depth.
 
 ---
 
