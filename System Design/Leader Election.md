@@ -182,6 +182,21 @@ Guarantees safety even during partitions. **This is the one to explain in depth*
 
 **Why random timeouts?** If all followers timed out together they'd each vote for themselves → split vote → no majority → retry forever. Random timers mean one node almost always fires first and wins in one round. A rare tie just retries next term with new random timers.
 
+**How the winner is actually chosen (the log-freshness rule).** A candidate doesn't win just by asking — a voter grants its vote **only if the candidate's log is at least as up-to-date as its own**. So a node with a stale log **can't get a majority** and **can't** become leader. This isn't "most up-to-date node wins"; it's a **gate**: being behind **disqualifies** you, and among qualified nodes the fastest to reach majority wins.
+
+"Up-to-date" is compared in this order:
+1. **Last log entry's term** (which election round it came from) — higher wins.
+2. **Then log length / index** — only if the last terms are equal, longer wins.
+
+```
+ Candidate C asks follower F for a vote:
+   compare C's last log vs F's last log → (term first, then index)
+      C ≥ F  → F may vote YES
+      C <  F → F votes NO ✋  (C is missing entries F already has)
+```
+
+**Why it matters — Leader Completeness:** because a behind node can never gather a majority, the elected leader is guaranteed to hold **all committed entries** → no committed data is ever lost on failover.
+
 ---
 
 ## The Practical Answer: Don't Build It Yourself
