@@ -100,19 +100,45 @@ Winner = highest alive ID. Simple but **chatty** (O(n²) messages).
 
 ### Ring — "pass a ballot around the circle"
 
-Nodes form a logical ring; each knows only its next neighbor. A dead node is skipped.
+Nodes sit in a **fixed circle**. Each node only talks to its **next neighbor** (clockwise). To elect a leader, a message travels around the circle **collecting every alive node's ID**, then the highest ID wins.
 
 ```
- Ring:  N1 ▶ N2 ▶ N3 ▶ N4 ▶ N5 ▶ (back to N1)
+   The ring (each node forwards only to the next one):
 
- PHASE 1 — ELECTION ballot circulates, each node appends its id
-           (N5 dead → skipped):
-   N2:[2] ▶ N3:[2,3] ▶ N4:[2,3,4] ▶ (skip N5) ▶ N1:[2,3,4,1] ▶ back to N2
-   N2 sees [2,3,4,1] → highest = 4 → N4 is leader
-
- PHASE 2 — COORDINATOR(leader=N4) circles once so all nodes learn it ✅
+        ┌──▶ N1 ──▶ N2 ──▶ N3 ──┐
+        │                       │
+        └──── N5(💀) ◀──── N4 ◀──┘
 ```
-Fewer messages than Bully (2 laps), but slower — hop by hop.
+
+**Phase 1 — collect IDs.** N2 notices the leader died and sends an ELECTION
+message carrying a list. Each node **adds its own ID**, then forwards it. A dead
+node (N5) doesn't answer, so its neighbor skips it and forwards to the next.
+
+```
+   N2 starts, list = [2]
+        │  forward to N3
+        ▼
+   N3 adds itself → [2, 3]
+        │  forward to N4
+        ▼
+   N4 adds itself → [2, 3, 4]
+        │  tries N5 → 💀 dead → skip → forward to N1
+        ▼
+   N1 adds itself → [2, 3, 4, 1]
+        │  forward back to N2 (the starter)
+        ▼
+   N2 sees the list came back = [2, 3, 4, 1]
+   Highest ID in list = 4  →  N4 is the leader
+```
+
+**Phase 2 — announce.** N2 sends a COORDINATOR message ("leader = N4") once
+around the ring so every node learns the result:
+
+```
+   N2 ─▶ N3 ─▶ N4 ─▶ (skip N5) ─▶ N1 ─▶ back to N2 ✅
+```
+
+Fewer messages than Bully (just 2 trips around the ring), but slower because it moves one hop at a time.
 
 ### Raft — quorum-based, the interview favorite ⭐
 
