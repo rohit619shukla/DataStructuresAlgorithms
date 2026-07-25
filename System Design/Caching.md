@@ -39,10 +39,21 @@
 
 ## Where Can You Cache? (The Request Path)
 
+```mermaid
+flowchart LR
+    U([User]) --> BC["Browser Cache<br/><i>client-side</i>"]
+    BC --> CDN["CDN / Edge<br/><i>Cloudflare, Akamai</i>"]
+    CDN --> LB["Load Balancer"]
+    LB --> APP["App Server<br/><i>local + distributed cache</i><br/>Redis / Memcached"]
+    APP --> DB[("Database<br/><i>buffer / query cache</i>")]
+
+    classDef cache fill:#e8f4ff,stroke:#3b82f6,color:#1e3a8a;
+    classDef store fill:#fef3c7,stroke:#d97706,color:#7c2d12;
+    class BC,CDN,APP cache;
+    class DB store;
 ```
-Browser Cache → CDN → Load Balancer → App Server (local + distributed cache) → Database (buffer/query cache)
-   client-side        edge              in-memory (Redis/Memcached)              server-side
-```
+
+*Each layer solves a different bottleneck — data is served by the earliest (leftmost) layer that has it.*
 
 | Layer | Example | Caches |
 |-------|---------|--------|
@@ -66,11 +77,23 @@ This is the **most commonly asked** caching topic. Know all five.
 
 The **application** manages the cache. Cache doesn't talk to the DB.
 
-```
-Read:
-  1. App checks cache
-  2. HIT  → return
-  3. MISS → read DB → write to cache → return
+```mermaid
+sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    App->>Cache: 1. GET key
+    alt Cache HIT
+        Cache-->>App: 2. return value ✅ (fast)
+    else Cache MISS
+        Cache-->>App: value not found ❌
+        App->>DB: 3. read from DB
+        DB-->>App: value
+        App->>Cache: 4. write value (SET key, TTL)
+        App->>App: 5. return value
+    end
+    Note over App,DB: The APP owns the logic — the cache never talks to the DB
 ```
 
 - ✅ Only requested data is cached (memory-efficient)
@@ -83,8 +106,22 @@ Read:
 
 The **cache** sits inline and fetches from the DB on a miss (app only talks to the cache).
 
-```
-App → Cache → (miss) → Cache loads from DB → returns to App
+```mermaid
+sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    App->>Cache: 1. GET key
+    alt Cache HIT
+        Cache-->>App: 2. return value ✅
+    else Cache MISS
+        Cache->>DB: 3. Cache reads DB itself
+        DB-->>Cache: value
+        Cache->>Cache: 4. store value
+        Cache-->>App: 5. return value
+    end
+    Note over App,DB: The CACHE owns the DB-load logic — app only ever talks to the cache
 ```
 
 - ✅ App code is simpler (cache library handles DB loads)
@@ -98,8 +135,17 @@ App → Cache → (miss) → Cache loads from DB → returns to App
 
 Write to cache **and** DB synchronously, in the same operation.
 
-```
-Write → Cache (update) → DB (update) → ack
+```mermaid
+sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    App->>Cache: 1. write value
+    Cache->>DB: 2. write value (synchronous)
+    DB-->>Cache: ack
+    Cache-->>App: 3. ack ✅
+    Note over Cache,DB: Both writes happen before the ack → cache & DB always agree
 ```
 
 - ✅ Cache always consistent with DB (no stale reads)
@@ -110,8 +156,17 @@ Write → Cache (update) → DB (update) → ack
 
 Write to cache immediately; **flush to DB later** (async/batched).
 
-```
-Write → Cache (ack immediately) → ... later ... → DB (batched flush)
+```mermaid
+sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    App->>Cache: 1. write value
+    Cache-->>App: 2. ack immediately ✅ (fast)
+    Note over Cache: value buffered / dirty
+    Cache-)DB: 3. later: async batched flush
+    Note over Cache,DB: ⚠️ Data loss if cache crashes before the flush
 ```
 
 - ✅ Very fast writes, great for write-heavy workloads
@@ -123,8 +178,24 @@ Write → Cache (ack immediately) → ... later ... → DB (batched flush)
 
 Write **directly to the DB**, skip the cache. Cache populated only on read (via cache-aside).
 
-```
-Write → DB only.   Read → cache-aside populates on miss.
+```mermaid
+sequenceDiagram
+    participant App
+    participant Cache
+    participant DB
+
+    rect rgb(255, 244, 230)
+    Note over App,DB: WRITE — skips the cache entirely
+    App->>DB: 1. write value (DB only)
+    DB-->>App: ack ✅
+    end
+    rect rgb(230, 244, 255)
+    Note over App,DB: READ (later) — cache-aside populates on miss
+    App->>Cache: 2. GET key → MISS ❌
+    App->>DB: 3. read value
+    App->>Cache: 4. populate cache
+    end
+    Note over App,DB: First read after a write is always a miss
 ```
 
 - ✅ Avoids flooding cache with write-once data
