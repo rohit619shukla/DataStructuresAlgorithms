@@ -51,6 +51,24 @@ flowchart TD
     class PAY,ORD,N1,N2 ephemeral;
 ```
 
+### Example Znode Layout
+
+```text
+/ (Root)
+│
+├── /election              <-- Parent folder for Leader Election
+│   ├── /node_0000000001
+│   └── /node_0000000002
+│
+├── /config                <-- Parent folder for Dynamic Configuration
+│   ├── /db_connection_url
+│   └── /feature_flags
+│
+└── /metadata              <-- Parent folder for Cluster Metadata
+    ├── /partition_offsets
+    └── /active_workers
+```
+
 **Key point:** it's a **coordination store, NOT a database**. Keep data tiny. Store *pointers/metadata* (like "leader = node-1"), not your app's real data.
 
 ### Types of znodes (interview gold ⭐)
