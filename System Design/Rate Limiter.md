@@ -93,6 +93,8 @@ flowchart LR
 - **Cons**: Bursts add latency (queued); can drop requests when full
 - **Best for**: Traffic shaping where a steady downstream rate is required
 
+> **Is the "bucket" a queue?** Only for **Leaky Bucket** — it's literally a **FIFO queue** holding *requests* that wait and leak out at a fixed rate. **Token Bucket** is **not** a queue: the bucket holds *tokens* (permits) and is just a **counter** (2 values: `tokens` + `last_refill_timestamp`). Requests aren't stored — they grab a token and proceed instantly, or get rejected. That's why Token Bucket is O(1) memory while Leaky Bucket is O(queue).
+
 ### 3. Fixed Window Counter
 - Count requests per fixed window (e.g., 00:00–00:01). Reset counter each window.
 - **Simple**, but has a **boundary problem**: a client can send `2x` the limit around the window edge.
