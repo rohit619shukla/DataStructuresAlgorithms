@@ -23,29 +23,23 @@
 
 ## The Flow: "Login with Google"
 
-```
-  You         Spotify              Google
-   │             │                   │
-   │ 1. Click "Login with Google"    │
-   │────────────►│                   │
-   │             │ 2. Redirect you to Google
-   │─────────────────────────────────►│
-   │                                 │
-   │ 3. You log in + click "Allow"   │
-   │─────────────────────────────────►│
-   │                                 │
-   │ 4. Google sends a one-time CODE back to Spotify
-   │◄─────────────────────────────────│
-   │             │                   │
-   │             │ 5. Spotify swaps CODE (+ secret) for a TOKEN
-   │             │──────────────────►│
-   │             │◄──────────────────│
-   │             │                   │
-   │             │ 6. Spotify uses TOKEN to fetch your name + email
-   │             │──────────────────►│
-   │             │◄──────────────────│
-   │ 7. You're logged in ✅          │
-   │◄────────────│                   │
+```mermaid
+sequenceDiagram
+    participant You as You (Resource Owner)
+    participant Spotify as Spotify (Client)
+    participant Google as Google (Auth Server)
+    participant API as Google API (Resource Server)
+
+    You->>Spotify: 1. Click "Login with Google"
+    Spotify-->>You: 2. Redirect to Google
+    You->>Google: 3. Log in + click "Allow" (scope: email, profile)
+    Note over You,Google: Spotify never sees your password 🔒
+    Google-->>Spotify: 4. Redirect back with one-time CODE
+    Spotify->>Google: 5. Exchange CODE + client_secret (server-to-server)
+    Google-->>Spotify: access_token (+ refresh_token)
+    Spotify->>API: 6. Call API with access_token
+    API-->>Spotify: your name + email
+    Spotify-->>You: 7. You're logged in ✅
 ```
 
 **In words:**
