@@ -129,6 +129,33 @@ sequenceDiagram
 
 ---
 
+## How Signing & Verification Works
+
+The **signature** is a **one-way hash** derived from the header + payload **together with the secret** — it does *not* contain or store them, and the secret **never leaves the server**.
+
+```
+signature = HMAC_SHA256( header + "." + payload , SECRET )
+
+token sent to client =  header . payload . signature
+                         (Base64)  (Base64)   (the hash)
+```
+
+- **Header & payload** travel as **plain Base64** — readable by anyone (so never put secrets in the payload).
+- **Signature** is the only hashed part; the **secret** is just an *ingredient*, never included in the token.
+
+**Verifying an incoming request:** the server takes the token's own header + payload, **recomputes** the hash using its secret, and compares:
+
+```
+expected = HMAC_SHA256( header.payload , SECRET )
+expected == signature_from_token ?
+    ✅ match    → authentic, trust the claims
+    ❌ no match → forged/tampered → reject (401)
+```
+
+Because a forger doesn't have the secret, any edit to the payload (e.g. `role: user` → `role: admin`) produces a signature that won't match — so tampering is caught **without any database lookup**.
+
+---
+
 ## Key Terms
 
 | Term | Meaning |
