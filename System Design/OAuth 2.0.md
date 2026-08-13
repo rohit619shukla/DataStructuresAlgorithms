@@ -71,3 +71,80 @@ sequenceDiagram
 - The app **never sees your password** — that's the whole point.
 - **Code → token swap happens server-to-server**, so the token isn't exposed in the browser.
 - **Access token** = short-lived; **Refresh token** = renews it silently.
+
+---
+
+# JWT (JSON Web Token)
+
+## What is it?
+
+A **JWT** is a **self-contained, digitally signed token** that carries user data (claims) inside it. Because it's signed, anyone with the key can verify it **hasn't been tampered with** — no database lookup needed.
+
+> In OAuth 2.0, the Authorization Server usually issues the **access token as a JWT**, so the Resource Server can validate it **locally** instead of calling back on every request.
+
+**One-liner:** JWT = a **tamper-proof JSON token** you can **verify without a database**.
+
+---
+
+## Structure: 3 Parts
+
+A JWT is 3 Base64URL parts joined by dots: `header.payload.signature`
+
+| Part | Contains | Example |
+|------|----------|---------|
+| **Header** | Algorithm + type | `{ "alg": "HS256", "typ": "JWT" }` |
+| **Payload** | Claims (data) | `{ "sub": "123", "email": "a@b.com", "exp": 1699999999 }` |
+| **Signature** | Signed hash of header+payload | verifies integrity |
+
+```
+eyJhbGciOi...   .   eyJzdWIiOiI...   .   SflKxwRJSM...
+   HEADER               PAYLOAD              SIGNATURE
+```
+
+---
+
+## The Flow: Issue & Verify
+
+```mermaid
+sequenceDiagram
+    participant User as User
+    participant Auth as Auth Server
+    participant API as Resource Server (API)
+
+    User->>Auth: 1. Login (credentials / OAuth code)
+    Auth->>Auth: 2. Create JWT + sign with SECRET key
+    Auth-->>User: 3. Return JWT
+    User->>API: 4. Request + JWT (Authorization: Bearer <token>)
+    API->>API: 5. Verify signature locally (no DB call) 🔒
+    API-->>User: 6. Respond if valid & not expired
+```
+
+**In words:**
+1. User logs in (or completes the OAuth code exchange).
+2. Auth Server builds the JWT and **signs** it with its secret/private key.
+3. The signed JWT is handed to the client.
+4. Client sends it on every request in the `Authorization: Bearer <token>` header.
+5. The API **verifies the signature locally** — no database or callback needed.
+6. If the signature is valid and the token hasn't expired, access is granted.
+
+---
+
+## Key Terms
+
+| Term | Meaning |
+|------|---------|
+| **Claims** | Key–value data inside the payload (e.g. `sub`, `email`, `exp`) |
+| **Signature** | Proves the token wasn't altered and came from the issuer |
+| **HS256 / RS256** | Symmetric (shared secret) / Asymmetric (private–public key) signing |
+| **`exp`** | Expiry timestamp — token is rejected after it |
+| **Bearer Token** | Whoever holds the token can use it — so keep it safe |
+
+---
+
+## Interview Quick Notes
+
+- **JWT = format**, **OAuth = framework** — OAuth *often* uses JWT as the token format.
+- **Stateless**: the server verifies via signature, so **no session storage** is needed.
+- **Payload is only Base64, not encrypted** — never put secrets in it; anyone can read it.
+- **RS256** lets the API verify with a **public key** while only the Auth Server holds the private key.
+- **Keep tokens short-lived** — you can't easily revoke a JWT before it expires.
