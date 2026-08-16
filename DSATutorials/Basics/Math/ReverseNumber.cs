@@ -1,25 +1,33 @@
 ﻿
 //class Solution
 //{
-//    // Time : O(log10(x)) we are taking 10(y) = x operations , space :O(1)
-//    public int Reverse(int x)
+//    // Time  : O(log10(x)) -> we process one digit per iteration (~number of digits)
+//    // Space : O(1)        -> only a few scalar variables, no extra data structures
+//    public int Reverse(int num)
 //    {
-//        // Use long to avoid overflow
-//        long reversed = 0;
+//        // Use long to safely detect 32-bit overflow before casting back to int
+//        long temp = 0;
 
-//        while (x != 0)
+//        while (num != 0)
 //        {
-//            int digit = x % 10;  // Extract the last digit
-//            reversed = reversed * 10 + digit;  // Build the reversed number
+//            // Extract the last digit (works for negatives too: -123 % 10 == -3)
+//            int lastNum = num % 10;
 
-//            // Check for overflow
-//            if (reversed > int.MaxValue || reversed < int.MinValue)
+//            // Shift accumulated result left by one decimal place and append the digit
+//            temp = temp * 10 + lastNum;
+
+//            // If the reversed value overflows int range, LeetCode expects 0
+//            if (temp > int.MaxValue || temp < int.MinValue)
+//            {
 //                return 0;
+//            }
 
-//            x /= 10;  // Remove the last digit
+//            // Drop the last digit we just consumed
+//            num /= 10;
 //        }
 
-//        return (int)reversed;  // Safe to cast back to int now
+//        // Safe to cast: overflow was already ruled out above
+//        return (int)temp;
 //    }
 
 //}
@@ -29,7 +37,7 @@
 //{
 //    public static void Main()
 //    {
-//        int x = -123;
+//        int x = 43261596;
 
 //        Solution s = new Solution();
 
