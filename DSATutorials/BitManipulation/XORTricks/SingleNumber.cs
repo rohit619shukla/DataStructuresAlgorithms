@@ -1,27 +1,28 @@
-﻿//public class Solution
-//{
+﻿// public class Solution
+// {
+//     // Time Complexity: O(n) - single pass over the array
+//     // Space Complexity: O(1) - only a constant amount of extra space
+//     public int SingleNumber(int[] nums)
+//     {
+//         int result = 0;
 
-//    // Time : O(n) , space :O(1)
-//    public int SingleNumber(int[] nums)
-//    {
-//        int num = 0;
+//         foreach (var num in nums)
+//         {
+//             result ^= num;
+//         }
 
-//        foreach (int item in nums)
-//        {
-//            num ^=  item;
-//        }
+//         return result;
+//     }
+// }
 
-//        return num;
-//    }
-//}
+// class Program
+// {
+//     public static void Main()
+//     {
+//         Solution s = new Solution();
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] nums = { 4, 1, 2, 1, 2 };
+//         int[] nums = { 4, 1, 2, 1, 2 };
 
-//        Solution s = new Solution();
-//        Console.WriteLine(s.SingleNumber(nums));
-//    }
-//}
+//         Console.WriteLine(s.SingleNumber(nums));
+//     }
+// }
