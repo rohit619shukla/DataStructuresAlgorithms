@@ -1,29 +1,30 @@
-﻿//public class Solution
-//{
-//    // Time :O(1) , space :O(1)
-//    public int GetSum(int a, int b)
-//    {
-//        while (b != 0)
-//        {
-//            int carry = a & b;
+﻿// public class Solution
+// {
+//     public int GetSum(int a, int b)
+//     {
+//         while (b != 0)
+//         {
+//             // 1. We will first figure out what all places needs carry
+//             int carry = a & b;
 
-//            a = a ^ b;
+//             // 2. Perform the addition using ^, This is becoz : 1+1 = 2, but is written as 1 0 in binary
+//             a = a ^ b;
 
-//            b = carry << 1;
-//        }
+//             // 3. Now take the carry and make it available to be added in next itration
+//             b = carry << 1;
+//         }
 
-//        return a;
-//    }
-//}
+//         return a;
+//     }
+// }
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int a = 1, b = 3;
 
-//        Solution s = new Solution();
+// class Program
+// {
+//     public static void Main()
+//     {
+//         Solution s = new Solution();
 
-//        Console.WriteLine(s.GetSum(a, b));
-//    }
-//}
+//         Console.WriteLine(s.GetSum(1, 2));
+//     }
+// }

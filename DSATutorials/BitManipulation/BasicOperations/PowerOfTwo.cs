@@ -1,19 +1,23 @@
-﻿//public class Solution
-//{
-//    public bool IsPowerOfTwo(int n)
-//    {
-//        // Ideally if any number only has 1 set bit is a power of 2, hence if we negate the number and do a bitwise AND operation with the original number, we should get 0.
-//        return n > 0 && (n & (n - 1)) == 0;
-//    }
-//}
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int num = 16;
+﻿// class Solution
+// {
+//     public bool IsPowerOfTwo(int num)
+//     {
+//         // If a number is power of 2, then there will only be 1 set bit
+//         // If we do N-1, that 1 bit will be set to 0 and all bits next to right will be set to 1
+//         // Doing logical and will give either 0 or 1
 
-//        Solution s = new Solution();
+//         if (num <= 0) return false;
 
-//        Console.WriteLine(s.IsPowerOfTwo(num));
-//    }
-//}
+//         return (num & num - 1) == 0 ? true : false;
+//     }
+// }
+
+// class Program
+// {
+//     public static void Main()
+//     {
+//         Solution s = new Solution();
+
+//         Console.WriteLine(s.IsPowerOfTwo(32));
+//     }
+// }

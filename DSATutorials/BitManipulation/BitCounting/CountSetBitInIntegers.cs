@@ -1,27 +1,24 @@
-﻿
-//class Solution
-//{
-//    public int CountBits(int num)
-//    {
-//        int count = 0;
+﻿// public class Solution
+// {
+//     public int HammingWeight(int n)
+//     {
+//         int count = 0;
 
-//        while (num > 0)
-//        {
-//            num &= (num - 1);
-//            count++;
-//        }
+//         while (n > 0)
+//         {
+//             n = n & n - 1;
+//             count++;
+//         }
+//         return count;
+//     }
+// }
 
-//        return count;
-//    }
-//}
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int num = 13;
+// class Program
+// {
+//     public static void Main()
+//     {
+//         Solution s = new Solution();
 
-//        Solution s = new Solution();
-
-//        Console.WriteLine(s.CountBits(num));
-//    }
-//}
+//         Console.WriteLine(s.HammingWeight(11));
+//     }
+// }
