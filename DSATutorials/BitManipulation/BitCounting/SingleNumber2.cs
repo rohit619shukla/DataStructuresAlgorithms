@@ -1,5 +1,6 @@
 // public class Solution
 // {
+//     // Time : O(n) outer loop runs for O(32) => 1
 //     public int SingleNumber(int[] nums)
 //     {
 //         int result = 0;
