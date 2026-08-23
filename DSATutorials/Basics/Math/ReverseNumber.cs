@@ -5,7 +5,6 @@
 //     // Space : O(1)        -> only a few scalar variables, no extra data structures
 //     public int Reverse(int num)
 //     {
-//         // Use long to safely detect 32-bit overflow before casting back to int
 //         int temp = 0;
 
 //         while (num != 0)
