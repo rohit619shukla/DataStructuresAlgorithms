@@ -1,34 +1,31 @@
-﻿
+﻿// class Solution
+// {
+//     // Time Complexity: O(n) - we traverse the array once
+//     // Space Complexity: O(1) - only a single variable is used
+//     public int largestElement(int[] nums)
+//     {
 
-//class Solution
-//{
-//    public int Solve(int[] arr)
-//    {
-//        if (arr == null || arr.Length == 0)
-//        {
-//            return -1;
-//        }
+//         // Always assume the first element in the array as largest and we assume the array will have atleast 1 element
+//         int maxi = nums[0];
 
-//        int largest = arr[0];
+//         foreach (int n in nums)
+//         {
+//             maxi = Math.Max(maxi, n);
+//         }
 
-//        for (int i = 1; i < arr.Length; i++)
-//        {
-//            largest = Math.Max(largest, arr[i]);
-//        }
+//         return maxi;
+//     }
+// }
 
-//        return largest;
-//    }
-//}
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] arr = { 20, 10, 20, 4, 100 };
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int[] nums = { 3, 3, 0, 99, -40 };
 
-//        Solution s = new Solution();
+//         Solution s = new Solution();
 
-//        Console.WriteLine(s.Solve(arr));
-//    }
-//}
+//         Console.WriteLine(s.largestElement(nums));
+//     }
+// }
 
-//// Time : O(n) , space :O(1)

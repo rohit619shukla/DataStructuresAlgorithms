@@ -1,87 +1,37 @@
-﻿
+﻿// public class Solution
+// {
+//     public int SecondLargestElement(int[] nums)
+//     {
 
-//class Soltuion
-//{
-//    // Brute force : O(nlogn) ,space :(1)
-//    //public int Solve(int[] arr)
-//    //{
-//    //    if (arr == null || arr.Length < 2)
-//    //    {
-//    //        return -1;
-//    //    }
+//         int firstLargest = int.MinValue;
+//         int secondLargest = int.MinValue;
 
-//    //    Array.Sort(arr);
+//         for (int i = 0; i < nums.Length; i++)
+//         {
+//             if (nums[i] > firstLargest)
+//             {
+//                 secondLargest = firstLargest;
+//                 firstLargest = nums[i];
+//             }
+//             else if (nums[i] > secondLargest && nums[i] != firstLargest)
+//             {
+//                 secondLargest = nums[i];
+//             }
+//         }
 
+//         return secondLargest == int.MinValue ? -1 : secondLargest;
+//     }
+// }
 
-//    //    return arr[arr.Length - 1] == arr[arr.Length - 2] ? -1 : arr[arr.Length - 2];
-//    //}
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int[] nums = { -1, -3, -4, -2, -5 };
+//         //int[] nums = { 8, 8, 7, 6, 5 };
 
+//         Solution s = new Solution();
 
-//    // Better force : O(2n) ,space :(1)
-//    //public int Solve(int[] arr)
-//    //{
-//    //    if (arr == null || arr.Length < 2)
-//    //    {
-//    //        return -1;
-//    //    }
-
-//    //    int largest = arr[0];
-//    //    int secondLargest = -1;
-
-//    //    for (int i = 1; i < arr.Length; i++)
-//    //    {
-//    //        largest = Math.Max(arr[i], largest);
-//    //    }
-
-//    //    for (int j = 0; j < arr.Length; j++)
-//    //    {
-//    //        if (arr[j] < largest)
-//    //        {
-//    //            secondLargest = Math.Max(arr[j], secondLargest);
-//    //        }
-//    //    }
-
-//    //    return secondLargest;
-//    //}
-
-//    // Optimal : O(n) , space :O(1)
-//    public int Solve(int[] arr)
-//    {
-//        if (arr == null || arr.Length < 2)
-//        {
-//            return -1;
-//        }
-
-//        int firstLargest = arr[0];
-//        int secondLargest = -1;
-
-//        for (int i = 1; i < arr.Length; i++)
-//        {
-//            if (arr[i] > firstLargest)
-//            {
-//                secondLargest = firstLargest;
-//                firstLargest = arr[i];
-//            }
-//            else if (arr[i] > secondLargest && arr[i] != firstLargest)
-//            {
-//                secondLargest = arr[i];
-//            }
-//        }
-
-//        return secondLargest;
-//    }
-
-//}
-//class Program
-//{
-//    public static void Main()
-//    {
-//        //int[] arr = { 12, 35, 1, 10, 34, 1 };
-//        //int[] arr = { 12, 12, 12, 12, 12 };
-//        int[] arr = { 1, 5, 7, 8, 3, 2, 9, 9 };
-
-//        Soltuion s = new Soltuion();
-
-//        Console.WriteLine(s.Solve(arr));
-//    }
-//}
+//         Console.WriteLine(s.SecondLargestElement(nums));
+//     }
+// }
