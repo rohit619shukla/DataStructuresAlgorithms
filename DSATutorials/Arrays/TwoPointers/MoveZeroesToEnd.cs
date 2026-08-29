@@ -1,63 +1,53 @@
-﻿
-//public class Solution
-//{
-//    // Time: O(3N) , space :O(1)
-//    //public void MoveZeroes(int[] nums)
-//    //{
-//    //    List<int> tempList = new List<int>();
+﻿// // Move Zeroes To End
+// // -------------------
+// // Move all zeroes in the array to the end while keeping the relative order
+// // of the non-zero elements. The operation is done in-place.
+// //
+// // Approach: Two pointers.
+// //   - i marks the position where the next non-zero element should be written.
+// //   - j scans through the array.
+// // First pass copies every non-zero element forward; second pass fills the
+// // remaining tail with zeroes.
+// //
+// // Time Complexity:  O(n) - each element is visited a constant number of times.
+// // Space Complexity: O(1) - the array is modified in-place, no extra storage.
 
-//    //    // Pass 1 : get all non zero numbers and store in list 
-//    //    for (int i = 0; i < nums.Length; i++)
-//    //    {
-//    //        if (nums[i] != 0)
-//    //        {
-//    //            tempList.Add(nums[i]);
-//    //        }
-//    //    }
+// public class Solution
+// {
+//     public void MoveZeroes(int[] nums)
+//     {
+//         // i: write index for non-zero values, j: read/scan index
+//         int i = 0, j = 0, n = nums.Length;
 
-//    //    // Pass 2: store all non zero number back in array
-//    //    for (int i = 0; i < tempList.Count; i++)
-//    //    {
-//    //        nums[i] = tempList[i];
-//    //    }
+//         // Move all non-zero elements to the front, preserving order.
+//         while (j < n)
+//         {
+//             if (nums[j] != 0)
+//             {
+//                 nums[i] = nums[j];
+//                 i++;
+//             }
+//             j++;
+//         }
 
-//    //    // Pass 3: assign zero to remaining places if any
-//    //    for (int j = tempList.Count; j < nums.Length; j++)
-//    //    {
-//    //        nums[j] = 0;
-//    //    }
-//    //}
+//         // Fill the remaining positions with zeroes.
+//         while (i < n)
+//         {
+//             nums[i] = 0;
+//             i++;
+//         }
+//     }
+// }
 
-//    // Time :O(2N) , space :O(1)
-//    public void MoveZeroes(int[] nums)
-//    {
-//        // Pass 1: Place all non negative number at start of array
-//        int pos = 0;
-//        for (int i = 0; i < nums.Length; i++)
-//        {
-//            if (nums[i] != 0)
-//            {
-//                nums[pos++] = nums[i];
-//            }
-//        }
 
-//        // Pass 2: place all zeroes at end
-//        for (int j = pos; j < nums.Length; j++)
-//        {
-//            nums[j] = 0;
-//        }
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int[] numks = { 0, 1, 0, 3, 12 };
 
-//    }
+//         Solution s = new Solution();
 
-//}
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] arr = { 0, 1, 0, 3, 12 };
-
-//        Solution s = new Solution();
-
-//        s.MoveZeroes(arr);
-//    }
-//}
+//         s.MoveZeroes(numks);
+//     }
+// }

@@ -1,63 +1,45 @@
-﻿//public class Solution
-//{
-//    // Time : O(k * n) , space :O(1)
-//    public void Rotate(int[] nums, int k)
-//    {
+﻿// public class Solution
+// {
+//     // Time : O(n), Space : O(1)
+//     public void Rotate(int[] nums, int k)
+//     {
+//         // Usually you can rotate the array that many number of times which is euqual to size of array
+//         // If the value of K is greater than size of array , we will kind of enter in a loop whichis not really needed
+//         // Hence we need to normalize the array
 
-//        for (int i = 0; i < k; i++)
-//        {
-//            int temp = nums[nums.Length - 1];
+//         int n = nums.Length;
+//         k %= n;
 
-//            for (int j = nums.Length - 2; j >= 0; j--)
-//            {
-//                nums[j + 1] = nums[j];
-//            }
-//            nums[0] = temp;
-//        }
+//         // Now we will reverse the array 3 times, based on following way
+//         // This works becasue if we see the output, after eversing the array all elements were
+//         // already in the right zone, they just need a bit of shuffling
+//         Reverse(0, n - 1, nums);
+//         Reverse(0, k - 1, nums);
+//         Reverse(k, n - 1, nums);
+//     }
 
-//        foreach (int item in nums)
-//        {
-//            Console.Write($"{item}" + " ");
-//        }
-//    }
+//     private void Reverse(int lb, int ub, int[] nums)
+//     {
+//         while (lb < ub)
+//         {
+//             int temp = nums[lb];
+//             nums[lb] = nums[ub];
+//             nums[ub] = temp;
 
+//             lb++;
+//             ub--;
+//         }
+//     }
+// }
 
-//    // Time :O(n) , space :O(1) 
-//    //public void Rotate(int[] nums, int k)
-//    //{
-//    //    int n = nums.Length;
-//    //    k %= n;
-//    //    Reverse(nums, 0, n - 1);
-//    //    Reverse(nums, 0, k - 1);
-//    //    Reverse(nums, k, n - 1);
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int[] nums = { 1, 2, 3, 4, 5, 6, 7 };
 
-//    //    foreach (int item in nums)
-//    //    {
-//    //        Console.Write($"{item}" + " ");
-//    //    }
-//    //}
+//         Solution s = new Solution();
 
-//    //private void Reverse(int[] nums, int start, int end)
-//    //{
-//    //    while (start < end)
-//    //    {
-//    //        int temp = nums[start];
-//    //        nums[start] = nums[end];
-//    //        nums[end] = temp;
-//    //        start++;
-//    //        end--;
-//    //    }
-//    //}
-//}
-
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] arr = { 1, 2, 3, 4, 5, 6, 7 };
-
-//        Solution s = new Solution();
-
-//        s.Rotate(arr, 3);
-//    }
-//}
+//         s.Rotate(nums, 3);
+//     }
+// }
