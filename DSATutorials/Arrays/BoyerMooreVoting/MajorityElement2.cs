@@ -1,85 +1,97 @@
-﻿
+﻿public class Solution
+{
+    // Time : O(n) , Space : O(1) (result list aside, only a constant number of counters)
+    public IList<int> MajorityElement(int[] nums)
+    {
+        // Boyer-Moore generalised: an element appearing more than n/k times
+        // can have at most k-1 such elements. Here k = 3, so there are at
+        // most two candidates that occur more than n/3 times.
 
-//public class Solution
-//{
-//    // Time :O(n) , space :(1)
-//    public IList<int> MajorityElement(int[] arr)
-//    {
-//        List<int> result = new List<int>();
-//        int count1 = 0, count2 = 0, candidate1 = 0, candidate2 = 0;
+        IList<int> result = new List<int>();
 
-//        // Phase1 : voting
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            if (arr[i] == candidate1)
-//            {
-//                count1++;
-//            }
-//            else if (arr[i] == candidate2)
-//            {
-//                count2++;
-//            }
-//            else if (count1 == 0)
-//            {
-//                candidate1 = arr[i];
-//                count1 = 1;
-//            }
-//            else if (count2 == 0)
-//            {
-//                candidate2 = arr[i];
-//                count2 = 1;
-//            }
-//            else
-//            {
-//                count1--;
-//                count2--;
-//            }
-//        }
+        // Two candidate slots and their running vote counts.
+        int maj1 = 0, count1 = 0, maj2 = 0, count2 = 0;
+        int n = nums.Length;
 
-//        // Phase 2 : verification of votes
-//        int finalCount1 = 0, finalCount2 = 0;
+        // Pass 1: find the two potential candidates via vote counting.
+        for (int i = 0; i < n; i++)
+        {
+            // Priority 1: current number already matches a candidate -> add a vote.
+            if (maj1 == nums[i])
+            {
+                count1++;
+            }
+            else if (maj2 == nums[i])
+            {
+                count2++;
+            }
 
-//        for (int i = 0; i < arr.Length; i++)
-//        {
-//            if (arr[i] == candidate1)
-//            {
-//                finalCount1++;
-//            }
-//            else if (arr[i] == candidate2)
-//            {
-//                finalCount2++;
-//            }
-//        }
+            // Priority 2: a candidate slot is free (count 0) -> take it for this number.
+            else if (count1 == 0)
+            {
+                maj1 = nums[i];
+                count1 = 1;
+            }
+            else if (count2 == 0)
+            {
+                maj2 = nums[i];
+                count2 = 1;
+            }
 
-//        if (finalCount1 > arr.Length / 3)
-//        {
-//            result.Add(candidate1);
-//        }
+            // Priority 3: number matches neither candidate and both are held ->
+            // cancel one vote from each candidate.
+            else
+            {
+                count1--;
+                count2--;
+            }
+        }
 
-//        if (finalCount2 > arr.Length / 3)
-//        {
-//            result.Add(candidate2);
-//        }
+        // Pass 2: candidates are only potential; recount their real frequencies.
+        int freq1 = 0, freq2 = 0;
 
-//        return result;
-//    }
-//}
+        for (int i = 0; i < n; i++)
+        {
+            if (maj1 == nums[i])
+            {
+                freq1++;
+            }
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] arr = { 2, 1, 1, 3, 1, 4, 5, 6 };
+            else if (maj2 == nums[i])
+            {
+                freq2++;
+            }
+        }
 
-//        Solution s = new Solution();
+        // Keep only candidates that truly appear more than n/3 times.
+        if (freq1 > (n / 3))
+        {
+            result.Add(maj1);
+        }
 
-//        IList<int> result = s.MajorityElement(arr);
+        if (freq2 > (n / 3))
+        {
+            result.Add(maj2);
+        }
 
-//        foreach (int item in result)
-//        {
-//            Console.Write($"{item}" + " ");
-//        }
-//    }
-//}
+        return result;
+    }
+}
 
-//// Note : for n/3 there will be atmost 2 majority element. This is due to formula: for n/k => k-1 majority elements
+
+class Program
+{
+    public static void Main()
+    {
+        int[] nums = { 1, 2 };
+
+        Solution s = new Solution();
+
+        var result = s.MajorityElement(nums);
+
+        foreach (var num in result)
+        {
+            Console.Write($"{num}" + " ");
+        }
+    }
+}

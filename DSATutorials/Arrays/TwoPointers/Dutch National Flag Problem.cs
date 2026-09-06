@@ -1,60 +1,56 @@
-﻿//public class Solution
-//{
-//    // Time :O(n) , space :O(1)
-//    public void SortColors(int[] arr)
-//    {
-//        if (arr == null || arr.Length == 0)
-//        {
-//            return;
-//        }
+﻿// public class Solution
+// {
+//     public void SortColors(int[] nums)
+//     {
+//         // The apporach is that we know :
+//         // k should be at last, but we dont know where to keep i and j
+//         // We assume : 0 => i, 1 => j and 2 => k
+//         int i = 0, j = 0, k = nums.Length - 1;
 
-//        // Note : i = > denotes 0, j => denotes 1, k => denotes 2
-//        int i = 0, j = 0, k = arr.Length - 1;
+//         while (j <= k)
+//         {
+//             // j will be used to determine who is at current index and what needs to be done with it
+//             switch (nums[j])
+//             {
+//                 case 0:
+//                     Swap(nums, i, j);
+//                     i++;
+//                     j++;
+//                     break;
+//                 case 1:
+//                     j++;
+//                     break;
+//                 case 2:
+//                     Swap(nums, j, k);
+//                     k--;
+//                     break;
+//             }
+//         }
+//     }
 
-//        while (j <= k)
-//        {
-//            switch (arr[j])
-//            {
-//                case 0:
-//                    Swap(arr, i, j);
-//                    i++;
-//                    j++;
-//                    break;
+//     private void Swap(int[] nums, int lb, int ub)
+//     {
+//         while (lb < ub)
+//         {
+//             int temp = nums[lb];
+//             nums[lb] = nums[ub];
+//             nums[ub] = temp;
 
-//                case 1:
-//                    j++;
-//                    break;
+//             lb++;
+//             ub--;
+//         }
+//     }
+// }
 
-//                case 2:
-//                    Swap(arr, j, k);
-//                    k--;
-//                    break;
 
-//                default:
-//                    return;
-//            }
-//        }
-//    }
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int[] nums = { 2, 0, 2, 1, 1, 0 };
 
-//    private void Swap(int[] arr, int lb, int ub)
-//    {
-//        int temp = arr[lb];
-//        arr[lb] = arr[ub];
-//        arr[ub] = temp;
+//         Solution s = new Solution();
 
-//    }
-//}
-
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] arr = { 2, 0, 2, 1, 1, 0 };
-
-//        Solution s = new Solution();
-
-//        s.SortColors(arr);
-//    }
-//}
-
-////Note : Once an element is at right place what it denotes only move that variable
+//         s.SortColors(nums);
+//     }
+// }

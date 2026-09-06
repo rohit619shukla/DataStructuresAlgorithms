@@ -1,104 +1,111 @@
-﻿
+﻿// public class Solution
+// {
+//     // Time  : O(n^3) -> sorting is O(n log n); the two nested loops (i, j) are O(n^2)
+//     //         and each drives an O(n) two-pointer scan, so O(n^2) * O(n) = O(n^3) dominates.
+//     // Space : O(1) auxiliary (ignoring the output list and the in-place sort's stack).
+//     public IList<IList<int>> FourSum(int[] nums, int target)
+//     {
+//         IList<IList<int>> result = new List<IList<int>>();
 
-//public class Solution
-//{
-//    // Time :O(N^3) + O(nlogn) , space :O(n)
-//    public IList<IList<int>> FourSum(int[] arr, int target)
-//    {
-//        // base case
-//        if (arr.Length < 4)
-//        {
-//            return null;
-//        }
+//         // Sort so we can fix two numbers and collapse the remaining pair with the
+//         // two-pointer 2 Sum technique, and so duplicates sit next to each other.
+//         Array.Sort(nums);
 
-//        var result = new List<IList<int>>();
+//         int n = nums.Length;
 
-//        // Step 1: Sort the array
-//        Array.Sort(arr);
+//         // Fix the first number of the quadruple.
+//         for (int i = 0; i < n - 3; i++)
+//         {
+//             // Skip duplicate values for i so we don't emit duplicate quadruples.
+//             if (i > 0 && nums[i] == nums[i - 1])
+//             {
+//                 continue;
+//             }
 
-//        // Step 2: Fix first number : we expect atleast 3 numbers to remain after selecting 1st number
-//        for (int i = 0; i < arr.Length - 3; i++)
-//        {
-//            // duplicate check
-//            if (i > 0 && arr[i] == arr[i - 1])
-//            {
-//                continue;
-//            }
+//             // Fix the second number of the quadruple.
+//             for (int j = i + 1; j < n - 2; j++)
+//             {
+//                 // Skip duplicate values for j, but keep the first j (== i + 1) since
+//                 // that is the starting position, not a repeat.
+//                 if (j != i + 1 && nums[j] == nums[j - 1])
+//                 {
+//                     continue;
+//                 }
 
-//            // Step 3:Fix the second number: we expect atleast 2  numbers to remain after selecting 2nd number
-//            for (int j = i + 1; j < arr.Length - 2; j++)
-//            {
-//                // duplicate check
-//                if (j > i + 1 && arr[j] == arr[j - 1])
-//                {
-//                    continue;
-//                }
+//                 // Remaining window [k .. l] is searched with two pointers.
+//                 int k = j + 1;
+//                 int l = n - 1;
 
-//                // Step 4: create a new target to determine based on what we did in 3 sum 
-//                long newTarget = (long)target - arr[i] - arr[j];
+//                 // Find pairs in the window that complete the target sum.
+//                 TwoSum(result, nums, target, i, j, k, l);
+//             }
+//         }
 
-//                // Step 5 : call two sum
-//                TwoSum(result, arr, newTarget, j + 1, arr.Length - 1, i, j);
-//            }
+//         return result;
+//     }
 
-//        }
+//     private void TwoSum(IList<IList<int>> result, int[] nums, int target, int n1, int n2, int lb, int ub)
+//     {
+//         // n1 and n2 are already fixed by the caller; move lb/ub inward to hit the target.
+//         while (lb < ub)
+//         {
+//             // Use long to avoid int overflow when values are near int.MaxValue.
+//             long sum = nums[n1];
+//             sum += nums[n2];
+//             sum += nums[lb];
+//             sum += nums[ub];
 
-//        return result;
-//    }
+//             if (sum < target)
+//             {
+//                 // Sum too small -> need a larger value, advance the lower pointer.
+//                 lb++;
+//             }
+//             else if (sum > target)
+//             {
+//                 // Sum too large -> need a smaller value, retreat the upper pointer.
+//                 ub--;
+//             }
+//             else
+//             {
+//                 // Match found. Skip duplicates on both ends so each quadruple is unique.
+//                 while (lb < ub && nums[lb] == nums[lb + 1])
+//                 {
+//                     lb++;
+//                 }
 
-//    private void TwoSum(List<IList<int>> result, int[] arr, long newTarget, int k, int l, int i, int j)
-//    {
-//        // These 2 are variables
-//        while (k < l)
-//        {
-//            long sum = (long)arr[k] + arr[l];
+//                 while (lb < ub && nums[ub] == nums[ub - 1])
+//                 {
+//                     ub--;
+//                 }
 
-//            if (sum == newTarget)
-//            {
-//                result.Add(new List<int> { arr[i], arr[j], arr[k], arr[l] });
+//                 result.Add(new List<int> { nums[n1], nums[n2], nums[lb], nums[ub] });
 
-//                while (k < l && arr[k] == arr[k + 1])
-//                {
-//                    k++;
-//                }
+//                 // Move both pointers past the recorded pair.
+//                 lb++;
+//                 ub--;
+//             }
+//         }
+//     }
+// }
 
-//                while (k < l && arr[l] == arr[l - 1])
-//                {
-//                    l--;
-//                }
 
-//                k++;
-//                l--;
-//            }
-//            else if (sum > newTarget)
-//            {
-//                l--;
-//            }
-//            else
-//            {
-//                k++;
-//            }
-//        }
-//    }
-//}
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int[] nums = { 1000000000,1000000000,1000000000,1000000000 };
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] nums = { 1, 0, -1, 0, -2, 2 };
+//         Solution s = new Solution();
 
-//        Solution s = new Solution();
+//         var result = s.FourSum(nums, -294967296);
 
-//        var result = s.FourSum(nums, 0);
-
-//        foreach (var rows in result)
-//        {
-//            foreach (var val in rows)
-//            {
-//                Console.Write($"{val}" + " ");
-//            }
-//            Console.WriteLine();
-//        }
-//    }
-//}
+//         foreach (List<int> temp in result)
+//         {
+//             foreach (int n in temp)
+//             {
+//                 Console.Write($"{n}" + " ");
+//             }
+//             Console.WriteLine();
+//         }
+//     }
+// }
