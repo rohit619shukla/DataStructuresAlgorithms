@@ -1,41 +1,54 @@
 ﻿// public class Solution
 // {
-//     public int MaxPower(string s)
+//     public int MostFrequentEven(int[] nums)
 //     {
-//         int count = 0, max = 0;
 
-//         for (int i = 0; i < s.Length; i++)
+//         // we wil lstore the element and its count of occurence
+//         Dictionary<int, int> map = new Dictionary<int, int>();
+
+//         // we will do this in single pass only
+//         int maxFreqElement = -1, maxFreq = 0;
+
+//         for (int i = 0; i < nums.Length; i++)
 //         {
-//             // this is the first char
-//             if (i == 0)
+//             if (nums[i] % 2 == 0)
 //             {
-//                 count = 1;
-//             }
-//             else if (s[i] != s[i - 1])
-//             {
-//                 // continuity broke, reset back to 1
-//                 count = 1;
-//             }
-//             else if (s[i] == s[i - 1])
-//             {
-//                 count++;
-//             }
+//                 if (map.ContainsKey(nums[i]))
+//                 {
+//                     // already seen increase the frequency
+//                     map[nums[i]]++;
+//                 }
+//                 else
+//                 {
+//                     // seeing first time
+//                     map[nums[i]] = 1;
+//                 }
 
-//             max = Math.Max(max, count);
+//                 // get the currentElement's freq
+//                 int currFreq = map[nums[i]];
+
+//                 // 1. If the frequency of current number is greater than max numbs' freq
+//                 // 2. If the freq for both are same , we will chose the smallest number
+//                 if (currFreq > maxFreq || (currFreq == maxFreq && nums[i] < maxFreqElement))
+//                 {
+//                     maxFreq = currFreq;
+//                     maxFreqElement = nums[i];
+//                 }
+//             }
 //         }
 
-//         return max;
+//         return maxFreqElement;
 //     }
 // }
-
 
 // class Program
 // {
 //     public static void Main()
 //     {
-//         string str = "abbcccddddeeeeedcba";
+//         int[] nums = { 0, 1, 2, 2, 4, 4, 1 };
 
 //         Solution s = new Solution();
-//         Console.WriteLine(s.MaxPower(str));
+
+//         Console.WriteLine(s.MostFrequentEven(nums));
 //     }
 // }
