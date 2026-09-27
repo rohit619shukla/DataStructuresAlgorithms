@@ -1,45 +1,49 @@
-﻿//public class Solution
-//{
-//    // Same as 1
-//    public IList<int> GetRow(int rowIndex)
-//    {
-//        var result = new List<IList<int>>();
+﻿// public class Solution
+// {
+//     public IList<int> GetRow(int rowIndex)
+//     {
+//         // Building the entire triangle and returning the requested row would use O(rowIndex^2) space.
+//         // Time: O(rowIndex^2). Space: O(rowIndex), including the returned row.
 
-//        for (int i = 0; i <= rowIndex; i++)
-//        {
-//            var newRow = new List<int>();
+//         List<int> prev = new List<int>();
 
-//            for (int j = 0; j <= i; j++)
-//            {
-//                if (j == 0 || j == i)
-//                {
-//                    newRow.Add(1);
-//                }
-//                else
-//                {
-//                    newRow.Add(result[i - 1][j] + result[i - 1][j - 1]);
-//                }
-//            }
-//            result.Add(newRow);
-//        }
+//         for (int i = 0; i <= rowIndex; i++)
+//         {
+//             List<int> curr = new List<int>();
 
-//        return result[rowIndex];
-//    }
-//}
+//             for (int j = 0; j <= i; j++)
+//             {
+//                 if (j == 0 || j == i)
+//                 {
+//                     curr.Add(1);
+//                 }
+//                 else
+//                 {
+//                     curr.Add(prev[j - 1] + prev[j]);
+//                 }
+//             }
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int rowIndex = 6;
+//             prev = curr;
+//         }
 
-//        Solution s = new Solution();
+//         return prev;
+//     }
+// }
 
-//        var result = s.GetRow(rowIndex);
 
-//        foreach (var item in result)
-//        {
-//            Console.Write($"{item}" + " ");
-//        }
-//    }
-//}
+// class Program
+// {
+//     public static void Main()
+//     {
+//         int rowIndex = 3;
+
+//         Solution s = new Solution();
+
+//         var result = s.GetRow(rowIndex);
+
+//         foreach (int item in result)
+//         {
+//             Console.Write($"{item}" + " ");
+//         }
+//     }
+// }
