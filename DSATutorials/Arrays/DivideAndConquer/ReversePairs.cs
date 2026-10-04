@@ -1,98 +1,114 @@
-﻿
+﻿public class Solution
+{
+    // Time: O(n log n), space: O(n) for the merge buffer plus O(log n) recursion.
+    public int ReversePairs(int[] nums)
+    {
+        int[] result = new int[nums.Length];
 
-//public class Solution
-//{
-//    // Time : O(nlogn), space :O(N)
-//    public int ReversePairs(int[] nums)
-//    {
-//        int[] temp = new int[nums.Length];
+        return MergeSort(nums, 0, nums.Length - 1, result);
+    }
 
-//        return MergeSort(nums, 0, nums.Length - 1, temp);
-//    }
+    private int MergeSort(int[] nums, int lb, int ub, int[] result)
+    {
+        int count = 0;
 
-//    private int MergeSort(int[] arr, int lb, int ub, int[] temp)
-//    {
-//        int count = 0;
+        if (lb < ub)
+        {
+            int mid = lb + (ub - lb) / 2;
 
-//        if (lb < ub)
-//        {
-//            int mid = lb + (ub - lb) / 2;
-//            count += MergeSort(arr, lb, mid, temp);
-//            count += MergeSort(arr, mid + 1, ub, temp);
-//            count += CountPairs(arr, lb, mid, ub);
-//            Merge(arr, lb, ub, mid, temp);
-//        }
+            count += MergeSort(nums, lb, mid, result);
+            count += MergeSort(nums, mid + 1, ub, result);
 
-//        return count;
-//    }
+            // Both halves are sorted now. Count cross-half reverse pairs before
+            // merging because reverse-pair comparison differs from merge ordering.
+            count += CountReversePairs(nums, lb, mid, ub);
+            Merge(nums, lb, mid, ub, result);
+        }
 
-//    private void Merge(int[] arr, int lb, int ub, int mid, int[] temp)
-//    {
-//        int i = lb;
-//        int j = mid + 1;
-//        int k = lb;
+        return count;
+    }
 
-//        while (i <= mid && j <= ub)
-//        {
-//            if (arr[i] < arr[j])
-//            {
-//                temp[k] = arr[i];
-//                i++;
-//            }
-//            else
-//            {
-//                temp[k] = arr[j];
-//                j++;
-//            }
-//            k++;
-//        }
+    private void Merge(int[] nums, int lb, int mid, int ub, int[] result)
+    {
+        int k = lb;
+        int i = lb;
+        int j = mid + 1;
 
-//        while (j <= ub)
-//        {
-//            temp[k] = arr[j];
-//            j++;
-//            k++;
-//        }
+        while (i <= mid && j <= ub)
+        {
+            if (nums[i] <= nums[j])
+            {
+                result[k] = nums[i];
+                i++;
+                k++;
+            }
+            else
+            {
+                result[k] = nums[j];
+                j++;
+                k++;
+            }
+        }
 
-//        while (i <= mid)
-//        {
-//            temp[k] = arr[i];
-//            i++;
-//            k++;
-//        }
+        if (i > mid)
+        {
+            while (j <= ub)
+            {
+                result[k] = nums[j];
+                j++;
+                k++;
+            }
+        }
 
-//        for (int x = lb; x <= ub; x++)
-//        {
-//            arr[x] = temp[x];
-//        }
-//    }
+        if (j > ub)
+        {
+            while (i <= mid)
+            {
+                result[k] = nums[i];
+                i++;
+                k++;
+            }
+        }
 
-//    private int CountPairs(int[] arr, int lb, int mid, int ub)
-//    {
-//        int count = 0;
+        for (int x = lb; x <= ub; x++)
+        {
+            nums[x] = result[x];
+        }
+    }
 
-//        int j = mid + 1;
+    private int CountReversePairs(int[] nums, int lb, int mid, int ub)
+    {
+        int count = 0;
+        int j = mid + 1;
 
-//        for (int i = lb; i <= mid; i++)
-//        {
-//            while (j <= ub && (long)arr[i] > (long)(2 * arr[j]))
-//            {
-//                j++;
-//            }
-//            count += j - (mid + 1);
-//        }
-//        return count;
-//    }
-//}
+        // For each value in the sorted left half, find how many values at the
+        // beginning of the sorted right half satisfy nums[i] > 2 * nums[j].
+        for (int i = lb; i <= mid; i++)
+        {
+            // j never moves backward: as nums[i] increases, every previously
+            // qualifying right-side value continues to qualify.
+            while (j <= ub && (long)nums[i] > 2L * nums[j])
+            {
+                j++;
+            }
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[] arr = { 8, 3, 6, 2 };
+            // The qualifying right-side indices are [mid + 1, j - 1].
+            count += j - (mid + 1);
+        }
 
-//        Solution s = new Solution();
+        return count;
+    }
+}
 
-//        Console.WriteLine(s.ReversePairs(arr));
-//    }
-//}
+
+class Program
+{
+    public static void Main()
+    {
+        int[] nums = { 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647 };
+
+        Solution s = new Solution();
+
+        Console.WriteLine($"{s.ReversePairs(nums)}");
+    }
+}
