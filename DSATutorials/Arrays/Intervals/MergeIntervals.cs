@@ -1,59 +1,58 @@
-﻿
-//class Solution
-//{
-//    // Time : O(nlogn) +O(n) , space :O(n)
-//    public int[][] Merge(int[][] intervals)
-//    {
-//        // Step 1 : sort the Array so that we can start the merging
-//        Array.Sort(intervals, new CompareArray());
+﻿// public class Solution
+// {
+//     // Time: O(n log n) for sorting + O(n) for merging and copying the result = O(n log n).
+//     // Auxiliary space: O(n) for the temporary result list + O(log n) sorting stack = O(n).
+//     // Output space: O(n) for the outer array created by ToArray(); inner interval arrays are not copied.
+//     // Total space: O(n) auxiliary + O(n) output = O(n), where n is the number of input intervals.
+//     // The input is sorted in place; merged endpoints mutate input rows because result stores their references.
+//     public int[][] Merge(int[][] intervals)
+//     {
+//         // Sort by start so each interval only needs to be compared with the last merged interval.
+//         Array.Sort(intervals, (n1, n2) => n1[0].CompareTo(n2[0]));
 
-//        // Step 2: start merging the intervals
-//        List<int[]> mergedIntervals = new List<int[]>();
+//         List<int[]> result = new List<int[]>();
 
-//        foreach (int[] inter in intervals)
-//        {
-//            // If the merged interval is already empty or current interval is higher than the last know exisiting interval range
-//            if (mergedIntervals.Count == 0 || mergedIntervals[mergedIntervals.Count - 1][1] < inter[0])
-//            {
-//                mergedIntervals.Add(inter);
-//            }
-//            else
-//            {
-//                // Do the merging
-//                mergedIntervals[mergedIntervals.Count - 1][1] = Math.Max(mergedIntervals[mergedIntervals.Count - 1][1], inter[1]);
-//            }
-//        }
+//         foreach (int[] interval in intervals)
+//         {
+//             // Start a new interval if the result is empty or there is a strict gap after the last merged end.
+//             // Equal endpoints overlap (e.g., [1, 4] and [4, 5]), so they must be merged.
+//             if (result.Count == 0 || result[result.Count - 1][1] < interval[0])
+//             {
+//                 result.Add(interval);
+//             }
+//             else
+//             {
+//                 // Extend the last merged end; Max also handles an interval contained within it.
+//                 result[result.Count - 1][0] = Math.Min(result[result.Count - 1][0], interval[0]);
+//                 result[result.Count - 1][1] = Math.Max(result[result.Count - 1][1], interval[1]);
+//             }
+//         }
 
-//        return mergedIntervals.ToArray();
-//    }
-//}
+//         // Copy the list into an outer array; the inner interval arrays are still shared with the input.
+//         return result.ToArray();
+//     }
+// }
 
-//internal class CompareArray : IComparer<int[]>
-//{
-//    public int Compare(int[] n1, int[] n2)
-//    {
-//        return n1[0].CompareTo(n2[0]);
-//    }
-//}
 
-//class Program
-//{
-//    public static void Main()
-//    {
-//        int[][] intervals = new int[][] {
-//        new int[] {1, 3},
-//        new int[] {2, 6},
-//        new int[] {8, 10},
-//        new int[] {15, 18}
-//    };
+// class Program
+// {
+//     public static void Main()
+//     {
+//         Solution s = new Solution();
 
-//        Solution solution = new Solution();
-//        var result = solution.Merge(intervals);
+//         int[][] intervals =
+//         {
+//             new int[] {1,3},
+//             new int[]{2,6},
+//             new int[]{8,10},
+//             new int[]{15,18}
+//         };
 
-//        foreach (var interval in result)
-//        {
-//            Console.WriteLine($"[{interval[0]}, {interval[1]}]");
-//        }
-//    }
-//}
+//         var result = s.Merge(intervals);
 
+//         foreach (int[] interval in result)
+//         {
+//             Console.WriteLine($"{interval[0]}, {interval[1]}");
+//         }
+//     }
+// }
