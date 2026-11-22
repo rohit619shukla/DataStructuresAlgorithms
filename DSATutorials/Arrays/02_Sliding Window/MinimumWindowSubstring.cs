@@ -25,9 +25,9 @@
 //             }
 //         }
 
-//         // Count distinct characters with unmet requirements, not missing occurrences.
-//         // For "AAB", this starts at 2 and decreases only when A or B reaches zero.
-//         int start = 0, end = 0, size = str.Length, countRequired = map.Count, min = int.MaxValue;
+//         // Count required occurrences still missing from the window, including duplicates.
+//         // For "AAB", this starts at 3 and decreases for both A's and the B.
+//         int start = 0, end = 0, size = str.Length, countRequired = t.Length, min = int.MaxValue;
 //         int startOfString = 0;
 
 //         // Expand the inclusive window [start, end] one character at a time.
@@ -38,9 +38,9 @@
 //             {
 //                 map[str[end]]--;
 
-//                 // Reaching zero satisfies this character's full required quantity.
-//                 // Surplus copies make the frequency negative without changing the counter.
-//                 if (map[str[end]] == 0)
+//                 // A frequency >= 0 after decrementing means this copy was still needed.
+//                 // A negative frequency means it is a surplus copy, so the counter stays the same.
+//                 if (map[str[end]] >= 0)
 //                 {
 //                     countRequired--;
 //                 }
